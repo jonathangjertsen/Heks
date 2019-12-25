@@ -18,6 +18,7 @@ public class BirdScript : MonoBehaviour
     float maxVelocityY = 5.0f;
     float visionRadius = 15f;
 
+    private GameObject player;
     private BirdState state;
 
     public AudioClip CryClip;
@@ -25,7 +26,7 @@ public class BirdScript : MonoBehaviour
 
     public Sprite DefaultSprite;
     public Sprite ChargingSprite;
-    public Transform player;
+    public Transform playerTransform;
 
     Animator animator;
     Rigidbody2D rigidBody2d;
@@ -82,8 +83,8 @@ public class BirdScript : MonoBehaviour
 
         spriteRenderer.sprite = ChargingSprite;
         ApproachVelocity(
-            distanceToPlayerX,
-            distanceToPlayerY
+            Math.Min(distanceToPlayerX, maxVelocityX),
+            Math.Min(distanceToPlayerY, maxVelocityY)
         );
 
         state = BirdState.MoveToPlayer;
@@ -92,8 +93,8 @@ public class BirdScript : MonoBehaviour
     void FixedUpdate()
     {
         // Calculate distance to player
-        float distanceToPlayerX = player.position.x - rigidBody2d.position.x;
-        float distanceToPlayerY = player.position.y - rigidBody2d.position.y;
+        float distanceToPlayerX = playerTransform.position.x - rigidBody2d.position.x;
+        float distanceToPlayerY = playerTransform.position.y - rigidBody2d.position.y;
 
         // Determine whether to approach the player or the home
         if(Math.Pow(distanceToPlayerX, 2) + Math.Pow(distanceToPlayerY, 2) < visionRadius)
