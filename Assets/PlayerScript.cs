@@ -14,6 +14,9 @@ enum PlayerState
 
 public class PlayerScript : MonoBehaviour
 {
+    public float headOffsetX = 4.87f;
+    public float headOffsetY = 6.06f;
+
     float axCoeffX = 0.01f;
     float axCoeffY = 0.03f;
     float rotCoeff = 1f;
