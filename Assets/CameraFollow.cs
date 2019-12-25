@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public float minY = 0;
-    public float minX = 0;
+    public float minY;
+    public float maxY;
+    public float minX;
+    public float maxX;
 
     float updateCoeffX = 0.1f;
     float updateCoeffY = 0.1f;
@@ -31,6 +33,10 @@ public class CameraFollow : MonoBehaviour
         {
             diffX = weightedDistanceX(minX);
         }
+        else if (player.position.x >= maxX)
+        {
+            diffX = weightedDistanceX(maxX);
+        }
         else
         {
             diffX = weightedDistanceX(player.position.x);
@@ -39,6 +45,10 @@ public class CameraFollow : MonoBehaviour
         if (player.position.y <= minY)
         {
             diffY = weightedDistanceY(minY);
+        }
+        else if (player.position.y >= maxY)
+        {
+            diffY = weightedDistanceY(maxY);
         }
         else
         {
