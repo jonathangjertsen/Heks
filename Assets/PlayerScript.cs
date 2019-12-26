@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
+using FrameTimer;
 
 enum PlayerState
 {
@@ -42,12 +44,11 @@ public class PlayerScript : MonoBehaviour
     // Management of "hurt" and "angry" states
     public int hurtTimerTop = 30;
     public int angryTimerTop = 60;
-    int hurtTimer;
-    int angryTimer;
-
-    // Management of idle state
     public int flyingToIdleTimerTop = 60;
-    int flyingToIdleTimer;
+    Timer hurtTimer;
+    Timer angryTimer;
+    Timer flyingToIdleTimer;
+    TimerCollection timers;
 
     // FSM state
     PlayerState state;
@@ -133,6 +134,13 @@ public class PlayerScript : MonoBehaviour
         state = PlayerState.Flying;
         Health = maxHealth;
         Charge = 0;
+
+        // Init timers
+        hurtTimer = new Timer(hurtTimerTop, onHurtTimerExpired);
+        angryTimer = new Timer(angryTimerTop, onAngryTimerExpired);
+        flyingToIdleTimer = new Timer(flyingToIdleTimerTop, onFlyingToIdleTimerExpired);
+        var timerList = new List<Timer>() { hurtTimer, angryTimer, flyingToIdleTimer };
+        timers = new TimerCollection(timerList);
     }
 
     // Make the player's velocity approach some max velocity
@@ -175,6 +183,7 @@ public class PlayerScript : MonoBehaviour
         state = PlayerState.Dead;
         spriteRenderer.sprite = DeadSprite;
 
+        timers.StopAll();
         healthBar.Hide();
         chargeBar.Hide();
     }
@@ -315,31 +324,30 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void UpdateHurtStates()
+    private void onHurtTimerExpired()
     {
-        if (state == PlayerState.Hurt)
-        {
-            hurtTimer -= 1;
-            if (hurtTimer <= 0)
-            {
-                SfxSource.clip = YellClip;
-                SfxSource.Play();
+        SfxSource.clip = YellClip;
+        SfxSource.Play();
 
-                spriteRenderer.sprite = AngrySprite;
-                state = PlayerState.Angry;
-                angryTimer = angryTimerTop;
-            }
-        }
+        spriteRenderer.sprite = AngrySprite;
+        state = PlayerState.Angry;
 
-        if (state == PlayerState.Angry)
-        {
-            angryTimer -= 1;
-            if (angryTimer <= 0)
-            {
-                spriteRenderer.sprite = FlyingSprite;
-                state = PlayerState.Flying;
-            }
-        }
+        hurtTimer.Stop();
+        angryTimer.Start();
+    }
+
+    private void onAngryTimerExpired()
+    {
+        spriteRenderer.sprite = FlyingSprite;
+        state = PlayerState.Flying;
+
+        angryTimer.Stop();
+    }
+
+    private void onFlyingToIdleTimerExpired()
+    {
+        spriteRenderer.sprite = StandingSprite;
+        state = PlayerState.Standing;
     }
 
     private void UpdateToIdleIfIdle()
@@ -349,17 +357,12 @@ public class PlayerScript : MonoBehaviour
             if (state == PlayerState.Flying)
             {
                 state = PlayerState.Still;
-                flyingToIdleTimer = flyingToIdleTimerTop;
+                flyingToIdleTimer.Start();
             }
-            else if (state == PlayerState.Still)
-            {
-                flyingToIdleTimer -= 1;
-                if (flyingToIdleTimer <= 0)
-                {
-                    spriteRenderer.sprite = StandingSprite;
-                    state = PlayerState.Standing;
-                }
-            }
+        }
+        else
+        {
+            flyingToIdleTimer.Stop();
         }
 
         if (((state == PlayerState.Standing)
@@ -388,19 +391,19 @@ public class PlayerScript : MonoBehaviour
 
         UpdatePositionBasedOnInput();
         UpdateCastCycleStates();
-        UpdateHurtStates();
         UpdateToIdleIfIdle();
         RegenerateHealth();
         healthBar.SetHealth(this.Health / maxHealth);
+        timers.TickAll();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         state = PlayerState.Hurt;
         spriteRenderer.sprite = HurtSprite;
-        hurtTimer = hurtTimerTop;
+        hurtTimer.Start();
 
-        this.Health -= 10;
+        Health -= 10;
 
         SfxSource.clip = HurtClip;
         SfxSource.Play();
