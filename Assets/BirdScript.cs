@@ -166,9 +166,7 @@ public class BirdScript : MonoBehaviour
     void Die()
     {
         state = BirdState.Dead;
-
-        // Doesn't seem like the right way
-        Destroy(healthBar.transform.parent.gameObject);
+        healthBar.Hide();
     }
 
     void OnCollisionEnter2D(Collision2D other)

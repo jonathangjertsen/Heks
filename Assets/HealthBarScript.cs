@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HealthBarScript : MonoBehaviour
 {
@@ -39,5 +37,10 @@ public class HealthBarScript : MonoBehaviour
             transform.localPosition.y,
             0
         );
+    }
+
+    public void Hide()
+    {
+        transform.parent.gameObject.SetActive(false);
     }
 }

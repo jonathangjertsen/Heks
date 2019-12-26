@@ -175,9 +175,8 @@ public class PlayerScript : MonoBehaviour
         state = PlayerState.Dead;
         spriteRenderer.sprite = DeadSprite;
 
-        // Doesn't seem like the right way
-        Destroy(healthBar.transform.parent.gameObject);
-        Destroy(chargeBar.transform.parent.gameObject);
+        healthBar.Hide();
+        chargeBar.Hide();
     }
 
     // Update the player's position based on input
