@@ -55,6 +55,7 @@ namespace FrameTimer
         public void Start()
         {
             running = true;
+            timer = top;
         }
 
         public void Stop()

@@ -11,8 +11,22 @@ namespace CreaturePhysics
         readonly float rotCoeff;
         readonly float maxVelocityX;
         readonly float maxVelocityY;
+        readonly Vector3 initialScale;
 
-        public bool FlipX { get; set; }
+        private bool flipX;
+        public bool FlipX { get => flipX; set
+            {
+                flipX = value;
+                if (value)
+                {
+                    transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z);
+                }
+                else
+                {
+                    transform.localScale = initialScale;
+                }
+            }
+        }
 
         public CreaturePhysics(
             MonoBehaviour bh,
@@ -25,6 +39,7 @@ namespace CreaturePhysics
         {
             rigidBody2d = bh.GetComponent<Rigidbody2D>();
             transform = bh.transform;
+            initialScale = transform.localScale;
             this.axCoeffX = axCoeffX;
             this.axCoeffY = axCoeffY;
             this.rotCoeff = rotCoeff;
@@ -71,6 +86,24 @@ namespace CreaturePhysics
             float targetRotation = (float)System.Math.Atan2(dy, dx);
             float currentRotation = rigidBody2d.rotation;
             rigidBody2d.rotation += rotCoeff * (targetRotation - currentRotation);
+        }
+
+        public void LookAt(Transform transform)
+        {
+            if (FlipX)
+            {
+                this.transform.right = transform.position - this.transform.position;
+            }
+            else
+            {
+                this.transform.right = this.transform.position - transform.position;
+                
+            }
+        }
+
+        public void Jump(float force)
+        {
+            rigidBody2d.velocity += new Vector2(0, force);
         }
 
         public void Recoil(float torque)

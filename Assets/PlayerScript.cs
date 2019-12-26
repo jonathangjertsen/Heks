@@ -76,7 +76,6 @@ public class PlayerScript : MonoBehaviour, IFlipX
     // Manage flipx
     BarCollection bars;
     private bool flipX;
-    private Vector3 initialScale;
     FlipXCollection flipXItems;
 
     // Simple properties
@@ -93,14 +92,6 @@ public class PlayerScript : MonoBehaviour, IFlipX
     {
         get => flipX;
         set {
-            if (value)
-            {
-                transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z);
-            }
-            else
-            {
-                transform.localScale = initialScale;
-            }
             flipX = value;
             flipXItems.FlipX = value;
         }
@@ -157,7 +148,6 @@ public class PlayerScript : MonoBehaviour, IFlipX
             maxVelocityX: maxVelocityX
         );
 
-        initialScale = transform.localScale;
         health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: Die);
         Charge = 0;
 

@@ -38,14 +38,8 @@ public class BirdScript : MonoBehaviour, IFlipX
     public Bar healthBar;
 
     Rigidbody2D rigidBody2d;
-    SpriteRenderer spriteRenderer;
     private BirdState FsmState { get => (BirdState)fsm.State; set => fsm.State = (int)value; }
-    private bool flipX;
-    public bool FlipX { get => flipX; set {
-            flipX = value;
-            spriteRenderer.flipX = value;
-        }
-    }
+    public bool FlipX { get => physics.FlipX; set => physics.FlipX = value; }
 
     void Start()
     {
@@ -58,8 +52,6 @@ public class BirdScript : MonoBehaviour, IFlipX
             maxVelocityY: maxVelocity,
             maxVelocityX: maxVelocity
         );
-
-        spriteRenderer = GetComponent<SpriteRenderer>();
 
         homeX = rigidBody2d.position.x;
         homeY = rigidBody2d.position.y;
@@ -111,6 +103,8 @@ public class BirdScript : MonoBehaviour, IFlipX
         // Calculate distance to player
         float distanceToPlayerX = playerTransform.position.x + player.HeadOffsetX - rigidBody2d.position.x;
         float distanceToPlayerY = playerTransform.position.y + player.HeadOffsetY - rigidBody2d.position.y;
+        FlipX = distanceToPlayerX > 0;
+        physics.LookAt(player.transform);
 
         if (player.Alive)
         {
@@ -126,16 +120,6 @@ public class BirdScript : MonoBehaviour, IFlipX
         else
         {
             ApproachHome();
-        }
-
-        FlipX = distanceToPlayerX > 0;
-        if (FlipX)
-        {
-            transform.right = player.transform.position - transform.position;
-        }
-        else
-        {
-            transform.right = transform.position - player.transform.position;
         }
 
         RegenerateHealth();
