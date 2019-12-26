@@ -9,11 +9,20 @@ enum PlayerState
     Charging,
     Casting,
     Hurt,
-    Angry
+    Angry,
+    Dead,
 };
 
 public class PlayerScript : MonoBehaviour
 {
+    public float maxHealth = 100;
+    public float regenPer = 0.02f;
+    private float health;
+
+    public float chargeTop = 50;
+    private float charge;
+    private int chargeDirection = 1;
+
     public float headOffsetX = 4.87f;
     public float headOffsetY = 6.06f;
 
@@ -27,42 +36,106 @@ public class PlayerScript : MonoBehaviour
     int castTimerTop = 30;
     int castTorque = 150;
 
+    public HealthBarScript healthBar;
+    public HealthBarScript chargeBar;
+
+    // Management of "hurt" and "angry" states
+    public int hurtTimerTop = 30;
+    public int angryTimerTop = 60;
     int hurtTimer;
-    int hurtTimerTop = 30;
-
     int angryTimer;
-    int angryTimerTop = 60;
 
+    // Management of idle state
+    public int flyingToIdleTimerTop = 60;
     int flyingToIdleTimer;
-    int flyingToIdleTimerTop = 60;
 
+    // FSM state
     PlayerState state;
 
+    // Audio
     public AudioClip YellClip;
     public AudioClip HurtClip;
     public AudioClip ChargeClip;
     public AudioClip CastClip;
     public AudioSource SfxSource;
 
+    // Sprites
     public Sprite FlyingSprite;
     public Sprite StandingSprite;
     public Sprite ChargingSprite;
     public Sprite CastingSprite;
     public Sprite HurtSprite;
     public Sprite AngrySprite;
+    public Sprite DeadSprite;
 
-    Animator animator;
+    // Spell management
+    public GameObject spell;
+    public Transform spawnPoint;
+
+    // References to other components
     Rigidbody2D rigidBody2d;
     SpriteRenderer spriteRenderer;
 
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-        rigidBody2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        state = PlayerState.Flying;
+    // Manage flipx
+    private bool flipX;
+    private Vector3 initialScale;
+    public bool FlipX {
+        get => flipX;
+        set {
+            if (value)
+            {
+                transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z);
+            }
+            else
+            {
+                transform.localScale = initialScale;
+            }
+            flipX = value;
+            healthBar.FlipX = value;
+            chargeBar.FlipX = value;
+        }
     }
 
+    public float Health { get => health; set {
+            float cappedHealth = value;
+            if (value >= maxHealth)
+            {
+                cappedHealth = maxHealth;
+            }
+            else if (value <= 0)
+            {
+                cappedHealth = 0;
+                Die();
+            }
+            healthBar.SetHealth(cappedHealth / maxHealth);
+            health = cappedHealth;
+        }
+    }
+    public float Charge
+    {
+        get => charge; set
+        {
+            chargeBar.SetHealth(value / chargeTop);
+            charge = value;
+        }
+    }
+
+    public float HeadOffsetX => headOffsetX * transform.localScale.x;
+
+    public float HeadOffsetY => headOffsetY * transform.localScale.y;
+
+    // Ran when the object is started
+    void Start()
+    {
+        rigidBody2d = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        initialScale = transform.localScale;
+        state = PlayerState.Flying;
+        Health = maxHealth;
+        Charge = 0;
+    }
+
+    // Make the player's velocity approach some max velocity
     private void ApproachVelocity(bool updateX, bool updateY, float velocityXTarget, float velocityYTarget)
     {
         float axX = 0;
@@ -84,6 +157,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    // Make the player's angular velocity approach some maximum
     private void ApproachAngularVelocity(float velocityXTarget, float velocityYTarget)
     {
         float targetRotation = (float)Math.Atan2(velocityYTarget, velocityXTarget);
@@ -91,6 +165,22 @@ public class PlayerScript : MonoBehaviour
         rigidBody2d.angularVelocity += rotCoeff * (targetRotation - currentRotation);
     }
 
+    public bool Alive()
+    {
+        return state != PlayerState.Dead;
+    }
+
+    private void Die()
+    {
+        state = PlayerState.Dead;
+        spriteRenderer.sprite = DeadSprite;
+
+        // Doesn't seem like the right way
+        Destroy(healthBar.transform.parent.gameObject);
+        Destroy(chargeBar.transform.parent.gameObject);
+    }
+
+    // Update the player's position based on input
     private void UpdatePositionBasedOnInput()
     {
         bool updateX = false;
@@ -102,13 +192,13 @@ public class PlayerScript : MonoBehaviour
         {
             updateX = true;
             velocityXTarget = +maxVelocityX;
-            spriteRenderer.flipX = false;
+            FlipX = false;
         }
         if (Input.GetKey("a") || Input.GetKey("left"))
         {
             updateX = true;
             velocityXTarget = -maxVelocityX;
-            spriteRenderer.flipX = true;
+            FlipX = true;
         }
         if (Input.GetKey("w") || Input.GetKey("up"))
         {
@@ -124,37 +214,94 @@ public class PlayerScript : MonoBehaviour
         ApproachAngularVelocity(velocityXTarget, velocityYTarget);
     }
 
+    private void EnterChargeState()
+    {
+        // Play the charge clip
+        SfxSource.clip = ChargeClip;
+        SfxSource.Play();
+
+        // Use the sprite for charging
+        spriteRenderer.sprite = ChargingSprite;
+
+        // Set FSM state
+        state = PlayerState.Charging;
+    }
+
+    private void CastSpell()
+    {
+        // Play the cast clip
+        SfxSource.clip = CastClip;
+        SfxSource.Play();
+
+        // Use the sprite for casting
+        spriteRenderer.sprite = CastingSprite;
+
+        // Set FSM state
+        state = PlayerState.Casting;
+
+        // Countdown to cast finish
+        castTimer = castTimerTop;
+
+        // Spawn a spell
+        GameObject bullet = Instantiate(spell, spawnPoint.position, spawnPoint.rotation);
+        Rigidbody2D bulletBody = bullet.GetComponent<Rigidbody2D>();
+        if (FlipX)
+        {
+            bulletBody.velocity = new Vector3(-0.1f * charge, 0.24f * charge, 0);
+            bulletBody.angularVelocity = 200 * charge;
+        }
+        else
+        {
+            bulletBody.velocity = new Vector3(0.1f * charge, 0.24f * charge, 0);
+            bulletBody.angularVelocity = -200 * charge;
+        }
+
+        // Do recoil
+        if (FlipX)
+        {
+            rigidBody2d.angularVelocity += castTorque;
+        }
+        else
+        {
+            rigidBody2d.angularVelocity -= castTorque;
+        }
+
+        Charge = 0;
+    }
+
+    private void AdvanceChargeTimer()
+    {
+        if (Charge >= chargeTop)
+        {
+            chargeDirection = -1;
+        }
+        else if (Charge <= 0)
+        {
+            chargeDirection = +1;
+        }
+
+        Charge += chargeDirection;
+    }
+
     private void UpdateCastCycleStates()
     {
         if (Input.GetKey("space"))
         {
             if (state == PlayerState.Flying)
             {
-                SfxSource.clip = ChargeClip;
-                SfxSource.Play();
+                EnterChargeState();
+            }
 
-                spriteRenderer.sprite = ChargingSprite;
-                state = PlayerState.Charging;
+            if (state == PlayerState.Charging)
+            {
+                AdvanceChargeTimer();
             }
         }
         else
         {
             if (state == PlayerState.Charging)
             {
-                SfxSource.clip = CastClip;
-                SfxSource.Play();
-
-                spriteRenderer.sprite = CastingSprite;
-                state = PlayerState.Casting;
-                castTimer = castTimerTop;
-                if (spriteRenderer.flipX)
-                {
-                    rigidBody2d.angularVelocity += castTorque;
-                }
-                else
-                {
-                    rigidBody2d.angularVelocity -= castTorque;
-                }
+                CastSpell();
             }
         }
 
@@ -224,12 +371,28 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    private void RegenerateHealth()
+    {
+        health += regenPer;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+    }
+
     private void FixedUpdate()
     {
+        if (state == PlayerState.Dead)
+        {
+            return;
+        }
+
         UpdatePositionBasedOnInput();
         UpdateCastCycleStates();
         UpdateHurtStates();
         UpdateToIdleIfIdle();
+        RegenerateHealth();
+        healthBar.SetHealth(this.Health / maxHealth);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -237,6 +400,8 @@ public class PlayerScript : MonoBehaviour
         state = PlayerState.Hurt;
         spriteRenderer.sprite = HurtSprite;
         hurtTimer = hurtTimerTop;
+
+        this.Health -= 10;
 
         SfxSource.clip = HurtClip;
         SfxSource.Play();
