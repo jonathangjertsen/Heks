@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using CreaturePhysics;
+using System.Collections.Generic;
 
 enum BirdState
 {
@@ -9,11 +9,13 @@ enum BirdState
     Dead,
 };
 
-public class BirdScript : MonoBehaviour
+public class BirdScript : MonoBehaviour, IFlipX
 {
+    CreatureFsm.CreatureFsm fsm;
+
     public float maxHealth = 100;
     public float regenPer = 0.02f;
-    private float health;
+    CreatureHealth health;
 
     CreaturePhysics.CreaturePhysics physics;
     public float axCoeffX = 0.02f;
@@ -22,41 +24,26 @@ public class BirdScript : MonoBehaviour
     public float overshoot = 0.01f;
     public float maxVelocity = 5.0f;
 
-    float homeX = 0f;
-    float homeY = 0f;
-    float rotCoeff = 1.3f;
+    float homeX;
+    float homeY;
+    public float rotCoeff = 1.3f;
 
     public PlayerScript player;
-    private BirdState state;
 
     public AudioClip CryClip;
-    public AudioSource CrySource;
 
     public Sprite DefaultSprite;
     public Sprite ChargingSprite;
     public Transform playerTransform;
-    public HealthBarScript healthBar;
+    public Bar healthBar;
 
-    Animator animator;
     Rigidbody2D rigidBody2d;
     SpriteRenderer spriteRenderer;
-
-    public float Health
-    {
-        get => health; set
-        {
-            float cappedHealth = value;
-            if (value >= maxHealth)
-            {
-                cappedHealth = maxHealth;
-            }
-            else if (value <= 0)
-            {
-                cappedHealth = 0;
-                Die();
-            }
-            healthBar.SetHealth(cappedHealth / maxHealth);
-            health = cappedHealth;
+    private BirdState FsmState { get => (BirdState)fsm.State; set => fsm.State = (int)value; }
+    private bool flipX;
+    public bool FlipX { get => flipX; set {
+            flipX = value;
+            spriteRenderer.flipX = value;
         }
     }
 
@@ -64,7 +51,7 @@ public class BirdScript : MonoBehaviour
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
         physics = new CreaturePhysics.CreaturePhysics(
-            rigidBody2d,
+            this,
             axCoeffX: axCoeffX,
             axCoeffY: axCoeffY,
             rotCoeff: rotCoeff,
@@ -72,51 +59,50 @@ public class BirdScript : MonoBehaviour
             maxVelocityX: maxVelocity
         );
 
-        animator = GetComponent<Animator>();
-
         spriteRenderer = GetComponent<SpriteRenderer>();
-        CrySource.clip = CryClip;
-
-        state = BirdState.MoveHome;
 
         homeX = rigidBody2d.position.x;
         homeY = rigidBody2d.position.y;
 
-        Health = maxHealth;
+        health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: Die);
+
+        var fsmSprites = new Dictionary<int, Sprite>
+        {
+            { (int)BirdState.MoveHome, DefaultSprite },
+            { (int)BirdState.MoveToPlayer, ChargingSprite },
+            { (int)BirdState.Dead, DefaultSprite }
+        };
+        var fsmClips = new Dictionary<int, AudioClip>
+        {
+            { (int)BirdState.MoveToPlayer, CryClip }
+        };
+        fsm = new CreatureFsm.CreatureFsm(gameObject, fsmSprites, fsmClips)
+        {
+            State = (int)BirdState.MoveHome
+        };
     }
 
     void ApproachHome()
     {
-        // Approach home
-        spriteRenderer.sprite = DefaultSprite;
         physics.ApproachVelocity(
-            (homeX - rigidBody2d.position.x) * (1 + overshoot),
-            (homeY - rigidBody2d.position.y) * (1 + overshoot)
+            (homeX - rigidBody2d.position.x),
+            (homeY - rigidBody2d.position.y)
         );
-
-        state = BirdState.MoveHome;
+        FsmState = BirdState.MoveHome;
     }
 
     void ApproachPlayer(float distanceToPlayerX, float distanceToPlayerY)
     {
-        // Approach the player
-        if (state != BirdState.MoveToPlayer)
-        {
-            CrySource.Play();
-        }
-
-        spriteRenderer.sprite = ChargingSprite;
         physics.ApproachVelocity(
-            Math.Min(distanceToPlayerX, maxVelocity),
-            Math.Min(distanceToPlayerY, maxVelocity)
+            Math.Min(distanceToPlayerX, maxVelocity) * (1 + overshoot),
+            Math.Min(distanceToPlayerY, maxVelocity) * (1 + overshoot)
         );
-
-        state = BirdState.MoveToPlayer;
+        FsmState = BirdState.MoveToPlayer;
     }
 
     void FixedUpdate()
     {
-        if (state == BirdState.Dead)
+        if (FsmState == BirdState.Dead)
         {
             rigidBody2d.velocity += new Vector2(0, -0.5f);
             return;
@@ -126,9 +112,8 @@ public class BirdScript : MonoBehaviour
         float distanceToPlayerX = playerTransform.position.x + player.HeadOffsetX - rigidBody2d.position.x;
         float distanceToPlayerY = playerTransform.position.y + player.HeadOffsetY - rigidBody2d.position.y;
 
-        if (player.Alive())
+        if (player.Alive)
         {
-            // Determine whether to approach the player or the home
             if (Math.Pow(distanceToPlayerX, 2) + Math.Pow(distanceToPlayerY, 2) < visionRadius)
             {
                 ApproachPlayer(distanceToPlayerX, distanceToPlayerY);
@@ -143,30 +128,32 @@ public class BirdScript : MonoBehaviour
             ApproachHome();
         }
 
-        // Watch the player
-        physics.ApproachAngle(distanceToPlayerX, distanceToPlayerY);
-        spriteRenderer.flipX = distanceToPlayerX > 0;
+        FlipX = distanceToPlayerX > 0;
+        if (FlipX)
+        {
+            transform.right = player.transform.position - transform.position;
+        }
+        else
+        {
+            transform.right = transform.position - player.transform.position;
+        }
 
         RegenerateHealth();
     }
 
     private void RegenerateHealth()
     {
-        health += regenPer;
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
+        health.Health += regenPer;
     }
 
     void Die()
     {
-        state = BirdState.Dead;
-        healthBar.Hide();
+        FsmState = BirdState.Dead;
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        Health -= 10;
+        health.Health -= 10;
+        physics.Recoil(100);
     }
 }

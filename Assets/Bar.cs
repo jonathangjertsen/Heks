@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class HealthBarScript : MonoBehaviour
+public class Bar : MonoBehaviour, IFlipX
 {
     private float startX;
     public float endX;
@@ -27,10 +28,10 @@ public class HealthBarScript : MonoBehaviour
         parentInitialScale = transform.parent.localScale;
 
         startX = transform.localPosition.x;
-        SetHealth(1);
+        FillTo(1);
     }
 
-    public void SetHealth(float proportion)
+    public void FillTo(float proportion)
     {
         transform.localPosition = new Vector3(
             endX + proportion * (startX - endX),
@@ -42,5 +43,37 @@ public class HealthBarScript : MonoBehaviour
     public void Hide()
     {
         transform.parent.gameObject.SetActive(false);
+    }
+}
+
+public class BarCollection : IFlipX
+{
+    readonly List<Bar> bars;
+    bool flipX;
+
+    public BarCollection(List<Bar> bars)
+    {
+        this.bars = bars;
+    }
+
+    public void Hide()
+    {
+        foreach (Bar bar in bars)
+        {
+            bar.Hide();
+        }
+    }
+
+    public bool FlipX
+    {
+        get => flipX;
+        set
+        {
+            foreach(Bar bar in bars)
+            {
+                bar.FlipX = value;
+            }
+            flipX = value;
+        }
     }
 }

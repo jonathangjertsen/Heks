@@ -2,18 +2,20 @@
 
 namespace CreaturePhysics
 {
-    public class CreaturePhysics
+    public class CreaturePhysics : IFlipX
     {
-        private Rigidbody2D rigidBody2d;
+        private readonly Rigidbody2D rigidBody2d;
+        private readonly Transform transform;
+        readonly float axCoeffX;
+        readonly float axCoeffY;
+        readonly float rotCoeff;
+        readonly float maxVelocityX;
+        readonly float maxVelocityY;
 
-        float axCoeffX;
-        float axCoeffY;
-        float rotCoeff;
-        float maxVelocityX;
-        float maxVelocityY;
+        public bool FlipX { get; set; }
 
         public CreaturePhysics(
-            Rigidbody2D rigidBody2d,
+            MonoBehaviour bh,
             float axCoeffX = 0.01f,
             float axCoeffY = 0.03f,
             float rotCoeff = 1f,
@@ -21,12 +23,14 @@ namespace CreaturePhysics
             float maxVelocityY = 10.0f
         )
         {
-            this.rigidBody2d = rigidBody2d;
+            rigidBody2d = bh.GetComponent<Rigidbody2D>();
+            transform = bh.transform;
             this.axCoeffX = axCoeffX;
             this.axCoeffY = axCoeffY;
             this.rotCoeff = rotCoeff;
             this.maxVelocityX = maxVelocityX;
             this.maxVelocityY = maxVelocityY;
+            FlipX = false;
         }
 
         public void ApproachVelocity(bool updateX, bool updateY, float velocityXTarget, float velocityYTarget)
@@ -67,6 +71,18 @@ namespace CreaturePhysics
             float targetRotation = (float)System.Math.Atan2(dy, dx);
             float currentRotation = rigidBody2d.rotation;
             rigidBody2d.rotation += rotCoeff * (targetRotation - currentRotation);
+        }
+
+        public void Recoil(float torque)
+        {
+            if (FlipX)
+            {
+                rigidBody2d.angularVelocity += torque;
+            }
+            else
+            {
+                rigidBody2d.angularVelocity -= torque;
+            }
         }
     }
 }
