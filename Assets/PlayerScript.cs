@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using FrameTimer;
-
+using CreaturePhysics;
 enum PlayerState
 {
     Flying,
@@ -28,14 +28,13 @@ public class PlayerScript : MonoBehaviour
     public float headOffsetX = 4.87f;
     public float headOffsetY = 6.06f;
 
+    CreaturePhysics.CreaturePhysics physics;
     float axCoeffX = 0.01f;
     float axCoeffY = 0.03f;
     float rotCoeff = 1f;
     float maxVelocityX = 10.0f;
     float maxVelocityY = 10.0f;
 
-    int castTimer;
-    int castTimerTop = 30;
     int castTorque = 150;
 
     public HealthBarScript healthBar;
@@ -45,9 +44,11 @@ public class PlayerScript : MonoBehaviour
     public int hurtTimerTop = 30;
     public int angryTimerTop = 60;
     public int flyingToIdleTimerTop = 60;
+    public int castTimerTop = 30;
     Timer hurtTimer;
     Timer angryTimer;
     Timer flyingToIdleTimer;
+    Timer castTimer;
     TimerCollection timers;
 
     // FSM state
@@ -129,6 +130,15 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
+        physics = new CreaturePhysics.CreaturePhysics(
+            rigidBody2d,
+            axCoeffX: axCoeffX,
+            axCoeffY: axCoeffY,
+            rotCoeff: rotCoeff,
+            maxVelocityY: maxVelocityY,
+            maxVelocityX: maxVelocityX
+        );
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         initialScale = transform.localScale;
         state = PlayerState.Flying;
@@ -139,38 +149,9 @@ public class PlayerScript : MonoBehaviour
         hurtTimer = new Timer(hurtTimerTop, onHurtTimerExpired);
         angryTimer = new Timer(angryTimerTop, onAngryTimerExpired);
         flyingToIdleTimer = new Timer(flyingToIdleTimerTop, onFlyingToIdleTimerExpired);
-        var timerList = new List<Timer>() { hurtTimer, angryTimer, flyingToIdleTimer };
+        castTimer = new Timer(castTimerTop, onCastTimerExpired);
+        var timerList = new List<Timer>() { hurtTimer, angryTimer, flyingToIdleTimer, castTimer };
         timers = new TimerCollection(timerList);
-    }
-
-    // Make the player's velocity approach some max velocity
-    private void ApproachVelocity(bool updateX, bool updateY, float velocityXTarget, float velocityYTarget)
-    {
-        float axX = 0;
-        float axY = 0;
-
-        if (updateX)
-        {
-            axX = axCoeffX * (velocityXTarget - rigidBody2d.velocity.x);
-        }
-
-        if (updateY)
-        {
-            axY = axCoeffY * (velocityYTarget - rigidBody2d.velocity.y);
-        }
-
-        if (updateX || updateY)
-        {
-            rigidBody2d.velocity += new Vector2(axX, axY);
-        }
-    }
-
-    // Make the player's angular velocity approach some maximum
-    private void ApproachAngularVelocity(float velocityXTarget, float velocityYTarget)
-    {
-        float targetRotation = (float)Math.Atan2(velocityYTarget, velocityXTarget);
-        float currentRotation = rigidBody2d.rotation;
-        rigidBody2d.angularVelocity += rotCoeff * (targetRotation - currentRotation);
     }
 
     public bool Alive()
@@ -218,8 +199,8 @@ public class PlayerScript : MonoBehaviour
             updateY = true;
             velocityYTarget = -maxVelocityY;
         }
-        ApproachVelocity(updateX, updateY, velocityXTarget, velocityYTarget);
-        ApproachAngularVelocity(velocityXTarget, velocityYTarget);
+        physics.ApproachVelocity(updateX, updateY, velocityXTarget, velocityYTarget);
+        physics.ApproachAngularVelocity(velocityXTarget, velocityYTarget);
     }
 
     private void EnterChargeState()
@@ -248,7 +229,7 @@ public class PlayerScript : MonoBehaviour
         state = PlayerState.Casting;
 
         // Countdown to cast finish
-        castTimer = castTimerTop;
+        castTimer.Start();
 
         // Spawn a spell
         GameObject bullet = Instantiate(spell, spawnPoint.position, spawnPoint.rotation);
@@ -312,16 +293,12 @@ public class PlayerScript : MonoBehaviour
                 CastSpell();
             }
         }
+    }
 
-        if (state == PlayerState.Casting)
-        {
-            castTimer -= 1;
-            if (castTimer <= 0)
-            {
-                spriteRenderer.sprite = FlyingSprite;
-                state = PlayerState.Flying;
-            }
-        }
+    private void onCastTimerExpired()
+    {
+        spriteRenderer.sprite = FlyingSprite;
+        state = PlayerState.Flying;
     }
 
     private void onHurtTimerExpired()

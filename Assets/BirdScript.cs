@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using CreaturePhysics;
 
 enum BirdState
 {
@@ -14,6 +15,7 @@ public class BirdScript : MonoBehaviour
     public float regenPer = 0.02f;
     private float health;
 
+    CreaturePhysics.CreaturePhysics physics;
     public float axCoeffX = 0.02f;
     public float axCoeffY = 0.06f;
     public float visionRadius = 15f;
@@ -60,8 +62,18 @@ public class BirdScript : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         rigidBody2d = GetComponent<Rigidbody2D>();
+        physics = new CreaturePhysics.CreaturePhysics(
+            rigidBody2d,
+            axCoeffX: axCoeffX,
+            axCoeffY: axCoeffY,
+            rotCoeff: rotCoeff,
+            maxVelocityY: maxVelocity,
+            maxVelocityX: maxVelocity
+        );
+
+        animator = GetComponent<Animator>();
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         CrySource.clip = CryClip;
 
@@ -73,27 +85,11 @@ public class BirdScript : MonoBehaviour
         Health = maxHealth;
     }
 
-    private void ApproachAngle(float velocityXTarget, float velocityYTarget)
-    {
-        // Update the angular velocity according to the X and Y components of velocity
-        float targetRotation = (float)Math.Atan2(velocityYTarget, velocityXTarget);
-        float currentRotation = rigidBody2d.rotation;
-        rigidBody2d.rotation += rotCoeff * (targetRotation - currentRotation);
-    }
-
-    private void ApproachVelocity(float velocityXTarget, float velocityYTarget)
-    {
-        // Update the velocity vector towards the target vector
-        float axX = axCoeffX * (velocityXTarget - rigidBody2d.velocity.x);
-        float axY = axCoeffY * (velocityYTarget - rigidBody2d.velocity.y);
-        rigidBody2d.velocity += new Vector2(axX, axY);
-    }
-
     void ApproachHome()
     {
         // Approach home
         spriteRenderer.sprite = DefaultSprite;
-        ApproachVelocity(
+        physics.ApproachVelocity(
             (homeX - rigidBody2d.position.x) * (1 + overshoot),
             (homeY - rigidBody2d.position.y) * (1 + overshoot)
         );
@@ -110,7 +106,7 @@ public class BirdScript : MonoBehaviour
         }
 
         spriteRenderer.sprite = ChargingSprite;
-        ApproachVelocity(
+        physics.ApproachVelocity(
             Math.Min(distanceToPlayerX, maxVelocity),
             Math.Min(distanceToPlayerY, maxVelocity)
         );
@@ -148,7 +144,7 @@ public class BirdScript : MonoBehaviour
         }
 
         // Watch the player
-        ApproachAngle(distanceToPlayerX, distanceToPlayerY);
+        physics.ApproachAngle(distanceToPlayerX, distanceToPlayerY);
         spriteRenderer.flipX = distanceToPlayerX > 0;
 
         RegenerateHealth();
