@@ -28,7 +28,7 @@ abstract public class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
     public bool logFsmChanges = false;
     public bool logTimerCallbacks = false;
 
-    private int deathToShrinkStartTimerTop = 10;
+    private int deathToShrinkStartTimerTop = 100;
     private int shrinkTimerTop = 200;
     private Vector3 initScale;
 
@@ -60,7 +60,7 @@ abstract public class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
         );
         timers = new TimerCollection();
         timers.logCallbacks = logTimerCallbacks;
-        timers.Add("deathToShrinkStart", new Timer(shrinkTimerTop, ShrinkStart));
+        timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, ShrinkStart));
         timers.Add("shrink", new Timer(shrinkTimerTop, ShrinkEnd, onTick: Shrinking));
 
         health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: Die);

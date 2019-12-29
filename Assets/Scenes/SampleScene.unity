@@ -121,6 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 54687302}
+  - component: {fileID: 54687303}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -142,6 +143,19 @@ Transform:
   m_Father: {fileID: 840480126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &54687303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54687301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f4d20a74db01e42a259e48d169077d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spell: {fileID: 8104213493228460048, guid: 0a7dc39c4e88ecb4088801114a644eb0, type: 3}
 --- !u!1001 &106301812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -828,8 +842,7 @@ MonoBehaviour:
   HurtSprite: {fileID: 21300000, guid: 96770ecf4c3ac3444818a93e0ca7519b, type: 3}
   AngrySprite: {fileID: 21300000, guid: 82a298a634924734b884af8061af5a51, type: 3}
   DeadSprite: {fileID: 21300000, guid: 96770ecf4c3ac3444818a93e0ca7519b, type: 3}
-  spell: {fileID: 1046410460890099894, guid: 0a7dc39c4e88ecb4088801114a644eb0, type: 3}
-  spawnPoint: {fileID: 54687302}
+  spellSpawn: {fileID: 54687303}
 --- !u!58 &840480130
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -859,9 +872,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 4.87, y: 6.06}
+  m_Offset: {x: 4.59, y: 4.76}
   serializedVersion: 2
-  m_Radius: 2.92
+  m_Radius: 2.01
 --- !u!82 &840480132
 AudioSource:
   m_ObjectHideFlags: 0

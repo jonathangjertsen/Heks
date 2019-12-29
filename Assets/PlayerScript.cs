@@ -48,8 +48,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     public Sprite DeadSprite;
 
     // Spell management
-    public GameObject spell;
-    public Transform spawnPoint;
+    public SpellSpawn spellSpawn;
 
     // Simple properties
     public float Charge
@@ -123,11 +122,14 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
         timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
         timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
         timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
+
+        flipXItems.Add(spellSpawn);
     }
 
     new private void FixedUpdate()
     {
         base.FixedUpdate();
+
         if (FsmState == PlayerState.Dead)
         {
             return;
@@ -168,20 +170,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     {
         FsmState = PlayerState.Casting;
         timers.Start("cast");
-
-        GameObject bullet = Instantiate(spell, spawnPoint.position, spawnPoint.rotation);
-        Rigidbody2D bulletBody = bullet.GetComponent<Rigidbody2D>();
-        if (FlipX)
-        {
-            bulletBody.velocity = new Vector3(-0.1f * charge, 0.24f * charge, 0);
-            bulletBody.angularVelocity = 200 * charge;
-        }
-        else
-        {
-            bulletBody.velocity = new Vector3(0.1f * charge, 0.24f * charge, 0);
-            bulletBody.angularVelocity = -200 * charge;
-        }
-
+        spellSpawn.Cast(charge);
         physics.Recoil(castTorque);
         Charge = 0;
     }
