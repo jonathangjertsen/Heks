@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using FrameTimer;
 
-enum PlayerState
+public enum PlayerState
 {
     Flying,
     Still,
@@ -14,12 +12,9 @@ enum PlayerState
     Dead,
 };
 
-public class PlayerScript : MonoBehaviour, IFlipX
+public class PlayerScript : BaseCreature<PlayerState>, IFlipX
 {
     // Health
-    public Bar healthBar;
-    private CreatureHealth health;
-    public float maxHealth = 100;
     public float regenPer = 0.02f;
     public float headOffsetX = 4.87f;
     public float headOffsetY = 6.06f;
@@ -33,27 +28,13 @@ public class PlayerScript : MonoBehaviour, IFlipX
     // Things related to casting
     public int castTorque = 150;
 
-    // Physics
-    CreaturePhysics.CreaturePhysics physics;
-    public float axCoeffX = 0.01f;
-    public float axCoeffY = 0.03f;
-    public float rotCoeff = 1f;
-    public float maxVelocityX = 10.0f;
-    public float maxVelocityY = 10.0f;
-
     // Timers
     public int hurtTimerTop = 30;
     public int angryTimerTop = 60;
     public int flyingToIdleTimerTop = 60;
     public int castTimerTop = 30;
-    Timer hurtTimer;
-    Timer angryTimer;
-    Timer flyingToIdleTimer;
-    Timer castTimer;
-    TimerCollection timers;
 
     // FSM state
-    CreatureFsm.CreatureFsm fsm;
     public AudioClip YellClip;
     public AudioClip HurtClip;
     public AudioClip ChargeClip;
@@ -70,16 +51,7 @@ public class PlayerScript : MonoBehaviour, IFlipX
     public GameObject spell;
     public Transform spawnPoint;
 
-    // References to other components
-    Rigidbody2D rigidBody2d;
-
-    // Manage flipx
-    BarCollection bars;
-    private bool flipX;
-    FlipXCollection flipXItems;
-
     // Simple properties
-    public bool Alive => FsmState != PlayerState.Dead;
     public float Charge
     {
         get => charge;
@@ -88,24 +60,27 @@ public class PlayerScript : MonoBehaviour, IFlipX
             charge = value;
         }
     }
-    public bool FlipX
+    private float HeadOffsetX => headOffsetX * transform.localScale.x;
+    private float HeadOffsetY => headOffsetY * transform.localScale.y;
+    public Vector2 HeadPosition => new Vector2(transform.position.x + HeadOffsetX, transform.position.y + HeadOffsetY);
+
+    public override void Die()
     {
-        get => flipX;
-        set {
-            flipX = value;
-            flipXItems.FlipX = value;
-        }
+        base.Die();
+        FsmState = PlayerState.Dead;
     }
-    private PlayerState FsmState { get => (PlayerState)fsm.State; set => fsm.State = (int)value; }
-    public float HeadOffsetX => headOffsetX * transform.localScale.x;
-    public float HeadOffsetY => headOffsetY * transform.localScale.y;
+
+    public bool Alive()
+    {
+        return FsmState != PlayerState.Dead;
+    }
 
     // Timer callbacks
 
     private void OnAngryTimerExpired()
     {
         FsmState = PlayerState.Flying;
-        angryTimer.Stop();
+        timers.Stop("angry");
     }
 
     private void OnCastTimerExpired()
@@ -121,75 +96,38 @@ public class PlayerScript : MonoBehaviour, IFlipX
     private void OnHurtTimerExpired()
     {
         FsmState = PlayerState.Angry;
-        hurtTimer.Stop();
-        angryTimer.Start();
-    }
-
-    // OnZeroHealth callback
-
-    private void Die()
-    {
-        FsmState = PlayerState.Dead;
-        timers.StopAll();
-        bars.Hide();
+        timers.Stop("hurt");
+        timers.Start("angry");
     }
 
     // Unity
 
-    void Start()
+    new void Start()
     {
-        rigidBody2d = GetComponent<Rigidbody2D>();
-        physics = new CreaturePhysics.CreaturePhysics(
-            this,
-            axCoeffX: axCoeffX,
-            axCoeffY: axCoeffY,
-            rotCoeff: rotCoeff,
-            maxVelocityY: maxVelocityY,
-            maxVelocityX: maxVelocityX
-        );
+        base.Start();
 
-        health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: Die);
         Charge = 0;
+        bars.Add(chargeBar);
 
-        bars = new BarCollection(new List<Bar>() { healthBar, chargeBar });
+        fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
+        fsm.Add(PlayerState.Hurt, HurtSprite, HurtClip);
+        fsm.Add(PlayerState.Casting, CastingSprite, CastClip);
+        fsm.Add(PlayerState.Dead, DeadSprite, null);
+        fsm.Add(PlayerState.Flying, FlyingSprite, null);
+        fsm.Add(PlayerState.Standing, StandingSprite, null);
+        fsm.Add(PlayerState.Still, FlyingSprite, null);
+        fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
+        FsmState = PlayerState.Flying;
 
-        var fsmSprites = new Dictionary<int, Sprite>
-        {
-            { (int)PlayerState.Angry, AngrySprite },
-            { (int)PlayerState.Casting, CastingSprite },
-            { (int)PlayerState.Charging, ChargingSprite },
-            { (int)PlayerState.Dead, DeadSprite },
-            { (int)PlayerState.Flying, FlyingSprite },
-            { (int)PlayerState.Hurt, HurtSprite },
-            { (int)PlayerState.Standing, StandingSprite },
-            { (int)PlayerState.Still, FlyingSprite }
-        };
-
-        var fsmClips = new Dictionary<int, AudioClip>
-        {
-            { (int)PlayerState.Hurt, HurtClip },
-            { (int)PlayerState.Charging, ChargeClip },
-            { (int)PlayerState.Casting, CastClip },
-            { (int)PlayerState.Angry, YellClip }
-        };
-
-        fsm = new CreatureFsm.CreatureFsm(gameObject, fsmSprites, fsmClips)
-        {
-            State = (int)PlayerState.Flying
-        };
-
-        // Init timers
-        hurtTimer = new Timer(hurtTimerTop, OnHurtTimerExpired);
-        angryTimer = new Timer(angryTimerTop, OnAngryTimerExpired);
-        flyingToIdleTimer = new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired);
-        castTimer = new Timer(castTimerTop, OnCastTimerExpired);
-        timers = new TimerCollection(new List<Timer>() { hurtTimer, angryTimer, flyingToIdleTimer, castTimer });
-
-        flipXItems = new FlipXCollection(new List<IFlipX>() { bars, physics });
+        timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
+        timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
+        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
+        timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
     }
 
-    private void FixedUpdate()
+    new private void FixedUpdate()
     {
+        base.FixedUpdate();
         if (FsmState == PlayerState.Dead)
         {
             return;
@@ -199,13 +137,14 @@ public class PlayerScript : MonoBehaviour, IFlipX
         UpdateCastCycleStates();
         UpdateToIdleIfIdle();
         RegenerateHealth();
-        timers.TickAll();
+
+        base.FixedUpdate();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         FsmState = PlayerState.Hurt;
-        hurtTimer.Start();
+        timers.Start("hurt");
         health.Health -= 10;
     }
 
@@ -228,7 +167,7 @@ public class PlayerScript : MonoBehaviour, IFlipX
     private void CastSpell()
     {
         FsmState = PlayerState.Casting;
-        castTimer.Start();
+        timers.Start("cast");
 
         GameObject bullet = Instantiate(spell, spawnPoint.position, spawnPoint.rotation);
         Rigidbody2D bulletBody = bullet.GetComponent<Rigidbody2D>();
@@ -265,12 +204,9 @@ public class PlayerScript : MonoBehaviour, IFlipX
                 AdvanceChargeTimer();
             }
         }
-        else
+        else if (FsmState == PlayerState.Charging)
         {
-            if (FsmState == PlayerState.Charging)
-            {
-                CastSpell();
-            }
+            CastSpell();
         }
     }
 
@@ -278,51 +214,50 @@ public class PlayerScript : MonoBehaviour, IFlipX
     {
         bool updateX = false;
         bool updateY = false;
-        float velocityXTarget = 0;
-        float velocityYTarget = 0;
+        Vector2 target = new Vector2(0, 0);
 
         if (Input.GetKey("d") || Input.GetKey("right"))
         {
             updateX = true;
-            velocityXTarget = +maxVelocityX;
+            target.x = maxVelocityX;
             FlipX = false;
         }
         if (Input.GetKey("a") || Input.GetKey("left"))
         {
             updateX = true;
-            velocityXTarget = -maxVelocityX;
+            target.x = -maxVelocityX;
             FlipX = true;
         }
         if (Input.GetKey("w") || Input.GetKey("up"))
         {
             updateY = true;
-            velocityYTarget = +maxVelocityY;
+            target.y = +maxVelocityY;
         }
         if (Input.GetKey("s") || Input.GetKey("down"))
         {
             updateY = true;
-            velocityYTarget = -maxVelocityY;
+            target.y = -maxVelocityY;
         }
-        physics.ApproachVelocity(updateX, updateY, velocityXTarget, velocityYTarget);
-        physics.ApproachAngularVelocity(velocityXTarget, velocityYTarget);
+        physics.ApproachVelocity(updateX, updateY, target);
+        physics.ApproachAngularVelocity(target);
     }
 
     private void UpdateToIdleIfIdle()
     {
-        if (rigidBody2d.velocity.magnitude <= 1.0)
+        if (physics.IsIdle())
         {
             if (FsmState == PlayerState.Flying)
             {
                 FsmState = PlayerState.Still;
-                flyingToIdleTimer.Start();
+                timers.Start("flyingToIdle");
             }
         }
         else
         {
-            flyingToIdleTimer.Stop();
+            timers.Stop("flyingToIdle");
         }
 
-        if (((FsmState == PlayerState.Standing || (FsmState == PlayerState.Still) && (Input.anyKey)))) {
+        if ((FsmState == PlayerState.Standing || FsmState == PlayerState.Still) && Input.anyKey) {
             FsmState = PlayerState.Flying;
         }
     }

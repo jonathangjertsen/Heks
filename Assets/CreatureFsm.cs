@@ -1,49 +1,93 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine;
 
-namespace CreatureFsm
+public class CreatureFsm<EnumType> where EnumType: struct, Enum
 {
-    public class CreatureFsm
+    readonly Dictionary<EnumType, Sprite> sprites;
+    readonly Dictionary<EnumType, AudioClip> clips;
+    readonly SpriteRenderer renderer;
+    readonly AudioSource source;
+
+    public bool logChanges = false;
+
+    EnumType state;
+
+    public CreatureFsm(BaseCreature<EnumType> creature)
     {
-        readonly Dictionary<int, Sprite> sprites;
-        readonly Dictionary<int, AudioClip> clips;
-        readonly SpriteRenderer renderer;
-        readonly AudioSource source;
+        renderer = creature.gameObject.GetComponent<SpriteRenderer>();
+        source = creature.gameObject.GetComponent<AudioSource>();
 
-        GameObject gameObject;
-        int state;
+        sprites = new Dictionary<EnumType, Sprite>();
+        clips = new Dictionary<EnumType, AudioClip>();
+    }
 
-        public CreatureFsm(GameObject gameObject, Dictionary<int, Sprite> sprites, Dictionary<int, AudioClip> clips)
+    public void Add(EnumType state, Sprite sprite, AudioClip clip)
+    {
+        sprites.Add(state, sprite);
+
+        if (clip != null)
         {
-            renderer = gameObject.GetComponent<SpriteRenderer>();
-            source = gameObject.GetComponent<AudioSource>();
-
-            this.sprites = sprites;
-            this.clips = clips;
+            clips.Add(state, clip);
         }
+    }
 
-        public int State
+    public void SetSprite(EnumType state)
+    {
+        if (sprites.TryGetValue(state, out Sprite sprite))
         {
-            get => state;
-            set
+            renderer.sprite = sprite;
+        }
+        else
+        {
+            throwStateNotFound(state);
+        }
+    }
+
+    public void UnsetSprite(EnumType state)
+    {
+        if (sprites.TryGetValue(state, out Sprite sprite))
+        {
+            if(renderer.sprite == sprite)
             {
-                if (state == value)
-                {
-                    return;
-                }
+                SetSprite(this.state);
+            }
+        }
+        else
+        {
+            throwStateNotFound(state);
+        }
+    }
 
-                state = value;
+    private void throwStateNotFound(EnumType state)
+    {
+        var lines = sprites.Select(kvp => kvp.Key + ": " + kvp.Value.name);
+        throw new System.Exception($"There is no sprite for {state}. Available: {string.Join(",", lines)}");
+    }
 
-                if (sprites.ContainsKey(state))
-                {
-                    renderer.sprite = sprites[state];
-                }
+    public EnumType State
+    {
+        get => state;
+        set
+        {
+            if (Convert.ToInt32(state) == Convert.ToInt32(value))
+            {
+                return;
+            }
 
-                if (clips.ContainsKey(state))
-                {
-                    source.clip = clips[state];
-                    source.Play();
-                }
+            SetSprite(value);
+
+            if (logChanges)
+            {
+                Debug.Log($"State changed from {state} to {value}, new sprite={renderer.sprite.name}");
+            }
+            state = value;
+
+            if (clips.TryGetValue(state, out AudioClip clip))
+            {
+                source.clip = clip;
+                source.Play();
             }
         }
     }

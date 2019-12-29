@@ -1,116 +1,109 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
-enum BirdState
+public enum BirdState
 {
     MoveHome,
     MoveToPlayer,
+    Hurt,
     Dead,
 };
 
-public class BirdScript : MonoBehaviour, IFlipX
+public class BirdScript : BaseCreature<BirdState>, IFlipX
 {
-    CreatureFsm.CreatureFsm fsm;
-
-    public float maxHealth = 100;
     public float regenPer = 0.02f;
-    CreatureHealth health;
-
-    CreaturePhysics.CreaturePhysics physics;
-    public float axCoeffX = 0.02f;
-    public float axCoeffY = 0.06f;
     public float visionRadius = 15f;
     public float overshoot = 0.01f;
-    public float maxVelocity = 5.0f;
 
-    float homeX;
-    float homeY;
-    public float rotCoeff = 1.3f;
-
-    public PlayerScript player;
+    Timer hurtTimer;
+    public int hurtTimerTop = 60;
 
     public AudioClip CryClip;
 
     public Sprite DefaultSprite;
     public Sprite ChargingSprite;
+    public Sprite HurtSprite;
+    public Sprite DeadSprite;
     public Transform playerTransform;
-    public Bar healthBar;
 
-    Rigidbody2D rigidBody2d;
-    private BirdState FsmState { get => (BirdState)fsm.State; set => fsm.State = (int)value; }
-    public bool FlipX { get => physics.FlipX; set => physics.FlipX = value; }
+    private Vector2 vectorToPlayer;
+    private Vector2 home;
 
-    void Start()
+    public override void Die()
     {
-        rigidBody2d = GetComponent<Rigidbody2D>();
-        physics = new CreaturePhysics.CreaturePhysics(
-            this,
-            axCoeffX: axCoeffX,
-            axCoeffY: axCoeffY,
-            rotCoeff: rotCoeff,
-            maxVelocityY: maxVelocity,
-            maxVelocityX: maxVelocity
-        );
+        base.Die();
+        FsmState = BirdState.Dead;
+    }
 
-        homeX = rigidBody2d.position.x;
-        homeY = rigidBody2d.position.y;
+    new void Start()
+    {
+        base.Start();
 
-        health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: Die);
+        home = physics.Position();
 
-        var fsmSprites = new Dictionary<int, Sprite>
-        {
-            { (int)BirdState.MoveHome, DefaultSprite },
-            { (int)BirdState.MoveToPlayer, ChargingSprite },
-            { (int)BirdState.Dead, DefaultSprite }
-        };
-        var fsmClips = new Dictionary<int, AudioClip>
-        {
-            { (int)BirdState.MoveToPlayer, CryClip }
-        };
-        fsm = new CreatureFsm.CreatureFsm(gameObject, fsmSprites, fsmClips)
-        {
-            State = (int)BirdState.MoveHome
-        };
+        fsm.Add(BirdState.MoveHome, DefaultSprite, null);
+        fsm.Add(BirdState.MoveToPlayer, ChargingSprite, CryClip);
+        fsm.Add(BirdState.Hurt, HurtSprite, CryClip);
+        fsm.Add(BirdState.Dead, DeadSprite, null);
+        FsmState = BirdState.MoveHome;
+
+        hurtTimer = new Timer(hurtTimerTop, OnHurtTimerExpired);
     }
 
     void ApproachHome()
     {
-        physics.ApproachVelocity(
-            (homeX - rigidBody2d.position.x),
-            (homeY - rigidBody2d.position.y)
-        );
+        physics.ApproachVelocity(home - physics.Position());
         FsmState = BirdState.MoveHome;
     }
 
-    void ApproachPlayer(float distanceToPlayerX, float distanceToPlayerY)
+    void DoBehaviourCloseToPlayer()
     {
-        physics.ApproachVelocity(
-            Math.Min(distanceToPlayerX, maxVelocity) * (1 + overshoot),
-            Math.Min(distanceToPlayerY, maxVelocity) * (1 + overshoot)
-        );
-        FsmState = BirdState.MoveToPlayer;
+        if (FsmState == BirdState.Hurt)
+        {
+            vectorToPlayer *= -1;
+        }
+        else
+        {
+            FsmState = BirdState.MoveToPlayer;
+        }
+
+        physics.ApproachVelocity(new Vector2(
+            Math.Min(vectorToPlayer.x, maxVelocityX) * (1 + overshoot),
+            Math.Min(vectorToPlayer.y, maxVelocityY) * (1 + overshoot)
+        ));
     }
 
-    void FixedUpdate()
+    bool CloseToPlayer()
     {
+        return vectorToPlayer.magnitude < visionRadius;
+    }
+
+    new void FixedUpdate()
+    {
+        base.FixedUpdate();
+
         if (FsmState == BirdState.Dead)
         {
-            rigidBody2d.velocity += new Vector2(0, -0.5f);
+            physics.Accelerate(new Vector2(0, -0.5f));
             return;
         }
 
-        // Calculate distance to player
-        float distanceToPlayerX = playerTransform.position.x + player.HeadOffsetX - rigidBody2d.position.x;
-        float distanceToPlayerY = playerTransform.position.y + player.HeadOffsetY - rigidBody2d.position.y;
-        FlipX = distanceToPlayerX > 0;
+        if (player == null)
+        {
+            ApproachHome();
+            return;
+        }
+
+        vectorToPlayer = player.HeadPosition - physics.Position();
+
+        FlipX = vectorToPlayer.x > 0;
         physics.LookAt(player.transform);
 
-        if (player.Alive)
+        if (player.Alive())
         {
-            if (Math.Pow(distanceToPlayerX, 2) + Math.Pow(distanceToPlayerY, 2) < visionRadius)
+            if (CloseToPlayer())
             {
-                ApproachPlayer(distanceToPlayerX, distanceToPlayerY);
+                DoBehaviourCloseToPlayer();
             }
             else
             {
@@ -130,14 +123,27 @@ public class BirdScript : MonoBehaviour, IFlipX
         health.Health += regenPer;
     }
 
-    void Die()
-    {
-        FsmState = BirdState.Dead;
-    }
-
     void OnCollisionEnter2D(Collision2D other)
     {
+        if (FsmState == BirdState.Dead)
+        {
+            return;
+        }
+
+        FsmState = BirdState.Hurt;
+        hurtTimer.Start();
+
         health.Health -= 10;
         physics.Recoil(100);
+    }
+
+    void OnHurtTimerExpired()
+    {
+        if (FsmState == BirdState.Dead)
+        {
+            return;
+        }
+
+        FsmState = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
     }
 }

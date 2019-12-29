@@ -8,11 +8,16 @@ public interface IFlipX
 public class FlipXCollection: IFlipX
 {
     private bool flipX;
-    List<IFlipX> items;
+    readonly List<IFlipX> items;
 
-    public FlipXCollection(List<IFlipX> items)
+    public FlipXCollection()
     {
-        this.items = items;
+        items = new List<IFlipX>();
+    }
+
+    public void Add(IFlipX item)
+    {
+        items.Add(item);
     }
 
     public bool FlipX
@@ -20,6 +25,7 @@ public class FlipXCollection: IFlipX
         get => flipX;
         set
         {
+            flipX = value;
             foreach (IFlipX item in items)
             {
                 item.FlipX = value;

@@ -51,9 +51,14 @@ public class BarCollection : IFlipX
     readonly List<Bar> bars;
     bool flipX;
 
-    public BarCollection(List<Bar> bars)
+    public BarCollection()
     {
-        this.bars = bars;
+        this.bars = new List<Bar>();
+    }
+
+    public void Add(Bar bar)
+    {
+        bars.Add(bar);
     }
 
     public void Hide()
