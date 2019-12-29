@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 public class CreaturePhysics : BasePhysics
 {
-    readonly Vector2 axCoeff;
-    readonly float rotCoeff;
-    readonly Vector2 maxJerk;
-    readonly float idleThreshold;
+    private readonly Vector2 axCoeff;
+    private readonly float rotCoeff;
+    private readonly Vector2 maxJerk;
+    private readonly float idleThreshold;
 
     public CreaturePhysics(
         MonoBehaviour bh,

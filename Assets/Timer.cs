@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 public enum TimerMode
@@ -32,7 +31,7 @@ public class Timer
         Running = false;
     }
 
-    public int Value { get => timer; }
+    public int Value => timer;
 
     public void Tick()
     {
@@ -116,7 +115,7 @@ public class TimerCollection
 
     public void TickAll()
     {
-        foreach(KeyValuePair<string, Timer> pair in timers)
+        foreach (KeyValuePair<string, Timer> pair in timers)
         {
             pair.Value.Tick();
         }
@@ -149,7 +148,7 @@ public class TimerCollection
 
     public void StopAll()
     {
-        foreach(KeyValuePair<string, Timer> pair in timers)
+        foreach (KeyValuePair<string, Timer> pair in timers)
         {
             pair.Value.Stop();
         }

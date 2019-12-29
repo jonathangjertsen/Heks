@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System;
 using UnityEngine;
 
-public class CreatureFsm<EnumType> where EnumType: struct, Enum
+public class CreatureFsm<EnumType> where EnumType : struct, Enum
 {
-    readonly Dictionary<EnumType, Sprite> sprites;
-    readonly Dictionary<EnumType, AudioClip> clips;
-    readonly SpriteRenderer renderer;
-    readonly AudioSource source;
+    private readonly Dictionary<EnumType, Sprite> sprites;
+    private readonly Dictionary<EnumType, AudioClip> clips;
+    private readonly SpriteRenderer renderer;
+    private readonly AudioSource source;
 
     public bool logChanges = false;
-
-    EnumType state;
+    private EnumType state;
 
     public CreatureFsm(BaseCreature<EnumType> creature)
     {
@@ -49,7 +48,7 @@ public class CreatureFsm<EnumType> where EnumType: struct, Enum
     {
         if (sprites.TryGetValue(state, out Sprite sprite))
         {
-            if(renderer.sprite == sprite)
+            if (renderer.sprite == sprite)
             {
                 SetSprite(this.state);
             }
@@ -62,7 +61,7 @@ public class CreatureFsm<EnumType> where EnumType: struct, Enum
 
     private void throwStateNotFound(EnumType state)
     {
-        var lines = sprites.Select(kvp => kvp.Key + ": " + kvp.Value.name);
+        IEnumerable<string> lines = sprites.Select(kvp => kvp.Key + ": " + kvp.Value.name);
         throw new System.Exception($"There is no sprite for {state}. Available: {string.Join(",", lines)}");
     }
 

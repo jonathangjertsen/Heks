@@ -9,7 +9,9 @@ public class Bar : MonoBehaviour, IFlipX
 
     private Vector3 parentInitialScale;
 
-    public bool FlipX { get => flipX; set
+    public bool FlipX
+    {
+        get => flipX; set
         {
             if (value)
             {
@@ -23,7 +25,7 @@ public class Bar : MonoBehaviour, IFlipX
         }
     }
 
-    void Start()
+    private void Start()
     {
         parentInitialScale = transform.parent.localScale;
 
@@ -48,12 +50,12 @@ public class Bar : MonoBehaviour, IFlipX
 
 public class BarCollection : IFlipX
 {
-    readonly List<Bar> bars;
-    bool flipX;
+    private readonly List<Bar> bars;
+    private bool flipX;
 
     public BarCollection()
     {
-        this.bars = new List<Bar>();
+        bars = new List<Bar>();
     }
 
     public void Add(Bar bar)
@@ -74,7 +76,7 @@ public class BarCollection : IFlipX
         get => flipX;
         set
         {
-            foreach(Bar bar in bars)
+            foreach (Bar bar in bars)
             {
                 bar.FlipX = value;
             }

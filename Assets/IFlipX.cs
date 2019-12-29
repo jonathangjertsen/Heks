@@ -5,10 +5,10 @@ public interface IFlipX
     bool FlipX { get; set; }
 }
 
-public class FlipXCollection: IFlipX
+public class FlipXCollection : IFlipX
 {
     private bool flipX;
-    readonly List<IFlipX> items;
+    private readonly List<IFlipX> items;
 
     public FlipXCollection()
     {

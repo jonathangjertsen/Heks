@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
-abstract public class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : struct, Enum
+public abstract class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : struct, Enum
 {
     protected CreatureFsm<StateEnum> fsm;
     protected CreaturePhysics physics;
@@ -73,7 +73,7 @@ abstract public class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
 
     private void Shrinking()
     {
-        float proportion = (float)timers.Value("shrink") / (float)shrinkTimerTop;
+        float proportion = timers.Value("shrink") / (float)shrinkTimerTop;
         physics.Size = physics.InitialSize * proportion;
     }
 

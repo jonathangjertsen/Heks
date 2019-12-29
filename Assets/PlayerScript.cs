@@ -54,7 +54,8 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     public float Charge
     {
         get => charge;
-        set {
+        set
+        {
             chargeBar.FillTo(value / chargeTop);
             charge = value;
         }
@@ -101,7 +102,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
 
     // Unity
 
-    new void Start()
+    private new void Start()
     {
         base.Start();
 
@@ -126,7 +127,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
         flipXItems.Add(spellSpawn);
     }
 
-    new private void FixedUpdate()
+    private new void FixedUpdate()
     {
         base.FixedUpdate();
 
@@ -143,7 +144,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
         base.FixedUpdate();
     }
 
-    void OnTriggerEnter2D()
+    private void OnTriggerEnter2D()
     {
         FsmState = PlayerState.Hurt;
         timers.Start("hurt");
@@ -246,7 +247,8 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
             timers.Stop("flyingToIdle");
         }
 
-        if ((FsmState == PlayerState.Standing || FsmState == PlayerState.Still) && Input.anyKey) {
+        if ((FsmState == PlayerState.Standing || FsmState == PlayerState.Still) && Input.anyKey)
+        {
             FsmState = PlayerState.Flying;
         }
     }

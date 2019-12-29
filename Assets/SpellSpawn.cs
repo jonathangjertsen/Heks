@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpellSpawn : MonoBehaviour, IFlipX
 {
@@ -17,9 +16,9 @@ public class SpellSpawn : MonoBehaviour, IFlipX
         );
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        
+
     }
 
 

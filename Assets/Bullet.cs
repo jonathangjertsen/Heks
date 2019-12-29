@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
     private int liveTimer;
     private BulletPhysics physics;
 
-    void Awake()
+    private void Awake()
     {
         physics = new BulletPhysics(this);
     }
@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
         physics.Torque(torque);
     }
 
-    void OnCollisionEnter2D()
+    private void OnCollisionEnter2D()
     {
         liveTimer = liveTimerTop;
     }

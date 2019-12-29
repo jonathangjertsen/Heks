@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum SkullState
 {
@@ -29,7 +28,7 @@ public class SkullScript : BaseCreature<SkullState>, IFlipX
         FsmState = SkullState.Dead;
     }
 
-    new void Start()
+    private new void Start()
     {
         base.Start();
 
@@ -45,7 +44,7 @@ public class SkullScript : BaseCreature<SkullState>, IFlipX
         FsmState = SkullState.InAir;
     }
 
-    new void FixedUpdate()
+    private new void FixedUpdate()
     {
         base.FixedUpdate();
 
@@ -70,12 +69,12 @@ public class SkullScript : BaseCreature<SkullState>, IFlipX
         }
     }
 
-    void OnHurtTimerExpired()
+    private void OnHurtTimerExpired()
     {
         fsm.UnsetSprite(SkullState.Hurt);
     }
 
-    void OnHopTimerExpired()
+    private void OnHopTimerExpired()
     {
         if (FsmState == SkullState.GroundedWaiting)
         {
@@ -83,7 +82,7 @@ public class SkullScript : BaseCreature<SkullState>, IFlipX
         }
     }
 
-    void OnCollisionExitToNotGroundedTimerExpired()
+    private void OnCollisionExitToNotGroundedTimerExpired()
     {
         if (FsmState == SkullState.GroundedWaiting)
         {
@@ -91,7 +90,7 @@ public class SkullScript : BaseCreature<SkullState>, IFlipX
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (FsmState == SkullState.Dead)
         {

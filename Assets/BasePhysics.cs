@@ -2,7 +2,7 @@
 
 public class BasePhysics : IFlipX
 {
-    readonly Vector3 initialScale;
+    private readonly Vector3 initialScale;
     protected readonly Transform transform;
     protected readonly Rigidbody2D rigidBody2d;
 
@@ -31,10 +31,7 @@ public class BasePhysics : IFlipX
         }
     }
 
-    public Vector3 InitialSize
-    {
-        get => initialScale;
-    }
+    public Vector3 InitialSize => initialScale;
 
     public Vector3 Size
     {

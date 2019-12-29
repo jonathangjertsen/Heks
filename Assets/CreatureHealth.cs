@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-
-public class CreatureHealth
+﻿public class CreatureHealth
 {
-    readonly Bar healthBar;
-    readonly float maxHealth;
-    float currentHealth;
-    readonly OnZeroHealth onZeroHealth;
+    private readonly Bar healthBar;
+    private readonly float maxHealth;
+    private float currentHealth;
+    private readonly OnZeroHealth onZeroHealth;
 
     public delegate void OnZeroHealth();
 

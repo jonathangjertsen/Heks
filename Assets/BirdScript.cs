@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 public enum BirdState
 {
@@ -7,15 +7,14 @@ public enum BirdState
     MoveToPlayer,
     Hurt,
     Dead,
-};
+}
 
 public class BirdScript : BaseCreature<BirdState>, IFlipX
 {
     public float regenPer = 0.02f;
     public float visionRadius = 15f;
     public float overshoot = 0.01f;
-
-    Timer hurtTimer;
+    private Timer hurtTimer;
     public int hurtTimerTop = 60;
 
     public AudioClip CryClip;
@@ -35,7 +34,7 @@ public class BirdScript : BaseCreature<BirdState>, IFlipX
         FsmState = BirdState.Dead;
     }
 
-    new void Start()
+    private new void Start()
     {
         base.Start();
 
@@ -50,13 +49,13 @@ public class BirdScript : BaseCreature<BirdState>, IFlipX
         hurtTimer = new Timer(hurtTimerTop, OnHurtTimerExpired);
     }
 
-    void ApproachHome()
+    private void ApproachHome()
     {
         physics.ApproachVelocity(home - physics.Position());
         FsmState = BirdState.MoveHome;
     }
 
-    void DoBehaviourCloseToPlayer()
+    private void DoBehaviourCloseToPlayer()
     {
         if (FsmState == BirdState.Hurt)
         {
@@ -73,12 +72,12 @@ public class BirdScript : BaseCreature<BirdState>, IFlipX
         ));
     }
 
-    bool CloseToPlayer()
+    private bool CloseToPlayer()
     {
         return vectorToPlayer.magnitude < visionRadius;
     }
 
-    new void FixedUpdate()
+    private new void FixedUpdate()
     {
         base.FixedUpdate();
 
@@ -123,7 +122,7 @@ public class BirdScript : BaseCreature<BirdState>, IFlipX
         health.Health += regenPer;
     }
 
-    void OnCollisionEnter2D()
+    private void OnCollisionEnter2D()
     {
         if (FsmState == BirdState.Dead)
         {
@@ -137,7 +136,7 @@ public class BirdScript : BaseCreature<BirdState>, IFlipX
         physics.Recoil(100);
     }
 
-    void OnHurtTimerExpired()
+    private void OnHurtTimerExpired()
     {
         if (FsmState == BirdState.Dead)
         {
