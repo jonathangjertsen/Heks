@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : Spell
 {
     public int liveTimerTop = 50;
     private int liveTimer;
@@ -11,10 +11,11 @@ public class Bullet : MonoBehaviour
         physics = new BulletPhysics(this);
     }
 
-    public void Launch(Vector2 ax, float torque)
+    override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
-        physics.Accelerate(ax);
-        physics.Torque(torque);
+        int flipXAsInt = flipX ? 1 : -1;
+        physics.Accelerate(initialVelocity + new Vector2(0.1f * charge * -flipXAsInt, 0.1f * charge));
+        physics.Torque(100f * charge * -flipXAsInt);
     }
 
     private void OnCollisionEnter2D()
