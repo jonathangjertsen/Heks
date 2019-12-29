@@ -6,31 +6,37 @@ public class Bar : MonoBehaviour, IFlipX
     private float startX;
     public float endX;
     private bool flipX;
+    public bool flipWithParent = true;
 
     private Vector3 parentInitialScale;
 
     public bool FlipX
     {
-        get => flipX; set
-        {
-            if (value)
+        get => flipX;
+        set {
+            if (flipWithParent)
             {
-                transform.parent.localScale = new Vector3(-parentInitialScale.x, parentInitialScale.y, parentInitialScale.z);
-            }
-            else
-            {
-                transform.parent.localScale = parentInitialScale;
+                if (value)
+                {
+                    transform.parent.localScale = new Vector3(-parentInitialScale.x, parentInitialScale.y, parentInitialScale.z);
+                }
+                else
+                {
+                    transform.parent.localScale = parentInitialScale;
+                }
             }
             flipX = value;
         }
     }
 
+    private void Awake()
+    {
+        startX = transform.localPosition.x;
+    }
+
     private void Start()
     {
         parentInitialScale = transform.parent.localScale;
-
-        startX = transform.localPosition.x;
-        FillTo(1);
     }
 
     public void FillTo(float proportion)

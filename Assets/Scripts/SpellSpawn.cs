@@ -6,13 +6,13 @@ public class SpellSpawn : MonoBehaviour, IFlipX
     private bool flipX;
     public bool FlipX { get => flipX; set => flipX = value; }
 
-    public void Cast(float charge)
+    public void Cast(Vector2 initialVelocity, float charge)
     {
         Bullet bullet = Instantiate(spell, transform.position, transform.rotation);
         int flipXAsInt = flipX ? 1 : -1;
         bullet.Launch(
-            new Vector2(0.01f * charge * -flipXAsInt, 0.24f * charge),
-            200f * charge * flipXAsInt
+            initialVelocity + new Vector2(0.1f * charge * -flipXAsInt, 0.1f * charge),
+            100f * charge * -flipXAsInt
         );
     }
 

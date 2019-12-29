@@ -13,6 +13,7 @@
         this.maxHealth = maxHealth;
         currentHealth = maxHealth;
         this.onZeroHealth = onZeroHealth;
+        Health = maxHealth;
     }
 
     public float Health

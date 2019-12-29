@@ -60,4 +60,9 @@ public class BasePhysics : IFlipX
     {
         return rigidBody2d.transform.position;
     }
+
+    public Vector2 Velocity()
+    {
+        return rigidBody2d.velocity;
+    }
 }

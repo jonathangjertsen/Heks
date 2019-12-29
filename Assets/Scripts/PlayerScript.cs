@@ -107,6 +107,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
         base.Start();
 
         Charge = 0;
+        chargeBar.FillTo(0);
         bars.Add(chargeBar);
 
         fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
@@ -174,7 +175,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     {
         FsmState = PlayerState.Casting;
         timers.Start("cast");
-        spellSpawn.Cast(charge);
+        spellSpawn.Cast(physics.Velocity(), charge);
         physics.Recoil(castTorque);
         Charge = 0;
     }
