@@ -143,7 +143,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
         base.FixedUpdate();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D()
     {
         FsmState = PlayerState.Hurt;
         timers.Start("hurt");

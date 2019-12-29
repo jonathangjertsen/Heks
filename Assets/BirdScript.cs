@@ -123,7 +123,7 @@ public class BirdScript : BaseCreature<BirdState>, IFlipX
         health.Health += regenPer;
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionEnter2D()
     {
         if (FsmState == BirdState.Dead)
         {

@@ -5,14 +5,12 @@ public class CreaturePhysics : BasePhysics
 {
     readonly Vector2 axCoeff;
     readonly float rotCoeff;
-    readonly Vector2 maxVelocity;
     readonly Vector2 maxJerk;
     readonly float idleThreshold;
 
     public CreaturePhysics(
         MonoBehaviour bh,
         Vector2 axCoeff,
-        Vector2 maxVelocity,
         Vector2 maxJerk,
         float rotCoeff = 1f,
         float idleThreshold = 1f
@@ -20,7 +18,6 @@ public class CreaturePhysics : BasePhysics
     {
         this.axCoeff = axCoeff;
         this.rotCoeff = rotCoeff;
-        this.maxVelocity = maxVelocity;
         this.maxJerk = maxJerk;
         this.idleThreshold = idleThreshold;
         FlipX = false;

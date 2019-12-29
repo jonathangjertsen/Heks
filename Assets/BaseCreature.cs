@@ -28,8 +28,8 @@ abstract public class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
     public bool logFsmChanges = false;
     public bool logTimerCallbacks = false;
 
-    private int deathToShrinkStartTimerTop = 100;
-    private int shrinkTimerTop = 200;
+    private readonly int deathToShrinkStartTimerTop = 100;
+    private readonly int shrinkTimerTop = 200;
     private Vector3 initScale;
 
     public PlayerScript player;
@@ -55,7 +55,6 @@ abstract public class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
             this,
             axCoeff: new Vector2(axCoeffX, axCoeffY),
             rotCoeff: rotCoeff,
-            maxVelocity: new Vector2(maxVelocityX, maxVelocityY),
             maxJerk: new Vector2(maxJerkX, maxJerkY)
         );
         timers = new TimerCollection();

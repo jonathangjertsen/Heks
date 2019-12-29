@@ -17,12 +17,12 @@ public class Bullet : MonoBehaviour
         physics.Torque(torque);
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionEnter2D()
     {
         liveTimer = liveTimerTop;
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionStay2D()
     {
         liveTimer -= 1;
         if (liveTimer <= 0)
