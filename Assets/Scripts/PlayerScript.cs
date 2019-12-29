@@ -146,9 +146,12 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
 
     private void OnTriggerEnter2D()
     {
-        FsmState = PlayerState.Hurt;
-        timers.Start("hurt");
-        health.Health -= 10;
+        if (FsmState != PlayerState.Hurt && FsmState != PlayerState.Angry)
+        {
+            FsmState = PlayerState.Hurt;
+            timers.Start("hurt");
+            health.Health -= 10;
+        }
     }
 
     // Helpers
