@@ -10,7 +10,7 @@ public enum TimerMode
 public class Timer
 {
     private readonly int top;
-    private readonly Timeout onTimeout;
+    private Timeout onTimeout;
     private readonly OnTick onTick;
     private int timer;
     private readonly TimerMode mode;
@@ -69,6 +69,11 @@ public class Timer
                 onTick();
             }
         }
+    }
+
+    public void SetTimeoutCallback(Timeout callback)
+    {
+        onTimeout = callback;
     }
 
     public void Start()

@@ -61,6 +61,11 @@ public class BasePhysics : IFlipX
         return rigidBody2d.transform.position;
     }
 
+    public void Translate(Vector2 offset)
+    {
+        rigidBody2d.transform.position += new Vector3(offset.x, offset.y, 0);
+    }
+
     public Vector2 Velocity()
     {
         return rigidBody2d.velocity;

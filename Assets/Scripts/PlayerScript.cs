@@ -47,6 +47,8 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     public Sprite AngrySprite;
     public Sprite DeadSprite;
 
+    public GameState gameState;
+
     // Spell management
     public SpellSpawn spellSpawn;
 
@@ -68,6 +70,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     {
         base.Die();
         FsmState = PlayerState.Dead;
+        gameState.PlayerDied();
     }
 
     public bool Alive()
@@ -142,11 +145,21 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
         UpdateToIdleIfIdle();
         RegenerateHealth();
 
+        if (Input.GetKey("x"))
+        {
+            Die();
+        }
+
         base.FixedUpdate();
     }
 
     private void OnTriggerEnter2D()
     {
+        if (FsmState == PlayerState.Dead)
+        {
+            return;
+        }
+
         if (FsmState != PlayerState.Hurt && FsmState != PlayerState.Angry)
         {
             FsmState = PlayerState.Hurt;
@@ -175,7 +188,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     {
         FsmState = PlayerState.Casting;
         timers.Start("cast");
-        spellSpawn.Cast(physics.Velocity(), charge);
+        spellSpawn.Cast(physics.Velocity(), charge / chargeTop);
         physics.Recoil(castTorque);
         Charge = 0;
     }
