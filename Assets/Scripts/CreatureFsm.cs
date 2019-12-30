@@ -13,7 +13,7 @@ public class CreatureFsm<EnumType> where EnumType : struct, Enum
     public bool logChanges = false;
     private EnumType state;
 
-    public CreatureFsm(BaseCreature<EnumType> creature)
+    public CreatureFsm(BaseCreatureBehaviour<EnumType> creature)
     {
         renderer = creature.gameObject.GetComponent<SpriteRenderer>();
         source = creature.gameObject.GetComponent<AudioSource>();

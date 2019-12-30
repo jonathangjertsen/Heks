@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : struct, Enum
+public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where StateEnum : struct, Enum
 {
     protected CreatureFsm<StateEnum> fsm;
     protected CreaturePhysics physics;

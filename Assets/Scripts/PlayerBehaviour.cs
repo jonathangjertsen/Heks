@@ -12,7 +12,7 @@ public enum PlayerState
     Dead,
 };
 
-public class PlayerBehaviour : BaseCreature<PlayerState>, IFlipX
+public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
 {
     // Health
     public float regenPer = 0.02f;
