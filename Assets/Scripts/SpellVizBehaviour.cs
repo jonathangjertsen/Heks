@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SpellViz : MonoBehaviour
+public class SpellVizBehaviour : MonoBehaviour
 {
-    public void SetSpell(Spell spell)
+    public void SetSpell(SpellBehaviour spell)
     {
         var image = GetComponent<Image>();
         var renderer = spell.GetComponent<SpriteRenderer>();

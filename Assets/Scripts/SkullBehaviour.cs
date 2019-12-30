@@ -9,7 +9,7 @@ public enum SkullState
     Dead
 }
 
-public class SkullScript : BaseCreature<SkullState>, IFlipX
+public class SkullBehaviour : BaseCreature<SkullState>, IFlipX
 {
     public Sprite GroundedSprite;
     public Sprite InAirSprite;

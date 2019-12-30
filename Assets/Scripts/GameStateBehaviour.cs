@@ -11,10 +11,10 @@ public enum GameStateEnum
     Won
 }
 
-public class GameState : MonoBehaviour
+public class GameStateBehaviour : MonoBehaviour
 {
     GameStateEnum state;
-    public FadeIn fade;
+    public FadeInBehaviour fade;
     protected TimerCollection timers;
     public bool logTimerCallbacks;
     public int deathToGameOverStartTop;

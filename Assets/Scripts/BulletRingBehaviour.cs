@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class BulletRing : Spell
+public class BulletRingBehaviour : SpellBehaviour
 {
     public float ringSize;
     public float maxOutwardSpeed;
@@ -31,7 +31,7 @@ public class BulletRing : Spell
                 normalizedOffset.y * outwardSpeed * charge
             );
 
-            BulletRing child;
+            BulletRingBehaviour child;
             if (i == 0)
             {
                 child = this;

@@ -1,13 +1,13 @@
 ﻿public class CreatureHealth
 {
-    private readonly Bar healthBar;
+    private readonly BarBehaviour healthBar;
     private readonly float maxHealth;
     private float currentHealth;
     private readonly OnZeroHealth onZeroHealth;
 
     public delegate void OnZeroHealth();
 
-    public CreatureHealth(Bar healthBar, float maxHealth, OnZeroHealth onZeroHealth)
+    public CreatureHealth(BarBehaviour healthBar, float maxHealth, OnZeroHealth onZeroHealth)
     {
         this.healthBar = healthBar;
         this.maxHealth = maxHealth;

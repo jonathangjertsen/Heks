@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollowBehaviour : MonoBehaviour
 {
     public float minY;
     public float maxY;

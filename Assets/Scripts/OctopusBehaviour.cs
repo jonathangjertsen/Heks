@@ -6,7 +6,7 @@ public enum OctpusState
     Dead
 }
 
-public class Octopus : BaseCreature<OctpusState>
+public class OctopusBehaviour : BaseCreature<OctpusState>
 {
     public float freqX;
     public float freqY;

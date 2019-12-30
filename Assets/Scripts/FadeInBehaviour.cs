@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FadeIn : MonoBehaviour
+public class FadeInBehaviour : MonoBehaviour
 {
     protected TimerCollection timers;
 

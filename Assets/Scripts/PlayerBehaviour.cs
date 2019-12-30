@@ -12,7 +12,7 @@ public enum PlayerState
     Dead,
 };
 
-public class PlayerScript : BaseCreature<PlayerState>, IFlipX
+public class PlayerBehaviour : BaseCreature<PlayerState>, IFlipX
 {
     // Health
     public float regenPer = 0.02f;
@@ -20,7 +20,7 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     public float headOffsetY = 6.06f;
 
     // Things related to charging
-    public Bar chargeBar;
+    public BarBehaviour chargeBar;
     public float chargeTop = 50;
     private float charge;
     private int chargeDirection = 1;
@@ -47,10 +47,10 @@ public class PlayerScript : BaseCreature<PlayerState>, IFlipX
     public Sprite AngrySprite;
     public Sprite DeadSprite;
 
-    public GameState gameState;
+    public GameStateBehaviour gameState;
 
     // Spell management
-    public SpellSpawn spellSpawn;
+    public SpellSpawnBehaviour spellSpawn;
 
     // Simple properties
     public float Charge

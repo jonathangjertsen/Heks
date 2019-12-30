@@ -12,7 +12,7 @@ public abstract class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
 
     protected bool flipX;
 
-    public Bar healthBar;
+    public BarBehaviour healthBar;
     public float maxHealth;
 
     public float axCoeffX = 0.01f;
@@ -32,7 +32,7 @@ public abstract class BaseCreature<StateEnum> : MonoBehaviour where StateEnum : 
     private readonly int shrinkTimerTop = 200;
     private Vector3 initScale;
 
-    public PlayerScript player;
+    public PlayerBehaviour player;
     protected StateEnum FsmState
     {
         get => fsm.State;

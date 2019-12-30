@@ -9,7 +9,7 @@ public enum BirdState
     Dead,
 }
 
-public class BirdScript : BaseCreature<BirdState>, IFlipX
+public class BirdBehaviour : BaseCreature<BirdState>, IFlipX
 {
     public float regenPer = 0.02f;
     public float visionRadius = 15f;

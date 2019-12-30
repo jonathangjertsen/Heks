@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Spell : MonoBehaviour
+public class SpellBehaviour : MonoBehaviour
 {
     public int liveTimerTop = 50;
     private int liveTimer;
