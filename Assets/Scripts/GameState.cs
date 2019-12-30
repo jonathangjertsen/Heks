@@ -14,7 +14,7 @@ public enum GameStateEnum
 public class GameState : MonoBehaviour
 {
     GameStateEnum state;
-    public Fade fade;
+    public FadeIn fade;
     protected TimerCollection timers;
     public bool logTimerCallbacks;
     public int deathToGameOverStartTop;

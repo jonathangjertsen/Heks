@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fade : MonoBehaviour
+public class FadeIn : MonoBehaviour
 {
     protected TimerCollection timers;
 
@@ -24,9 +24,6 @@ public class Fade : MonoBehaviour
 
         foreach (Graphic component in components)
         {
-            var color = component.color;
-            color.a = 0f;
-            component.color = color;
             component.enabled = false;
         }
     }
