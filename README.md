@@ -32,3 +32,33 @@ Assets
 ├───Scenes            - Obsolete
 └───Scripts           - All scripts
 ```
+
+## Class hierarchy at a glance
+
+```
+UnityEngine.MonoBehaviour
+    Bar
+    BaseCreature
+        BirdScript
+        PlayerScript
+        SkullScript
+    CameraFollow
+    FadeIn
+    Spell
+        Bullet
+        BulletRing
+        StraightBullet
+    SpellSpawn
+    SpellViz
+    GameState
+
+BarCollection
+BasePhysics
+    BulletPhysics
+    CreaturePhysics
+CreatureFsm
+CreatureHealth
+FlipXCollection
+Timer
+TimerCollection
+```
