@@ -2,46 +2,76 @@
 using System;
 using UnityEngine;
 
-public interface ISpellSpawner
+public interface ISpellCaster
 {
     void Cast(Vector2 initialVelocity, float charge);
 }
 
-public class SpellSpawnBehaviour : MonoBehaviour, IFlipX, ISpellSpawner
+public interface ISpellInstantiator
 {
+    ISpell InstantiateSpell(ISpell source);
+}
+
+public interface ISpellVisualizer
+{
+    void ShowSpell(ISpell spell);
+}
+
+
+[Serializable]
+public class SpellSpawner
+{
+    private ISpell activeSpell;
     private System.Random random;
-    private SpellBehaviour activeSpell;
-    private List<SpellBehaviour> spells;
+    public ISpell[] spells;
+    private ISpellInstantiator instantiator;
+    private ISpellVisualizer viz;
 
-    public SpellVizBehaviour viz;
-    public BulletBehaviour bullet;
-    public StraightBulletBehaviour straightBullet;
-    public BulletRingBehaviour bulletRing;
-
-    public bool FlipX { get; set; }
-
-    public void Start()
+    public void Init(ISpellInstantiator instantiator, ISpellVisualizer viz, ISpell[] spells)
     {
-        spells = new List<SpellBehaviour>() {
-            bullet,
-            straightBullet,
-            bulletRing
-        };
+        this.spells = spells;
+        this.instantiator = instantiator;
+        this.viz = viz;
+
         random = new System.Random();
 
         SetUpNextSpell();
     }
 
-    public void Cast(Vector2 initialVelocity, float charge)
+    public void Cast(Vector2 initialVelocity, float charge, bool flipX)
     {
-        SpellBehaviour spell = Instantiate(activeSpell, transform.position, transform.rotation);
-        spell.Launch(initialVelocity, charge, FlipX);
+        ISpell spell = instantiator.InstantiateSpell(activeSpell);
+        spell.Launch(initialVelocity, charge, flipX);
         SetUpNextSpell();
     }
 
     private void SetUpNextSpell()
     {
-        activeSpell = spells[random.Next(spells.Count)];
-        viz.SetSpell(activeSpell);
+        activeSpell = spells[random.Next(spells.Length)];
+        viz.ShowSpell(activeSpell);
+    }
+}
+
+public class SpellSpawnBehaviour : MonoBehaviour, IFlipX, ISpellInstantiator, ISpellCaster
+{
+    public SpellVizBehaviour viz;
+    public SpellSpawner spellSpawner;
+    public SpellBehaviour[] spells;
+
+    public bool FlipX { get; set; }
+
+    public void Start()
+    {
+        spellSpawner.Init(this, viz, spells);
+    }
+
+    public ISpell InstantiateSpell(ISpell spell)
+    {
+        return Instantiate((SpellBehaviour)spell, transform.position, transform.rotation);
+    }
+
+    public void Cast(Vector2 initialVelocity, float charge)
+    {
+        spellSpawner.Cast(initialVelocity, charge, FlipX);
     }
 }

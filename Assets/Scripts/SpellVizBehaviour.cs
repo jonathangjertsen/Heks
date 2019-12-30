@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SpellVizBehaviour : MonoBehaviour
+public class SpellVizBehaviour : MonoBehaviour, ISpellVisualizer
 {
-    public void SetSpell(SpellBehaviour spell)
+    public void ShowSpell(ISpell spell)
     {
         var image = GetComponent<Image>();
-        var renderer = spell.GetComponent<SpriteRenderer>();
-        image.sprite = renderer.sprite;
-        image.color = renderer.color;
+        image.sprite = spell.GetSprite();
+        image.color = spell.GetColor();
     }
 }

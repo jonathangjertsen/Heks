@@ -35,14 +35,14 @@ public class Player
     public int flyingToIdleTimerTop = 60;
     public int castTimerTop = 30;
 
-    private ISpellSpawner spellSpawner;
+    private ISpellCaster spellSpawner;
     private ICreatureFsm<PlayerState> fsm;
     private ICreaturePhysics physics;
     private ICreatureHealth health;
     private TimerCollection timers;
     private BarCollection bars;
 
-    public void Init(ICreaturePhysics physics, ICreatureFsm<PlayerState> fsm, TimerCollection timers, BarCollection bars, IBarDisplay chargeBar, ISpellSpawner spellSpawner, ICreatureHealth health)
+    public void Init(ICreaturePhysics physics, ICreatureFsm<PlayerState> fsm, TimerCollection timers, BarCollection bars, IBarDisplay chargeBar, ISpellCaster spellSpawner, ICreatureHealth health)
     {
         this.chargeBar = chargeBar;
         this.fsm = fsm;
