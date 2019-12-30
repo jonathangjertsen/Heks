@@ -50,6 +50,9 @@ public class Octopus : BaseCreature<OctpusState>
 
     private void OnCollisionEnter2D()
     {
-        health.Health -= 10;
+        if (FsmState != OctpusState.Dead)
+        {
+            health.Health -= 10;
+        }
     }
 }
