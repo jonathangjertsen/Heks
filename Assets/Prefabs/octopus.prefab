@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1269431479898106261}
   - component: {fileID: 1357190120657263387}
   m_Layer: 0
-  m_Name: octopus
+  m_Name: Octopus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: da8d821b33cbaba4cac36322f853d2b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
