@@ -8,7 +8,7 @@ public interface ICreaturePhysics : IBasePhysics
     void ApproachVelocity(bool updateX, bool updateY, Vector2 target);
     void ApproachAngularVelocity(Vector2 target);
     void ApproachAngle(Vector2 diff);
-    void LookAt(Transform transform);
+    void LookAt(Vector2 transform);
     void Jump(float force);
     void Recoil(float torque);
     bool IsIdle();
@@ -76,15 +76,16 @@ public class CreaturePhysics : BasePhysics, ICreaturePhysics
         rigidBody2d.rotation += rotCoeff * (targetRotation - currentRotation);
     }
 
-    public void LookAt(Transform transform)
+    public void LookAt(Vector2 position)
     {
+        Vector3 position3 = position;
         if (FlipX)
         {
-            this.transform.right = transform.position - this.transform.position;
+            this.transform.right = position3 - this.transform.position;
         }
         else
         {
-            this.transform.right = this.transform.position - transform.position;
+            this.transform.right = this.transform.position - position3;
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public enum PlayerState
 {
@@ -12,33 +13,45 @@ public enum PlayerState
     Dead,
 };
 
+[Serializable]
+public class Player
+{
+    public float maxVelocityX = 10.0f;
+    public float maxVelocityY = 10.0f;
+}
+
 public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 {
-    // Health
-    public float regenPer = 0.02f;
+    public BarBehaviour chargeBar;
+    public GameStateBehaviour gameState;
+    public SpellSpawnBehaviour spellSpawn;
+
+    [Space] [Header("Movement")]
+    public Player self;
+
+    [Space] [Header("Head position")]
     public float headOffsetX = 4.87f;
     public float headOffsetY = 6.06f;
 
-    // Things related to charging
-    public BarBehaviour chargeBar;
+    [Space] [Header("Charging and casting")]
     public float chargeTop = 50;
     private float charge;
     private int chargeDirection = 1;
-
-    // Things related to casting
     public int castTorque = 150;
 
-    // Timers
+    [Space] [Header("FSM timers")]
     public int hurtTimerTop = 30;
     public int angryTimerTop = 60;
     public int flyingToIdleTimerTop = 60;
     public int castTimerTop = 30;
 
-    // FSM state
+    [Space] [Header("Audio clips")]
     public AudioClip YellClip;
     public AudioClip HurtClip;
     public AudioClip ChargeClip;
     public AudioClip CastClip;
+
+    [Space] [Header("Sprites")]
     public Sprite FlyingSprite;
     public Sprite StandingSprite;
     public Sprite ChargingSprite;
@@ -46,11 +59,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     public Sprite HurtSprite;
     public Sprite AngrySprite;
     public Sprite DeadSprite;
-
-    public GameStateBehaviour gameState;
-
-    // Spell management
-    public SpellSpawnBehaviour spellSpawn;
 
     // Simple properties
     public float Charge
@@ -96,7 +104,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         FsmState = PlayerState.Standing;
     }
 
-    private void OnHurtTimerExpired()
+    override public void OnHurtCompleted()
     {
         FsmState = PlayerState.Angry;
         creature.timers.Stop("hurt");
@@ -123,7 +131,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
         FsmState = PlayerState.Flying;
 
-        creature.timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
         creature.timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
         creature.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
         creature.timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
@@ -143,7 +150,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         UpdatePositionBasedOnInput();
         UpdateCastCycleStates();
         UpdateToIdleIfIdle();
-        RegenerateHealth();
 
         if (Input.GetKey("x"))
         {
@@ -193,11 +199,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         Charge = 0;
     }
 
-    private void RegenerateHealth()
-    {
-        creature.health.Health += regenPer;
-    }
-
     private void UpdateCastCycleStates()
     {
         if (Input.GetKey("space"))
@@ -226,24 +227,24 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         if (Input.GetKey("d") || Input.GetKey("right"))
         {
             updateX = true;
-            target.x = creature.maxVelocityX;
+            target.x = self.maxVelocityX;
             creature.FlipX = false;
         }
         if (Input.GetKey("a") || Input.GetKey("left"))
         {
             updateX = true;
-            target.x = -creature.maxVelocityX;
+            target.x = -self.maxVelocityX;
             creature.FlipX = true;
         }
         if (Input.GetKey("w") || Input.GetKey("up"))
         {
             updateY = true;
-            target.y = +creature.maxVelocityY;
+            target.y = +self.maxVelocityY;
         }
         if (Input.GetKey("s") || Input.GetKey("down"))
         {
             updateY = true;
-            target.y = -creature.maxVelocityY;
+            target.y = -self.maxVelocityY;
         }
         creature.physics.ApproachVelocity(updateX, updateY, target);
         creature.physics.ApproachAngularVelocity(target);

@@ -11,15 +11,19 @@ public enum SkullState
 
 public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
 {
+    [Space] [Header("Sprites")]
     public Sprite GroundedSprite;
     public Sprite InAirSprite;
     public Sprite DeadSprite;
     public Sprite HurtSprite;
 
+    [Space] [Header("Jumping and chasing behaviour")]
     public float visionRadius = 15f;
     public int hopTimerTop = 50;
     public int hopForce = 10;
     public int hurtTimerTop = 10;
+
+    [Space] [Header("Glitch filtering")]
     public int collisionExitToNotGroundedTimerTop = 10;
 
     public override void Die()
@@ -34,7 +38,6 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
 
         creature.timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
         creature.timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
-        creature.timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
 
         fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
         fsm.Add(SkullState.GroundedWaiting, GroundedSprite, null);
@@ -59,7 +62,7 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
         if (FsmState == SkullState.InAir)
         {
             creature.physics.ApproachVelocity(true, false, new Vector2(distanceToPlayerX, 0));
-            creature.physics.LookAt(player.transform);
+            creature.physics.LookAt(player.transform.position);
         }
 
         if (FsmState == SkullState.GroundedCanHop)
@@ -69,7 +72,7 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
         }
     }
 
-    private void OnHurtTimerExpired()
+    override public void OnHurtCompleted()
     {
         fsm.UnsetSprite(SkullState.Hurt);
     }

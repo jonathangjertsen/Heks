@@ -4,16 +4,24 @@ using UnityEngine;
 [Serializable]
 public class BaseCreature
 {
+    [Header("Health")]
     public float maxHealth;
+    public float regenPer = 0.02f;
+
+    [Space] [Header("Physics")]
     public float axCoeffX = 0.01f;
     public float axCoeffY = 0.03f;
     public float rotCoeff = 1f;
-    public float maxVelocityX = 10.0f;
-    public float maxVelocityY = 10.0f;
     public float maxJerkX = 5f;
     public float maxJerkY = 5f;
+
+    [Space] [Header("Debug")]
     public bool logFsmChanges = false;
     public bool logTimerCallbacks = false;
+
+    [Space] [Header("Damage")]
+    public int hurtTimerTop = 60;
+
     private readonly int deathToShrinkStartTimerTop = 100;
     private readonly int shrinkTimerTop = 200;
 
@@ -38,7 +46,12 @@ public class BaseCreature
         );
     }
 
-    public void Init(Timer.Timeout onDeathCompleted, IBarDisplay healthBar, CreatureHealth.OnZeroHealth onDeathStart)
+    public void Init(
+        Timer.Timeout onDeathCompleted,
+        IBarDisplay healthBar,
+        CreatureHealth.OnZeroHealth onDeathStart,
+        Timer.Timeout onHurtCompleted
+     )
     {
         if (physics == null)
         {
@@ -53,6 +66,7 @@ public class BaseCreature
         timers.logCallbacks = logTimerCallbacks;
         timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, ShrinkStart));
         timers.Add("shrink", new Timer(shrinkTimerTop, onDeathCompleted, onTick: Shrinking));
+        timers.Add("hurt", new Timer(hurtTimerTop, onHurtCompleted));
 
         flipXItems = new FlipXCollection();
         flipXItems.Add(bars);
@@ -84,7 +98,20 @@ public class BaseCreature
 
     public void FixedUpdate()
     {
+        RegenerateHealth();
         timers.TickAll();
+    }
+
+    public void RegenerateHealth()
+    {
+        health.Health += regenPer;
+    }
+
+    public void Hurt(float damage, float recoilTorque = 0f)
+    {
+        timers.Start("hurt");
+        health.Health -= damage;
+        physics.Recoil(recoilTorque);
     }
 }
 
@@ -92,12 +119,12 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
 {
     public BaseCreature creature;
     protected CreatureFsm<StateEnum> fsm;
-    protected bool flipX;
-    public BarBehaviour healthBar;
-    private Vector2 axCoeff;
-    private Vector3 initScale;
 
+    [Space]
+    [Header("Behaviour references")]
+    public BarBehaviour healthBar;
     public PlayerBehaviour player;
+
     protected StateEnum FsmState
     {
         get => fsm.State;
@@ -109,10 +136,14 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
         creature.Die();
     }
 
+    public virtual void OnHurtCompleted()
+    {
+    }
+
     protected void Start()
     {
         creature.SetPhysicsFromBehaviour(this);
-        creature.Init(OnDeathCompleted, healthBar, Die);
+        creature.Init(OnDeathCompleted, healthBar, Die, OnHurtCompleted);
 
         fsm = new CreatureFsm<StateEnum>(this);
         fsm.logChanges = creature.logFsmChanges;

@@ -64,7 +64,7 @@ namespace Tests
             throw new System.NotImplementedException();
         }
 
-        public void LookAt(Transform transform)
+        public void LookAt(Vector2 transform)
         {
             throw new System.NotImplementedException();
         }
