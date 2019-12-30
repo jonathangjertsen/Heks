@@ -89,4 +89,10 @@ public class CreaturePhysics : BasePhysics
     {
         return rigidBody2d.velocity.magnitude < idleThreshold;
     }
+
+    public void GetUpright(float torque)
+    {
+        float dir = AngleDegrees() < 180 ? -1f : +1f;
+        rigidBody2d.angularVelocity += torque * dir;
+    }
 }

@@ -44,6 +44,17 @@ public class BasePhysics : IFlipX
         rigidBody2d.velocity += ax;
     }
 
+
+    public void AccelerateRelative(Vector2 relativeAx)
+    {
+        Vector2 unit = UnitVector();
+        Vector2 absoluteAx = new Vector2(
+            (unit.x * relativeAx.x) - (unit.y * relativeAx.y),
+            (unit.y * relativeAx.x) - (unit.x * relativeAx.y)
+        );
+        Accelerate(absoluteAx);
+    }
+
     public void Torque(float torque)
     {
         if (FlipX)
@@ -69,5 +80,24 @@ public class BasePhysics : IFlipX
     public Vector2 Velocity()
     {
         return rigidBody2d.velocity;
+    }
+
+    public float AngleDegrees()
+    {
+        return rigidBody2d.transform.eulerAngles.z;
+    }
+
+    public float Angle()
+    {
+        return AngleDegrees() * Mathf.PI/ 180;
+    }
+
+    public Vector2 UnitVector()
+    {
+        float angle = Angle();
+        return new Vector2(
+            Mathf.Cos(angle),
+            Mathf.Sin(angle)
+        );
     }
 }
