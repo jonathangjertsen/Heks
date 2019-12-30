@@ -2,7 +2,12 @@
 using System;
 using UnityEngine;
 
-public class SpellSpawnBehaviour : MonoBehaviour, IFlipX
+public interface ISpellSpawner
+{
+    void Cast(Vector2 initialVelocity, float charge);
+}
+
+public class SpellSpawnBehaviour : MonoBehaviour, IFlipX, ISpellSpawner
 {
     private System.Random random;
     private SpellBehaviour activeSpell;

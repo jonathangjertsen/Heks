@@ -15,10 +15,6 @@ public class BaseCreature
     public float maxJerkX = 5f;
     public float maxJerkY = 5f;
 
-    [Space] [Header("Debug")]
-    public bool logFsmChanges = false;
-    public bool logTimerCallbacks = false;
-
     [Space] [Header("Damage")]
     public int hurtTimerTop = 60;
 
@@ -63,7 +59,6 @@ public class BaseCreature
         health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: onDeathStart);
 
         timers = new TimerCollection();
-        timers.logCallbacks = logTimerCallbacks;
         timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, ShrinkStart));
         timers.Add("shrink", new Timer(shrinkTimerTop, onDeathCompleted, onTick: Shrinking));
         timers.Add("hurt", new Timer(hurtTimerTop, onHurtCompleted));
@@ -121,15 +116,14 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     protected CreatureFsm<StateEnum> fsm;
 
     [Space]
+    [Header("Debug")]
+    public bool logFsmChanges = false;
+    public bool logTimerCallbacks = false;
+
+    [Space]
     [Header("Behaviour references")]
     public BarBehaviour healthBar;
     public PlayerBehaviour player;
-
-    protected StateEnum FsmState
-    {
-        get => fsm.State;
-        set => fsm.State = value;
-    }
 
     public virtual void Die()
     {
@@ -144,9 +138,10 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     {
         creature.SetPhysicsFromBehaviour(this);
         creature.Init(OnDeathCompleted, healthBar, Die, OnHurtCompleted);
+        creature.timers.logCallbacks = logTimerCallbacks;
 
         fsm = new CreatureFsm<StateEnum>(this);
-        fsm.logChanges = creature.logFsmChanges;
+        fsm.logChanges = logFsmChanges;
     }
 
     protected void FixedUpdate()

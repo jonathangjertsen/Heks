@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public enum SkullState
 {
@@ -9,14 +10,9 @@ public enum SkullState
     Dead
 }
 
-public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
+[Serializable]
+public class Skull
 {
-    [Space] [Header("Sprites")]
-    public Sprite GroundedSprite;
-    public Sprite InAirSprite;
-    public Sprite DeadSprite;
-    public Sprite HurtSprite;
-
     [Space] [Header("Jumping and chasing behaviour")]
     public float visionRadius = 15f;
     public int hopTimerTop = 50;
@@ -26,106 +22,159 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     [Space] [Header("Glitch filtering")]
     public int collisionExitToNotGroundedTimerTop = 10;
 
-    public override void Die()
+    private TimerCollection timers;
+    private ICreatureFsm<SkullState> fsm;
+    private ICreaturePhysics physics;
+    private IFlipX flipX;
+    private ICreatureHealth health;
+
+    public void Init(TimerCollection timers, ICreatureFsm<SkullState> fsm, ICreaturePhysics physics, IFlipX flipX, ICreatureHealth health)
     {
-        base.Die();
-        FsmState = SkullState.Dead;
+        this.fsm = fsm;
+        this.timers = timers;
+        this.physics = physics;
+        this.flipX = flipX;
+        this.health = health;
+
+        this.fsm.State = SkullState.InAir;
+
+        this.timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
+        this.timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
     }
 
-    private new void Start()
+    public void Die()
     {
-        base.Start();
-
-        creature.timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
-        creature.timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
-
-        fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
-        fsm.Add(SkullState.GroundedWaiting, GroundedSprite, null);
-        fsm.Add(SkullState.InAir, InAirSprite, null);
-        fsm.Add(SkullState.Dead, DeadSprite, null);
-        fsm.Add(SkullState.Hurt, HurtSprite, null);
-        FsmState = SkullState.InAir;
+        fsm.State = SkullState.Dead;
     }
 
-    private new void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        if ((FsmState == SkullState.Dead) || (player == null))
-        {
-            return;
-        }
-
-        float distanceToPlayerX = player.HeadPosition.x - transform.position.x;
-        creature.FlipX = distanceToPlayerX < 0;
-
-        if (FsmState == SkullState.InAir)
-        {
-            creature.physics.ApproachVelocity(true, false, new Vector2(distanceToPlayerX, 0));
-            creature.physics.LookAt(player.transform.position);
-        }
-
-        if (FsmState == SkullState.GroundedCanHop)
-        {
-            creature.physics.Jump(hopForce);
-            FsmState = SkullState.GroundedWaiting;
-        }
-    }
-
-    override public void OnHurtCompleted()
+    public void OnHurtCompleted()
     {
         fsm.UnsetSprite(SkullState.Hurt);
     }
 
     private void OnHopTimerExpired()
     {
-        if (FsmState == SkullState.GroundedWaiting)
+        if (fsm.State == SkullState.GroundedWaiting)
         {
-            FsmState = SkullState.GroundedCanHop;
+            fsm.State = SkullState.GroundedCanHop;
         }
     }
 
     private void OnCollisionExitToNotGroundedTimerExpired()
     {
-        if (FsmState == SkullState.GroundedWaiting)
+        if (fsm.State == SkullState.GroundedWaiting)
         {
-            FsmState = SkullState.InAir;
+            fsm.State = SkullState.InAir;
         }
+    }
+
+    public void NewPlayerPosition(Vector2 playerPosition, bool playerAlive)
+    {
+        if ((fsm.State == SkullState.Dead) || !playerAlive)
+        {
+            return;
+        }
+
+        float distanceToPlayerX = playerPosition.x - physics.Position().x;
+        flipX.FlipX = distanceToPlayerX < 0;
+
+        if (fsm.State == SkullState.InAir)
+        {
+            physics.ApproachVelocity(true, false, new Vector2(distanceToPlayerX, 0));
+            physics.LookAt(playerPosition);
+        }
+
+        if (fsm.State == SkullState.GroundedCanHop)
+        {
+            physics.Jump(hopForce);
+            fsm.State = SkullState.GroundedWaiting;
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (fsm.State == SkullState.Dead)
+        {
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            fsm.State = SkullState.GroundedWaiting;
+            timers.Start("hop");
+            timers.Stop("collisionExitToNotGrounded");
+        }
+        else
+        {
+            health.Health -= 10;
+            fsm.SetSprite(SkullState.Hurt);
+            timers.Start("hurt");
+        }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (fsm.State == SkullState.Dead)
+        {
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            fsm.State = SkullState.GroundedWaiting;
+            timers.Stop("hop");
+            timers.Start("collisionExitToNotGrounded");
+        }
+    }
+}
+
+public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
+{
+    public Skull skull;
+
+    [Space] [Header("Sprites")]
+    public Sprite GroundedSprite;
+    public Sprite InAirSprite;
+    public Sprite DeadSprite;
+    public Sprite HurtSprite;
+
+    public override void Die()
+    {
+        base.Die();
+        skull.Die();
+    }
+
+    private new void Start()
+    {
+        base.Start();
+
+        fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
+        fsm.Add(SkullState.GroundedWaiting, GroundedSprite, null);
+        fsm.Add(SkullState.InAir, InAirSprite, null);
+        fsm.Add(SkullState.Dead, DeadSprite, null);
+        fsm.Add(SkullState.Hurt, HurtSprite, null);
+
+        skull.Init(creature.timers, fsm, creature.physics, creature.flipXItems, creature.health);
+    }
+
+    private new void FixedUpdate()
+    {
+        base.FixedUpdate();
+        skull.NewPlayerPosition(player.HeadPosition, player != null && player.Alive());
+    }
+
+    override public void OnHurtCompleted()
+    {
+        skull.OnHurtCompleted();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (FsmState == SkullState.Dead)
-        {
-            return;
-        }
-
-        if (collision.gameObject.CompareTag("ground"))
-        {
-            FsmState = SkullState.GroundedWaiting;
-            creature.timers.Start("hop");
-            creature.timers.Stop("collisionExitToNotGrounded");
-        }
-        else
-        {
-            creature.health.Health -= 10;
-            fsm.SetSprite(SkullState.Hurt);
-            creature.timers.Start("hurt");
-        }
+        skull.OnCollisionEnter2D(collision);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (FsmState == SkullState.Dead)
-        {
-            return;
-        }
-
-        if (collision.gameObject.CompareTag("ground"))
-        {
-            FsmState = SkullState.GroundedWaiting;
-            creature.timers.Stop("hop");
-            creature.timers.Start("collisionExitToNotGrounded");
-        }
+        skull.OnCollisionExit2D(collision);
     }
 }

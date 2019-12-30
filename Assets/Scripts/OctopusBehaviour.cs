@@ -37,35 +37,23 @@ public class Octopus
         physics.AccelerateRelative(target);
     }
 
-    public void SetPhysics(ICreaturePhysics physics)
-    {
-        this.physics = physics;
-    }
-
-    public void SetFsm(ICreatureFsm<OctopusState> fsm)
+    public void Init(ICreaturePhysics physics, ICreatureFsm<OctopusState> fsm, ICreatureHealth health)
     {
         this.fsm = fsm;
-    }
-
-    public void SetHealth(ICreatureHealth health)
-    {
         this.health = health;
-    }
+        this.physics = physics;
 
-    protected OctopusState FsmState
-    {
-        get => fsm.State;
-        set => fsm.State = value;
+        fsm.State = OctopusState.Alive;
     }
 
     public void Die()
     {
-        FsmState = OctopusState.Dead;
+        fsm.State = OctopusState.Dead;
     }
 
     public void OnCollisionEnter2D()
     {
-        if (FsmState != OctopusState.Dead)
+        if (fsm.State != OctopusState.Dead)
         {
             health.Health -= 10;
         }
@@ -80,13 +68,11 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
     new private void Start()
     {
         base.Start();
-        octopus.SetPhysics(creature.physics);
-        octopus.SetFsm(fsm);
-        octopus.SetHealth(creature.health);
 
         fsm.Add(OctopusState.Alive, sprite, null);
         fsm.Add(OctopusState.Dead, sprite, null);
-        FsmState = OctopusState.Alive;
+
+        octopus.Init(creature.physics, fsm, creature.health);
     }
 
     public override void Die()

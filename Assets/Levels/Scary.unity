@@ -1111,21 +1111,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature:
     maxHealth: 30
+    regenPer: 0.02
     axCoeffX: 0.01
     axCoeffY: 0.03
     rotCoeff: 1
-    maxVelocityX: 10
-    maxVelocityY: 10
     maxJerkX: 5
     maxJerkY: 5
-    logFsmChanges: 0
-    logTimerCallbacks: 0
+    hurtTimerTop: 60
+  logFsmChanges: 0
+  logTimerCallbacks: 0
   healthBar: {fileID: 1035123455}
   player: {fileID: 840480129}
-  regenPer: 0.02
+  chargeBar: {fileID: 965610641}
+  gameState: {fileID: 599865654}
+  spellSpawn: {fileID: 54687303}
+  self:
+    maxVelocityX: 10
+    maxVelocityY: 10
   headOffsetX: 4.87
   headOffsetY: 6.06
-  chargeBar: {fileID: 965610641}
   chargeTop: 100
   castTorque: 150
   hurtTimerTop: 30
@@ -1143,8 +1147,6 @@ MonoBehaviour:
   HurtSprite: {fileID: 21300000, guid: 96770ecf4c3ac3444818a93e0ca7519b, type: 3}
   AngrySprite: {fileID: 21300000, guid: 82a298a634924734b884af8061af5a51, type: 3}
   DeadSprite: {fileID: 21300000, guid: 96770ecf4c3ac3444818a93e0ca7519b, type: 3}
-  gameState: {fileID: 599865654}
-  spellSpawn: {fileID: 54687303}
 --- !u!58 &840480130
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1855,7 +1857,7 @@ PrefabInstance:
     - target: {fileID: 2852255323461275839, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2852255323461275841, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
@@ -1927,6 +1929,16 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 840480126}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: creature.logFsmChanges
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: logFsmChanges
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -1945,7 +1957,7 @@ PrefabInstance:
     - target: {fileID: 2852255323461275839, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2852255323461275841, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
@@ -2777,6 +2789,11 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 840480126}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: logFsmChanges
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -2880,7 +2897,7 @@ PrefabInstance:
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}

@@ -18,163 +18,81 @@ public class Player
 {
     public float maxVelocityX = 10.0f;
     public float maxVelocityY = 10.0f;
-}
 
-public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
-{
-    public BarBehaviour chargeBar;
-    public GameStateBehaviour gameState;
-    public SpellSpawnBehaviour spellSpawn;
-
-    [Space] [Header("Movement")]
-    public Player self;
-
-    [Space] [Header("Head position")]
-    public float headOffsetX = 4.87f;
-    public float headOffsetY = 6.06f;
-
-    [Space] [Header("Charging and casting")]
+    [Space]
+    [Header("Charging and casting")]
     public float chargeTop = 50;
+    public int castTorque = 150;
     private float charge;
     private int chargeDirection = 1;
-    public int castTorque = 150;
+    private IBarDisplay chargeBar;
+    private float Charge { get => charge; set => chargeBar.FillTo((charge = value) / chargeTop); }
 
-    [Space] [Header("FSM timers")]
+    [Space]
+    [Header("FSM timers")]
     public int hurtTimerTop = 30;
     public int angryTimerTop = 60;
     public int flyingToIdleTimerTop = 60;
     public int castTimerTop = 30;
 
-    [Space] [Header("Audio clips")]
-    public AudioClip YellClip;
-    public AudioClip HurtClip;
-    public AudioClip ChargeClip;
-    public AudioClip CastClip;
+    private ISpellSpawner spellSpawner;
+    private ICreatureFsm<PlayerState> fsm;
+    private ICreaturePhysics physics;
+    private ICreatureHealth health;
+    private TimerCollection timers;
+    private BarCollection bars;
 
-    [Space] [Header("Sprites")]
-    public Sprite FlyingSprite;
-    public Sprite StandingSprite;
-    public Sprite ChargingSprite;
-    public Sprite CastingSprite;
-    public Sprite HurtSprite;
-    public Sprite AngrySprite;
-    public Sprite DeadSprite;
-
-    // Simple properties
-    public float Charge
+    public void Init(ICreaturePhysics physics, ICreatureFsm<PlayerState> fsm, TimerCollection timers, BarCollection bars, IBarDisplay chargeBar, ISpellSpawner spellSpawner, ICreatureHealth health)
     {
-        get => charge;
-        set
-        {
-            chargeBar.FillTo(value / chargeTop);
-            charge = value;
-        }
+        this.chargeBar = chargeBar;
+        this.fsm = fsm;
+        this.timers = timers;
+        this.bars = bars;
+        this.physics = physics;
+        this.spellSpawner = spellSpawner;
+        this.health = health;
+
+        this.timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
+        this.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
+        this.timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
+
+        Charge = 0;
+        chargeBar.FillTo(0);
+        this.bars.Add(chargeBar);
     }
-    private float HeadOffsetX => headOffsetX * transform.localScale.x;
-    private float HeadOffsetY => headOffsetY * transform.localScale.y;
-    public Vector2 HeadPosition => new Vector2(transform.position.x + HeadOffsetX, transform.position.y + HeadOffsetY);
 
-    public override void Die()
+    public void Die()
     {
-        base.Die();
-        FsmState = PlayerState.Dead;
-        gameState.PlayerDied();
+        fsm.State = PlayerState.Dead;
     }
 
     public bool Alive()
     {
-        return FsmState != PlayerState.Dead;
+        return fsm.State != PlayerState.Dead;
     }
-
-    // Timer callbacks
 
     private void OnAngryTimerExpired()
     {
-        FsmState = PlayerState.Flying;
-        creature.timers.Stop("angry");
+        fsm.State = PlayerState.Flying;
+        timers.Stop("angry");
     }
 
     private void OnCastTimerExpired()
     {
-        FsmState = PlayerState.Flying;
+        fsm.State = PlayerState.Flying;
     }
 
     private void OnFlyingToIdleTimerExpired()
     {
-        FsmState = PlayerState.Standing;
+        fsm.State = PlayerState.Standing;
     }
 
-    override public void OnHurtCompleted()
+    public void OnHurtCompleted()
     {
-        FsmState = PlayerState.Angry;
-        creature.timers.Stop("hurt");
-        creature.timers.Start("angry");
+        fsm.State = PlayerState.Angry;
+        timers.Stop("hurt");
+        timers.Start("angry");
     }
-
-    // Unity
-
-    private new void Start()
-    {
-        base.Start();
-
-        Charge = 0;
-        chargeBar.FillTo(0);
-        creature.bars.Add(chargeBar);
-
-        fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
-        fsm.Add(PlayerState.Hurt, HurtSprite, HurtClip);
-        fsm.Add(PlayerState.Casting, CastingSprite, CastClip);
-        fsm.Add(PlayerState.Dead, DeadSprite, null);
-        fsm.Add(PlayerState.Flying, FlyingSprite, null);
-        fsm.Add(PlayerState.Standing, StandingSprite, null);
-        fsm.Add(PlayerState.Still, FlyingSprite, null);
-        fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
-        FsmState = PlayerState.Flying;
-
-        creature.timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
-        creature.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
-        creature.timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
-
-        creature.flipXItems.Add(spellSpawn);
-    }
-
-    private new void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        if (FsmState == PlayerState.Dead)
-        {
-            return;
-        }
-
-        UpdatePositionBasedOnInput();
-        UpdateCastCycleStates();
-        UpdateToIdleIfIdle();
-
-        if (Input.GetKey("x"))
-        {
-            Die();
-        }
-
-        base.FixedUpdate();
-    }
-
-    private void OnTriggerEnter2D()
-    {
-        if (FsmState == PlayerState.Dead)
-        {
-            return;
-        }
-
-        if (FsmState != PlayerState.Hurt && FsmState != PlayerState.Angry)
-        {
-            FsmState = PlayerState.Hurt;
-            creature.timers.Start("hurt");
-            creature.health.Health -= 10;
-        }
-    }
-
-    // Helpers
 
     private void AdvanceChargeTimer()
     {
@@ -192,82 +110,181 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
     private void CastSpell()
     {
-        FsmState = PlayerState.Casting;
-        creature.timers.Start("cast");
-        spellSpawn.Cast(creature.physics.Velocity(), charge / chargeTop);
-        creature.physics.Recoil(castTorque);
+        fsm.State = PlayerState.Casting;
+        timers.Start("cast");
+        spellSpawner.Cast(physics.Velocity(), charge / chargeTop);
+        physics.Recoil(castTorque);
         Charge = 0;
     }
 
-    private void UpdateCastCycleStates()
+    public void UpdateCastCycleStates(bool charging)
     {
-        if (Input.GetKey("space"))
+        if (charging)
         {
-            if (FsmState == PlayerState.Flying)
+            if (fsm.State == PlayerState.Flying)
             {
-                FsmState = PlayerState.Charging;
+                fsm.State = PlayerState.Charging;
             }
-            else if (FsmState == PlayerState.Charging)
+            else if (fsm.State == PlayerState.Charging)
             {
                 AdvanceChargeTimer();
             }
         }
-        else if (FsmState == PlayerState.Charging)
+        else if (fsm.State == PlayerState.Charging)
         {
             CastSpell();
         }
     }
 
-    private void UpdatePositionBasedOnInput()
+    public void OnTriggerEnter2D()
     {
-        bool updateX = false;
-        bool updateY = false;
-        Vector2 target = new Vector2(0, 0);
+        if (fsm.State == PlayerState.Dead)
+        {
+            return;
+        }
 
-        if (Input.GetKey("d") || Input.GetKey("right"))
+        if (fsm.State != PlayerState.Hurt && fsm.State != PlayerState.Angry)
         {
-            updateX = true;
-            target.x = self.maxVelocityX;
-            creature.FlipX = false;
+            fsm.State = PlayerState.Hurt;
+            timers.Start("hurt");
+            health.Health -= 10;
         }
-        if (Input.GetKey("a") || Input.GetKey("left"))
-        {
-            updateX = true;
-            target.x = -self.maxVelocityX;
-            creature.FlipX = true;
-        }
-        if (Input.GetKey("w") || Input.GetKey("up"))
-        {
-            updateY = true;
-            target.y = +self.maxVelocityY;
-        }
-        if (Input.GetKey("s") || Input.GetKey("down"))
-        {
-            updateY = true;
-            target.y = -self.maxVelocityY;
-        }
-        creature.physics.ApproachVelocity(updateX, updateY, target);
-        creature.physics.ApproachAngularVelocity(target);
     }
 
-    private void UpdateToIdleIfIdle()
+    public void UpdateToIdleIfIdle(bool anyKeyHeld)
     {
-        if (creature.physics.IsIdle())
+        if (physics.IsIdle())
         {
-            if (FsmState == PlayerState.Flying)
+            if (fsm.State == PlayerState.Flying)
             {
-                FsmState = PlayerState.Still;
-                creature.timers.Start("flyingToIdle");
+                fsm.State = PlayerState.Still;
+                timers.Start("flyingToIdle");
             }
         }
         else
         {
-            creature.timers.Stop("flyingToIdle");
+            timers.Stop("flyingToIdle");
         }
 
-        if ((FsmState == PlayerState.Standing || FsmState == PlayerState.Still) && Input.anyKey)
+        if ((fsm.State == PlayerState.Standing || fsm.State == PlayerState.Still) && anyKeyHeld)
         {
-            FsmState = PlayerState.Flying;
+            fsm.State = PlayerState.Flying;
         }
+    }
+
+    public void KeyInput(bool right, bool left, bool up, bool down, bool space)
+    {
+        bool any = right || left || up || down || space;
+
+        // Movement
+        Vector2 target = new Vector2(0, 0);
+        bool updateX = right ^ left;
+        bool updateY = up ^ down;
+        target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
+        target.y = maxVelocityY * (up ? 1 : down ? -1 : 0);
+        physics.ApproachVelocity(updateX, updateY, target);
+        physics.ApproachAngularVelocity(target);
+
+        // Cast
+        UpdateCastCycleStates(space);
+
+        // Idle
+        UpdateToIdleIfIdle(any);
+    }
+}
+
+public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
+{
+    public BarBehaviour chargeBar;
+    public GameStateBehaviour gameState;
+    public SpellSpawnBehaviour spellSpawn;
+
+    [Space] [Header("Movement")]
+    public Player self;
+
+    [Space] [Header("Head position")]
+    public float headOffsetX = 4.87f;
+    public float headOffsetY = 6.06f;
+
+    [Space] [Header("Audio clips")]
+    public AudioClip YellClip;
+    public AudioClip HurtClip;
+    public AudioClip ChargeClip;
+    public AudioClip CastClip;
+
+    [Space] [Header("Sprites")]
+    public Sprite FlyingSprite;
+    public Sprite StandingSprite;
+    public Sprite ChargingSprite;
+    public Sprite CastingSprite;
+    public Sprite HurtSprite;
+    public Sprite AngrySprite;
+    public Sprite DeadSprite;
+
+    // Simple properties
+    
+    private float HeadOffsetX => headOffsetX * transform.localScale.x;
+    private float HeadOffsetY => headOffsetY * transform.localScale.y;
+    public Vector2 HeadPosition => new Vector2(transform.position.x + HeadOffsetX, transform.position.y + HeadOffsetY);
+
+    public override void Die()
+    {
+        base.Die();
+        self.Die();
+        gameState.PlayerDied();
+    }
+
+    // Unity
+
+    private new void Start()
+    {
+        base.Start();
+
+        fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
+        fsm.Add(PlayerState.Hurt, HurtSprite, HurtClip);
+        fsm.Add(PlayerState.Casting, CastingSprite, CastClip);
+        fsm.Add(PlayerState.Dead, DeadSprite, null);
+        fsm.Add(PlayerState.Flying, FlyingSprite, null);
+        fsm.Add(PlayerState.Standing, StandingSprite, null);
+        fsm.Add(PlayerState.Still, FlyingSprite, null);
+        fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
+        fsm.State = PlayerState.Flying;
+
+        creature.flipXItems.Add(spellSpawn);
+
+        self.Init(creature.physics, fsm, creature.timers, creature.bars, chargeBar, spellSpawn, creature.health);
+    }
+
+    private new void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if (fsm.State == PlayerState.Dead)
+        {
+            return;
+        }
+
+        bool right = Input.GetKey("d") || Input.GetKey("right");
+        bool left = Input.GetKey("a") || Input.GetKey("left");
+        bool up = Input.GetKey("w") || Input.GetKey("up");
+        bool down = Input.GetKey("s") || Input.GetKey("down");
+        bool space = Input.GetKey("space");
+        creature.FlipX = right ? false : left ? true : creature.FlipX;
+        self.KeyInput(right, left, up, down, space);
+
+        if (Input.GetKey("x"))
+        {
+            Die();
+        }
+    }
+
+    private void OnTriggerEnter2D()
+    {
+        self.OnTriggerEnter2D();
+    }
+
+    public bool Alive()
+    {
+        return self.Alive();
     }
 }

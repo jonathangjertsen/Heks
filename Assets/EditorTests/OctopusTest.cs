@@ -108,6 +108,16 @@ namespace Tests
         {
             throw new System.NotImplementedException();
         }
+
+        public void SetSprite(OctopusState state)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnsetSprite(OctopusState state)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     public class OctopusTest
@@ -128,9 +138,7 @@ namespace Tests
         private Octopus GetOctopus()
         {
             Octopus octopus = new Octopus();
-            octopus.SetFsm(new CreatureFsmMock());
-            octopus.SetHealth(new CreatureHealthMock());
-            octopus.SetPhysics(new CreaturePhysicsMock());
+            octopus.Init(new CreaturePhysicsMock(), new CreatureFsmMock(), new CreatureHealthMock());
             return octopus;
         }
     }

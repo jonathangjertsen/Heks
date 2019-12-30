@@ -106,6 +106,11 @@ public class Bird
 
     public void Hurt()
     {
+        if (!Alive())
+        {
+            return;
+        }
+
         fsm.State = BirdState.Hurt;
     }
 
