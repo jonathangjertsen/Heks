@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public enum OctpusState
+public enum OctopusState
 {
     Alive,
     Dead
@@ -10,14 +10,14 @@ public enum OctpusState
 [Serializable]
 public class Octopus
 {
-    public float freqX;
-    public float freqY;
-    public float ampX;
-    public float ampY;
-    public float uprightTorque;
+    public float freqX = 0.3f;
+    public float freqY = 0.2f;
+    public float ampX = 0.02f;
+    public float ampY = 0.03f;
+    public float uprightTorque = 4;
 
     private ICreaturePhysics physics;
-    private ICreatureFsm<OctpusState> fsm;
+    private ICreatureFsm<OctopusState> fsm;
     private ICreatureHealth health;
     private int counter;
 
@@ -42,7 +42,7 @@ public class Octopus
         this.physics = physics;
     }
 
-    public void SetFsm(ICreatureFsm<OctpusState> fsm)
+    public void SetFsm(ICreatureFsm<OctopusState> fsm)
     {
         this.fsm = fsm;
     }
@@ -52,7 +52,7 @@ public class Octopus
         this.health = health;
     }
 
-    protected OctpusState FsmState
+    protected OctopusState FsmState
     {
         get => fsm.State;
         set => fsm.State = value;
@@ -60,19 +60,19 @@ public class Octopus
 
     public void Die()
     {
-        FsmState = OctpusState.Dead;
+        FsmState = OctopusState.Dead;
     }
 
     public void OnCollisionEnter2D()
     {
-        if (FsmState != OctpusState.Dead)
+        if (FsmState != OctopusState.Dead)
         {
             health.Health -= 10;
         }
     }
 }
 
-public class OctopusBehaviour : BaseCreatureBehaviour<OctpusState>
+public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
 {
     public Sprite sprite;
     public Octopus octopus;
@@ -80,13 +80,13 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctpusState>
     new private void Start()
     {
         base.Start();
-        octopus.SetPhysics(physics);
+        octopus.SetPhysics(creature.physics);
         octopus.SetFsm(fsm);
         octopus.SetHealth(health);
 
-        fsm.Add(OctpusState.Alive, sprite, null);
-        fsm.Add(OctpusState.Dead, sprite, null);
-        FsmState = OctpusState.Alive;
+        fsm.Add(OctopusState.Alive, sprite, null);
+        fsm.Add(OctopusState.Dead, sprite, null);
+        FsmState = OctopusState.Alive;
     }
 
     public override void Die()

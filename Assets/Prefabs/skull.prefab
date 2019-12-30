@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3795617845260621462}
   - component: {fileID: 5537958232131321184}
   m_Layer: 0
-  m_Name: skull
+  m_Name: Skull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,17 +96,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7818623bc02b0994eba43885378c940e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature:
+    maxHealth: 30
+    axCoeffX: 0.01
+    axCoeffY: 0.03
+    rotCoeff: 1
+    maxVelocityX: 10
+    maxVelocityY: 10
+    maxJerkX: 5
+    maxJerkY: 5
+    logFsmChanges: 0
+    logTimerCallbacks: 0
   healthBar: {fileID: 6380522236195666845}
-  maxHealth: 40
-  axCoeffX: 0.01
-  axCoeffY: 0.03
-  rotCoeff: 1
-  maxVelocityX: 10
-  maxVelocityY: 10
-  maxJerkX: 5
-  maxJerkY: 5
-  logFsmChanges: 0
-  logTimerCallbacks: 0
   player: {fileID: 0}
   GroundedSprite: {fileID: 21300000, guid: 9a4221834ebaa974a92c79842b153089, type: 3}
   InAirSprite: {fileID: 21300000, guid: 5c371870182b72349bf10c70686fe76f, type: 3}

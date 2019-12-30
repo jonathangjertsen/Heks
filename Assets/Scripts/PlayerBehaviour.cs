@@ -83,7 +83,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
     private void OnAngryTimerExpired()
     {
         FsmState = PlayerState.Flying;
-        timers.Stop("angry");
+        creature.timers.Stop("angry");
     }
 
     private void OnCastTimerExpired()
@@ -99,8 +99,8 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
     private void OnHurtTimerExpired()
     {
         FsmState = PlayerState.Angry;
-        timers.Stop("hurt");
-        timers.Start("angry");
+        creature.timers.Stop("hurt");
+        creature.timers.Start("angry");
     }
 
     // Unity
@@ -123,10 +123,10 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
         fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
         FsmState = PlayerState.Flying;
 
-        timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
-        timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
-        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
-        timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
+        creature.timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
+        creature.timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
+        creature.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
+        creature.timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
 
         flipXItems.Add(spellSpawn);
     }
@@ -163,7 +163,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
         if (FsmState != PlayerState.Hurt && FsmState != PlayerState.Angry)
         {
             FsmState = PlayerState.Hurt;
-            timers.Start("hurt");
+            creature.timers.Start("hurt");
             health.Health -= 10;
         }
     }
@@ -187,9 +187,9 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
     private void CastSpell()
     {
         FsmState = PlayerState.Casting;
-        timers.Start("cast");
-        spellSpawn.Cast(physics.Velocity(), charge / chargeTop);
-        physics.Recoil(castTorque);
+        creature.timers.Start("cast");
+        spellSpawn.Cast(creature.physics.Velocity(), charge / chargeTop);
+        creature.physics.Recoil(castTorque);
         Charge = 0;
     }
 
@@ -226,42 +226,42 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
         if (Input.GetKey("d") || Input.GetKey("right"))
         {
             updateX = true;
-            target.x = maxVelocityX;
+            target.x = creature.maxVelocityX;
             FlipX = false;
         }
         if (Input.GetKey("a") || Input.GetKey("left"))
         {
             updateX = true;
-            target.x = -maxVelocityX;
+            target.x = -creature.maxVelocityX;
             FlipX = true;
         }
         if (Input.GetKey("w") || Input.GetKey("up"))
         {
             updateY = true;
-            target.y = +maxVelocityY;
+            target.y = +creature.maxVelocityY;
         }
         if (Input.GetKey("s") || Input.GetKey("down"))
         {
             updateY = true;
-            target.y = -maxVelocityY;
+            target.y = -creature.maxVelocityY;
         }
-        physics.ApproachVelocity(updateX, updateY, target);
-        physics.ApproachAngularVelocity(target);
+        creature.physics.ApproachVelocity(updateX, updateY, target);
+        creature.physics.ApproachAngularVelocity(target);
     }
 
     private void UpdateToIdleIfIdle()
     {
-        if (physics.IsIdle())
+        if (creature.physics.IsIdle())
         {
             if (FsmState == PlayerState.Flying)
             {
                 FsmState = PlayerState.Still;
-                timers.Start("flyingToIdle");
+                creature.timers.Start("flyingToIdle");
             }
         }
         else
         {
-            timers.Stop("flyingToIdle");
+            creature.timers.Stop("flyingToIdle");
         }
 
         if ((FsmState == PlayerState.Standing || FsmState == PlayerState.Still) && Input.anyKey)

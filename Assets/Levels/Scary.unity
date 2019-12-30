@@ -1109,17 +1109,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af1fcd1f77db7944abad2b743c6b75d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature:
+    maxHealth: 30
+    axCoeffX: 0.01
+    axCoeffY: 0.03
+    rotCoeff: 1
+    maxVelocityX: 10
+    maxVelocityY: 10
+    maxJerkX: 5
+    maxJerkY: 5
+    logFsmChanges: 0
+    logTimerCallbacks: 0
   healthBar: {fileID: 1035123455}
-  maxHealth: 30
-  axCoeffX: 0.01
-  axCoeffY: 0.03
-  rotCoeff: 1
-  maxVelocityX: 10
-  maxVelocityY: 10
-  maxJerkX: 5
-  maxJerkY: 5
-  logFsmChanges: 0
-  logTimerCallbacks: 0
   player: {fileID: 840480129}
   regenPer: 0.02
   headOffsetX: 4.87

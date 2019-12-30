@@ -38,7 +38,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
     {
         base.Start();
 
-        home = physics.Position();
+        home = creature.physics.Position();
 
         fsm.Add(BirdState.MoveHome, DefaultSprite, null);
         fsm.Add(BirdState.MoveToPlayer, ChargingSprite, CryClip);
@@ -51,7 +51,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
 
     private void ApproachHome()
     {
-        physics.ApproachVelocity(home - physics.Position());
+        creature.physics.ApproachVelocity(home - creature.physics.Position());
         FsmState = BirdState.MoveHome;
     }
 
@@ -66,9 +66,9 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
             FsmState = BirdState.MoveToPlayer;
         }
 
-        physics.ApproachVelocity(new Vector2(
-            Math.Min(vectorToPlayer.x, maxVelocityX) * (1 + overshoot),
-            Math.Min(vectorToPlayer.y, maxVelocityY) * (1 + overshoot)
+        creature.physics.ApproachVelocity(new Vector2(
+            Math.Min(vectorToPlayer.x, creature.maxVelocityX) * (1 + overshoot),
+            Math.Min(vectorToPlayer.y, creature.maxVelocityY) * (1 + overshoot)
         ));
     }
 
@@ -83,7 +83,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
 
         if (FsmState == BirdState.Dead)
         {
-            physics.Accelerate(new Vector2(0, -0.5f));
+            creature.physics.Accelerate(new Vector2(0, -0.5f));
             return;
         }
 
@@ -93,10 +93,10 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
             return;
         }
 
-        vectorToPlayer = player.HeadPosition - physics.Position();
+        vectorToPlayer = player.HeadPosition - creature.physics.Position();
 
         FlipX = vectorToPlayer.x > 0;
-        physics.LookAt(player.transform);
+        creature.physics.LookAt(player.transform);
 
         if (player.Alive())
         {
@@ -133,7 +133,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
         hurtTimer.Start();
 
         health.Health -= 10;
-        physics.Recoil(100);
+        creature.physics.Recoil(100);
     }
 
     private void OnHurtTimerExpired()

@@ -95,8 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4a2d491fb93d44aa557dd7f3257e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature:
+    maxHealth: 30
   healthBar: {fileID: 4444203106989673559}
-  maxHealth: 30
   axCoeffX: 0.01
   axCoeffY: 0.03
   rotCoeff: 1
@@ -109,11 +110,11 @@ MonoBehaviour:
   player: {fileID: 0}
   sprite: {fileID: 21300000, guid: da8d821b33cbaba4cac36322f853d2b2, type: 3}
   octopus:
-    freqX: 0.01
-    freqY: 0.032
-    ampX: 0.03
-    ampY: 0.02
-    uprightTorque: 0.3
+    freqX: 0
+    freqY: 0
+    ampX: 0
+    ampY: 0
+    uprightTorque: 0
 --- !u!50 &1269431479898106261
 Rigidbody2D:
   serializedVersion: 4

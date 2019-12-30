@@ -32,9 +32,9 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>, IFlipX
     {
         base.Start();
 
-        timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
-        timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
-        timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
+        creature.timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
+        creature.timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
+        creature.timers.Add("hurt", new Timer(hurtTimerTop, OnHurtTimerExpired));
 
         fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
         fsm.Add(SkullState.GroundedWaiting, GroundedSprite, null);
@@ -58,13 +58,13 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>, IFlipX
 
         if (FsmState == SkullState.InAir)
         {
-            physics.ApproachVelocity(true, false, new Vector2(distanceToPlayerX, 0));
-            physics.LookAt(player.transform);
+            creature.physics.ApproachVelocity(true, false, new Vector2(distanceToPlayerX, 0));
+            creature.physics.LookAt(player.transform);
         }
 
         if (FsmState == SkullState.GroundedCanHop)
         {
-            physics.Jump(hopForce);
+            creature.physics.Jump(hopForce);
             FsmState = SkullState.GroundedWaiting;
         }
     }
@@ -100,14 +100,14 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>, IFlipX
         if (collision.gameObject.CompareTag("ground"))
         {
             FsmState = SkullState.GroundedWaiting;
-            timers.Start("hop");
-            timers.Stop("collisionExitToNotGrounded");
+            creature.timers.Start("hop");
+            creature.timers.Stop("collisionExitToNotGrounded");
         }
         else
         {
             health.Health -= 10;
             fsm.SetSprite(SkullState.Hurt);
-            timers.Start("hurt");
+            creature.timers.Start("hurt");
         }
     }
 
@@ -121,8 +121,8 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>, IFlipX
         if (collision.gameObject.CompareTag("ground"))
         {
             FsmState = SkullState.GroundedWaiting;
-            timers.Stop("hop");
-            timers.Start("collisionExitToNotGrounded");
+            creature.timers.Stop("hop");
+            creature.timers.Start("collisionExitToNotGrounded");
         }
     }
 }

@@ -390,8 +390,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af1fcd1f77db7944abad2b743c6b75d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature:
+    maxHealth: 50
   healthBar: {fileID: 4498044781353060376}
-  maxHealth: 30
   axCoeffX: 0.01
   axCoeffY: 0.03
   rotCoeff: 1
