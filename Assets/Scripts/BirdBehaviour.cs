@@ -9,7 +9,7 @@ public enum BirdState
     Dead,
 }
 
-public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
+public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
 {
     public float regenPer = 0.02f;
     public float visionRadius = 15f;
@@ -95,7 +95,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>, IFlipX
 
         vectorToPlayer = player.HeadPosition - creature.physics.Position();
 
-        FlipX = vectorToPlayer.x > 0;
+        creature.FlipX = vectorToPlayer.x > 0;
         creature.physics.LookAt(player.transform);
 
         if (player.Alive())

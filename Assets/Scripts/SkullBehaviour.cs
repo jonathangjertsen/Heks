@@ -9,7 +9,7 @@ public enum SkullState
     Dead
 }
 
-public class SkullBehaviour : BaseCreatureBehaviour<SkullState>, IFlipX
+public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
 {
     public Sprite GroundedSprite;
     public Sprite InAirSprite;
@@ -54,7 +54,7 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>, IFlipX
         }
 
         float distanceToPlayerX = player.HeadPosition.x - transform.position.x;
-        FlipX = distanceToPlayerX < 0;
+        creature.FlipX = distanceToPlayerX < 0;
 
         if (FsmState == SkullState.InAir)
         {

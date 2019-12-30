@@ -17,6 +17,7 @@ public class BaseCreature
     private readonly int deathToShrinkStartTimerTop = 100;
     private readonly int shrinkTimerTop = 200;
 
+    public FlipXCollection flipXItems;
     public TimerCollection timers;
 
     public ICreaturePhysics physics;
@@ -35,12 +36,22 @@ public class BaseCreature
         );
     }
 
-    public void InitTimers(Timer.Timeout onDeathCompleted)
+    public void Init(Timer.Timeout onDeathCompleted, BarCollection bars)
     {
         timers = new TimerCollection();
         timers.logCallbacks = logTimerCallbacks;
         timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, ShrinkStart));
         timers.Add("shrink", new Timer(shrinkTimerTop, onDeathCompleted, onTick: Shrinking));
+
+        flipXItems = new FlipXCollection();
+        flipXItems.Add(bars);
+        flipXItems.Add(physics);
+    }
+
+    public bool FlipX
+    {
+        get => flipXItems.FlipX;
+        set => flipXItems.FlipX = value;
     }
 
     private void Shrinking()
@@ -71,7 +82,6 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     public BaseCreature creature;
     protected CreatureFsm<StateEnum> fsm;
     protected CreatureHealth health;
-    protected FlipXCollection flipXItems;
     protected BarCollection bars;
     protected bool flipX;
     public BarBehaviour healthBar;
@@ -93,25 +103,16 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
 
     protected void Start()
     {
-        creature.InitTimers(OnDeathCompleted);
+        bars = new BarCollection();
+        bars.Add(healthBar);
+
         creature.SetPhysicsFromBehaviour(this);
+        creature.Init(OnDeathCompleted, bars);
 
         fsm = new CreatureFsm<StateEnum>(this);
         fsm.logChanges = creature.logFsmChanges;
 
         health = new CreatureHealth(healthBar, creature.maxHealth, onZeroHealth: Die);
-        bars = new BarCollection();
-        bars.Add(healthBar);
-
-        flipXItems = new FlipXCollection();
-        flipXItems.Add(bars);
-        flipXItems.Add(creature.physics);
-    }
-
-    public bool FlipX
-    {
-        get => flipXItems.FlipX;
-        set => flipXItems.FlipX = value;
     }
 
     protected void FixedUpdate()

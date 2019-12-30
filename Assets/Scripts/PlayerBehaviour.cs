@@ -12,7 +12,7 @@ public enum PlayerState
     Dead,
 };
 
-public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
+public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 {
     // Health
     public float regenPer = 0.02f;
@@ -128,7 +128,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
         creature.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
         creature.timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
 
-        flipXItems.Add(spellSpawn);
+        creature.flipXItems.Add(spellSpawn);
     }
 
     private new void FixedUpdate()
@@ -227,13 +227,13 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IFlipX
         {
             updateX = true;
             target.x = creature.maxVelocityX;
-            FlipX = false;
+            creature.FlipX = false;
         }
         if (Input.GetKey("a") || Input.GetKey("left"))
         {
             updateX = true;
             target.x = -creature.maxVelocityX;
-            FlipX = true;
+            creature.FlipX = true;
         }
         if (Input.GetKey("w") || Input.GetKey("up"))
         {
