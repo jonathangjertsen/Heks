@@ -18,6 +18,8 @@ public class BaseCreature
     private readonly int shrinkTimerTop = 200;
 
     public FlipXCollection flipXItems;
+    public BarCollection bars;
+    public CreatureHealth health;
     public TimerCollection timers;
 
     public ICreaturePhysics physics;
@@ -36,8 +38,17 @@ public class BaseCreature
         );
     }
 
-    public void Init(Timer.Timeout onDeathCompleted, BarCollection bars)
+    public void Init(Timer.Timeout onDeathCompleted, IBarDisplay healthBar, CreatureHealth.OnZeroHealth onDeathStart)
     {
+        if (physics == null)
+        {
+            throw new Exception("Must call SetPhysics or SetPhysicsFromBehaviour before Init");
+        }
+
+        bars = new BarCollection();
+        bars.Add(healthBar);
+        health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: onDeathStart);
+
         timers = new TimerCollection();
         timers.logCallbacks = logTimerCallbacks;
         timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, ShrinkStart));
@@ -81,8 +92,6 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
 {
     public BaseCreature creature;
     protected CreatureFsm<StateEnum> fsm;
-    protected CreatureHealth health;
-    protected BarCollection bars;
     protected bool flipX;
     public BarBehaviour healthBar;
     private Vector2 axCoeff;
@@ -97,22 +106,16 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
 
     public virtual void Die()
     {
-        bars.Hide();
         creature.Die();
     }
 
     protected void Start()
     {
-        bars = new BarCollection();
-        bars.Add(healthBar);
-
         creature.SetPhysicsFromBehaviour(this);
-        creature.Init(OnDeathCompleted, bars);
+        creature.Init(OnDeathCompleted, healthBar, Die);
 
         fsm = new CreatureFsm<StateEnum>(this);
         fsm.logChanges = creature.logFsmChanges;
-
-        health = new CreatureHealth(healthBar, creature.maxHealth, onZeroHealth: Die);
     }
 
     protected void FixedUpdate()

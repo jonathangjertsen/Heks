@@ -119,7 +119,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
 
     private void RegenerateHealth()
     {
-        health.Health += regenPer;
+        creature.health.Health += regenPer;
     }
 
     private void OnCollisionEnter2D()
@@ -132,7 +132,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
         FsmState = BirdState.Hurt;
         hurtTimer.Start();
 
-        health.Health -= 10;
+        creature.health.Health -= 10;
         creature.physics.Recoil(100);
     }
 

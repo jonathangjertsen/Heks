@@ -82,7 +82,7 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
         base.Start();
         octopus.SetPhysics(creature.physics);
         octopus.SetFsm(fsm);
-        octopus.SetHealth(health);
+        octopus.SetHealth(creature.health);
 
         fsm.Add(OctopusState.Alive, sprite, null);
         fsm.Add(OctopusState.Dead, sprite, null);

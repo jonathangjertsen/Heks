@@ -1,18 +1,24 @@
-﻿public interface ICreatureHealth
+﻿public interface IBarDisplay : IFlipX
+{
+    void FillTo(float proportion);
+    void Hide();
+}
+
+public interface ICreatureHealth
 {
     float Health { get; set; }
 }
 
 public class CreatureHealth : ICreatureHealth
 {
-    private readonly BarBehaviour healthBar;
+    private readonly IBarDisplay healthBar;
     private readonly float maxHealth;
     private float currentHealth;
     private readonly OnZeroHealth onZeroHealth;
 
     public delegate void OnZeroHealth();
 
-    public CreatureHealth(BarBehaviour healthBar, float maxHealth, OnZeroHealth onZeroHealth)
+    public CreatureHealth(IBarDisplay healthBar, float maxHealth, OnZeroHealth onZeroHealth)
     {
         this.healthBar = healthBar;
         this.maxHealth = maxHealth;

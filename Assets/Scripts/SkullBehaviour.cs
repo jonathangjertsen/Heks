@@ -105,7 +105,7 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
         }
         else
         {
-            health.Health -= 10;
+            creature.health.Health -= 10;
             fsm.SetSprite(SkullState.Hurt);
             creature.timers.Start("hurt");
         }

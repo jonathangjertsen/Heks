@@ -111,7 +111,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
         Charge = 0;
         chargeBar.FillTo(0);
-        bars.Add(chargeBar);
+        creature.bars.Add(chargeBar);
 
         fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
         fsm.Add(PlayerState.Hurt, HurtSprite, HurtClip);
@@ -164,7 +164,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         {
             FsmState = PlayerState.Hurt;
             creature.timers.Start("hurt");
-            health.Health -= 10;
+            creature.health.Health -= 10;
         }
     }
 
@@ -195,7 +195,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
     private void RegenerateHealth()
     {
-        health.Health += regenPer;
+        creature.health.Health += regenPer;
     }
 
     private void UpdateCastCycleStates()

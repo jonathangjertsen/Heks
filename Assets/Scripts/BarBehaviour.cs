@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BarBehaviour : MonoBehaviour, IFlipX
+public class BarBehaviour : MonoBehaviour, IBarDisplay
 {
     private float startX;
     public float endX;
@@ -56,22 +56,22 @@ public class BarBehaviour : MonoBehaviour, IFlipX
 
 public class BarCollection : IFlipX
 {
-    private readonly List<BarBehaviour> bars;
+    private readonly List<IBarDisplay> bars;
     private bool flipX;
 
     public BarCollection()
     {
-        bars = new List<BarBehaviour>();
+        bars = new List<IBarDisplay>();
     }
 
-    public void Add(BarBehaviour bar)
+    public void Add(IBarDisplay bar)
     {
         bars.Add(bar);
     }
 
     public void Hide()
     {
-        foreach (BarBehaviour bar in bars)
+        foreach (IBarDisplay bar in bars)
         {
             bar.Hide();
         }
@@ -82,7 +82,7 @@ public class BarCollection : IFlipX
         get => flipX;
         set
         {
-            foreach (BarBehaviour bar in bars)
+            foreach (IBarDisplay bar in bars)
             {
                 bar.FlipX = value;
             }
