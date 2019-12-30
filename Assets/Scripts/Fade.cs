@@ -21,6 +21,14 @@ public class Fade : MonoBehaviour
 
         timers = new TimerCollection();
         timers.Add("fade", new Timer(fadeTop, FadeEnded, onTick: FadeTick));
+
+        foreach (Graphic component in components)
+        {
+            var color = component.color;
+            color.a = 0f;
+            component.color = color;
+            component.enabled = false;
+        }
     }
 
     public void StartFade(FadeEndedCallback endCallback)
