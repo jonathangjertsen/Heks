@@ -1,4 +1,9 @@
-﻿public class CreatureHealth
+﻿public interface ICreatureHealth
+{
+    float Health { get; set; }
+}
+
+public class CreatureHealth : ICreatureHealth
 {
     private readonly BarBehaviour healthBar;
     private readonly float maxHealth;

@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CreatureFsm<EnumType> where EnumType : struct, Enum
+public interface ICreatureFsm<EnumType> where EnumType : struct, Enum
+{
+    EnumType State { get; set; }
+    void Add(EnumType state, Sprite sprite, AudioClip clip);
+}
+
+public class CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : struct, Enum
 {
     private readonly Dictionary<EnumType, Sprite> sprites;
     private readonly Dictionary<EnumType, AudioClip> clips;

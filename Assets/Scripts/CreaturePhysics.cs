@@ -1,7 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-public class CreaturePhysics : BasePhysics
+public interface ICreaturePhysics : IBasePhysics
+{
+    void GetUpright(float torque);
+}
+
+public class CreaturePhysics : BasePhysics, ICreaturePhysics
 {
     private readonly Vector2 axCoeff;
     private readonly float rotCoeff;

@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 
-public class BasePhysics : IFlipX
+public interface IBasePhysics
+{
+    void AccelerateRelative(Vector2 target);
+}
+
+public class BasePhysics : IFlipX, IBasePhysics
 {
     private readonly Vector3 initialScale;
     protected readonly Transform transform;

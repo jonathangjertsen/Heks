@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public enum OctpusState
 {
@@ -6,53 +7,102 @@ public enum OctpusState
     Dead
 }
 
-public class OctopusBehaviour : BaseCreatureBehaviour<OctpusState>
+[Serializable]
+public class Octopus
 {
     public float freqX;
     public float freqY;
     public float ampX;
     public float ampY;
+    public float uprightTorque;
 
-    public Sprite sprite;
-
+    private ICreaturePhysics physics;
+    private ICreatureFsm<OctpusState> fsm;
+    private ICreatureHealth health;
     private int counter;
 
-    new private void Start()
+    public Octopus()
     {
-        base.Start();
-
-        fsm.Add(OctpusState.Alive, sprite, null);
-        fsm.Add(OctpusState.Dead, sprite, null);
-        FsmState = OctpusState.Alive;
-
         counter = 0;
     }
 
-    public override void Die()
+    public void NextFrame()
     {
-        base.Die();
-        FsmState = OctpusState.Dead;
-    }
-
-    new private void FixedUpdate()
-    {
-        base.FixedUpdate();
-        counter += 1;
-
+        counter++;
         Vector2 target = new Vector2(
             ampX * Mathf.Cos(freqX * counter),
             ampY * Mathf.Sin(freqY * counter)
         );
-
-        physics.GetUpright(0.3f);
+        physics.GetUpright(uprightTorque);
         physics.AccelerateRelative(target);
     }
 
-    private void OnCollisionEnter2D()
+    public void SetPhysics(ICreaturePhysics physics)
+    {
+        this.physics = physics;
+    }
+
+    public void SetFsm(ICreatureFsm<OctpusState> fsm)
+    {
+        this.fsm = fsm;
+    }
+
+    public void SetHealth(ICreatureHealth health)
+    {
+        this.health = health;
+    }
+
+    protected OctpusState FsmState
+    {
+        get => fsm.State;
+        set => fsm.State = value;
+    }
+
+    public void Die()
+    {
+        FsmState = OctpusState.Dead;
+    }
+
+    public void OnCollisionEnter2D()
     {
         if (FsmState != OctpusState.Dead)
         {
             health.Health -= 10;
         }
+    }
+}
+
+public class OctopusBehaviour : BaseCreatureBehaviour<OctpusState>
+{
+    public Sprite sprite;
+    public Octopus octopus;
+
+    new private void Start()
+    {
+        base.Start();
+        octopus.SetPhysics(physics);
+        octopus.SetFsm(fsm);
+        octopus.SetHealth(health);
+
+        fsm.Add(OctpusState.Alive, sprite, null);
+        fsm.Add(OctpusState.Dead, sprite, null);
+        FsmState = OctpusState.Alive;
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        octopus.Die();
+    }
+
+    new private void FixedUpdate()
+    {
+        base.FixedUpdate();
+        octopus.NextFrame();
+    }
+
+    private void OnCollisionEnter2D()
+    {
+        octopus.OnCollisionEnter2D();
     }
 }
