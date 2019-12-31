@@ -22,6 +22,7 @@ Assets
 ├───Audio
 │   ├───Music         - Music (.mp3)
 │   └───SFX           - Sound effects (.wav)
+├───EditorTests       - Unit tests
 ├───Fonts             - Fonts (.ttf)
 ├───Graphics
 │   ├───backgrounds   - Background images (.png)
@@ -35,30 +36,72 @@ Assets
 
 ## Class hierarchy at a glance
 
-```
-UnityEngine.MonoBehaviour
-    Bar
-    BaseCreature
-        BirdScript
-        PlayerScript
-        SkullScript
-    CameraFollow
-    FadeIn
-    Spell
-        Bullet
-        BulletRing
-        StraightBullet
-    SpellSpawn
-    SpellViz
-    GameState
+#### Interfaces
 
-BarCollection
-BasePhysics
-    BulletPhysics
-    CreaturePhysics
-CreatureFsm
-CreatureHealth
-FlipXCollection
+```
+ICreatureFsm<EnumType> where EnumType : struct, Enum
+ICreatureHealth
+IFadeIn
+IFlipX
+    IBarDisplay : IFlipX
+    IBasePhysics : IFlipX
+        ICreaturePhysics : IBasePhysics
+ISpell
+ISpellCaster
+ISpellInstantiator
+ISpellVisualizer
+ITransform
+IRigidBody2d
+```
+
+#### Classes
+
+```
+BaseCreature
+BasePhysics : IFlipX, IBasePhysics
+    BulletPhysics : BasePhysics
+    CreaturePhysics : BasePhysics, ICreaturePhysics
+Bird
+CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : struct, Enum
+CreatureHealth : ICreatureHealth
+CreaturePhysicsProperties
+FlipXCollection : IFlipX
+Octopus
+Player
+RigidBody2dWrapper : IRigidBody2d
+Skull
+SpellSpawner
 Timer
 TimerCollection
+TransformWrapper : ITransform
+```
+
+#### Enums
+
+```
+BirdState
+GameState
+OctopusState
+PlayerState
+SkullState
+TimerMode
+```
+
+#### Behaviours (not tested)
+
+```
+BarBehaviour : MonoBehaviour, IBarDisplay
+BaseCreatureBehaviour<StateEnum> : MonoBehaviour where StateEnum : struct, Enum
+    OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
+    PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
+    SkullBehaviour : BaseCreatureBehaviour<SkullState>
+CameraFollowBehaviour : MonoBehaviour
+FadeInBehaviour : MonoBehaviour, IFadeIn
+GameStateBehaviour : MonoBehaviour
+SpellBehaviour : MonoBehaviour, ISpell
+    StraightBulletBehaviour : SpellBehaviour
+    BulletBehaviour : SpellBehaviour
+    BulletRingBehaviour : SpellBehaviour
+SpellSpawnBehaviour : MonoBehaviour, IFlipX, ISpellInstantiator, ISpellCaster
+SpellVizBehaviour : MonoBehaviour, ISpellVisualizer
 ```
