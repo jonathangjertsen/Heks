@@ -37,7 +37,7 @@ public class CreatureHealth : ICreatureHealth
             {
                 cappedHealth = maxHealth;
             }
-            else if (value <= 0)
+            else if (value <= 0.0001f)
             {
                 cappedHealth = 0;
                 healthBar.Hide();

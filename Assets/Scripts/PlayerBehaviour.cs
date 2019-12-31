@@ -287,4 +287,9 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     {
         return self.Alive();
     }
+
+    public override void OnHurtCompleted()
+    {
+        self.OnHurtCompleted();
+    }
 }

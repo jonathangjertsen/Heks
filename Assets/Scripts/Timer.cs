@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,12 +99,17 @@ public class Timer
 
 public class TimerCollection
 {
+    private Dictionary<string, Timer> startedTimers;
+    private Dictionary<string, Timer> stoppedTimers;
+
     private readonly Dictionary<string, Timer> timers;
     public bool logCallbacks = false;
 
     public TimerCollection()
     {
         timers = new Dictionary<string, Timer>();
+        startedTimers = new Dictionary<string, Timer>();
+        stoppedTimers = new Dictionary<string, Timer>();
     }
 
     public void Add(string name, Timer timer)
@@ -118,19 +124,39 @@ public class TimerCollection
         return timers[name].Value;
     }
 
+    public bool Running(string name)
+    {
+        return timers[name].Running;
+    }
+
     public void TickAll()
     {
         foreach (KeyValuePair<string, Timer> pair in timers)
         {
             pair.Value.Tick();
         }
+
+        foreach (KeyValuePair<string, Timer> pair in startedTimers)
+        {
+            pair.Value.Start();
+        }
+        startedTimers = new Dictionary<string, Timer>();
+
+        foreach (KeyValuePair<string, Timer> pair in stoppedTimers)
+        {
+            pair.Value.Stop();
+        }
+        stoppedTimers = new Dictionary<string, Timer>();
     }
 
     public void Start(string name)
     {
         if (timers.TryGetValue(name, out Timer timer))
         {
-            timer.Start();
+            if (!startedTimers.ContainsKey(name))
+            {
+                startedTimers.Add(name, timer);
+            }
         }
         else
         {
@@ -143,7 +169,10 @@ public class TimerCollection
     {
         if (timers.TryGetValue(name, out Timer timer))
         {
-            timer.Stop();
+            if (!stoppedTimers.ContainsKey(name))
+            {
+                stoppedTimers.Add(name, timer);
+            }
         }
         else
         {

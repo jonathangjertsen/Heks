@@ -535,10 +535,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067a84df3533dd447a968b9ff0bd03e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState:
+    logTimerCallbacks: 0
+    deathToGameOverStartTop: 0
+    gameOverFadeTop: 0
   fade: {fileID: 755725832}
-  logTimerCallbacks: 0
-  deathToGameOverStartTop: 20
-  gameOverFadeTop: 200
 --- !u!4 &599865655
 Transform:
   m_ObjectHideFlags: 0
@@ -1081,14 +1082,16 @@ MonoBehaviour:
   creature:
     maxHealth: 30
     regenPer: 0.02
-    axCoeffX: 0.01
-    axCoeffY: 0.03
-    rotCoeff: 1
-    maxJerkX: 5
-    maxJerkY: 5
+    physicsProperties:
+      axCoeffX: 0.01
+      axCoeffY: 0.03
+      rotCoeff: 1
+      maxJerkX: 5
+      maxJerkY: 5
+      idleThreshold: 1
     hurtTimerTop: 60
   logFsmChanges: 0
-  logTimerCallbacks: 0
+  logTimerCallbacks: 1
   healthBar: {fileID: 1035123455}
   player: {fileID: 840480129}
   chargeBar: {fileID: 965610641}
@@ -2761,7 +2764,7 @@ PrefabInstance:
     - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: logFsmChanges
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}

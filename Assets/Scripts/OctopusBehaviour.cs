@@ -10,10 +10,19 @@ public enum OctopusState
 [Serializable]
 public class Octopus
 {
+    [Range(-0.1f, 0.1f)]
     public float freqX = 0.3f;
+
+    [Range(-0.1f, 0.1f)]
     public float freqY = 0.2f;
+
+    [Range(0.0f, 0.04f)]
     public float ampX = 0.02f;
+
+    [Range(0.0f, 0.04f)]
     public float ampY = 0.03f;
+
+    [Range(0f, 10f)]
     public float uprightTorque = 4;
 
     private ICreaturePhysics physics;
@@ -37,11 +46,11 @@ public class Octopus
         physics.AccelerateRelative(target);
     }
 
-    public void Init(ICreaturePhysics physics, ICreatureFsm<OctopusState> fsm, ICreatureHealth health)
+    public void Init(BaseCreature creature, ICreatureFsm<OctopusState> fsm)
     {
         this.fsm = fsm;
-        this.health = health;
-        this.physics = physics;
+        health = creature.health;
+        physics = creature.physics;
 
         fsm.State = OctopusState.Alive;
     }
@@ -72,7 +81,7 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
         fsm.Add(OctopusState.Alive, sprite, null);
         fsm.Add(OctopusState.Dead, sprite, null);
 
-        octopus.Init(creature.physics, fsm, creature.health);
+        octopus.Init(creature, fsm);
     }
 
     public override void Die()

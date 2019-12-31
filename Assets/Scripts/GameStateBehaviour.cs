@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -11,17 +12,24 @@ public enum GameStateEnum
     Won
 }
 
-public class GameStateBehaviour : MonoBehaviour
+[Serializable]
+public class GameState
 {
     GameStateEnum state;
-    public FadeInBehaviour fade;
     protected TimerCollection timers;
+    private IFadeIn fade;
+
+    [Header("Debug")]
     public bool logTimerCallbacks;
+
+    [Space] [Header("Timing")]
     public int deathToGameOverStartTop;
     public int gameOverFadeTop;
 
-    public void Start()
+    public void Init(IFadeIn fade)
     {
+        this.fade = fade;
+
         state = GameStateEnum.Playing;
 
         timers = new TimerCollection();
@@ -47,11 +55,31 @@ public class GameStateBehaviour : MonoBehaviour
 
     public void FixedUpdate()
     {
+        timers.TickAll();
+    }
+}
+
+public class GameStateBehaviour : MonoBehaviour
+{
+    public GameState gameState;
+    public FadeInBehaviour fade;
+
+    public void Start()
+    {
+        gameState.Init(fade);
+    }
+
+    public void PlayerDied()
+    {
+        gameState.PlayerDied();
+    }
+
+    public void FixedUpdate()
+    {
         if (Input.GetKey("r"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-
-        timers.TickAll();
+        gameState.FixedUpdate();
     }
 }

@@ -6,12 +6,6 @@ public class BulletRingBehaviour : SpellBehaviour
     public float ringSize;
     public float maxOutwardSpeed;
     public int maxNum;
-    private BulletPhysics physics;
-
-    private void Awake()
-    {
-        physics = new BulletPhysics(this);
-    }
 
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {

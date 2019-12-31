@@ -14,6 +14,17 @@ public interface ICreaturePhysics : IBasePhysics
     bool IsIdle();
 }
 
+[Serializable]
+public class CreaturePhysicsProperties
+{
+    public float axCoeffX = 0.01f;
+    public float axCoeffY = 0.03f;
+    public float rotCoeff = 1f;
+    public float maxJerkX = 5f;
+    public float maxJerkY = 5f;
+    public float idleThreshold = 1f;
+}
+
 public class CreaturePhysics : BasePhysics, ICreaturePhysics
 {
     private readonly Vector2 axCoeff;
@@ -21,18 +32,12 @@ public class CreaturePhysics : BasePhysics, ICreaturePhysics
     private readonly Vector2 maxJerk;
     private readonly float idleThreshold;
 
-    public CreaturePhysics(
-        MonoBehaviour bh,
-        Vector2 axCoeff,
-        Vector2 maxJerk,
-        float rotCoeff = 1f,
-        float idleThreshold = 1f
-    ) : base(bh)
+    public CreaturePhysics(IRigidBody2d rigidBody2d, ITransform transform, CreaturePhysicsProperties properties) : base(rigidBody2d, transform)
     {
-        this.axCoeff = axCoeff;
-        this.rotCoeff = rotCoeff;
-        this.maxJerk = maxJerk;
-        this.idleThreshold = idleThreshold;
+        axCoeff = new Vector2(properties.axCoeffX, properties.axCoeffY);
+        rotCoeff = properties.rotCoeff;
+        maxJerk = new Vector2(properties.maxJerkX, properties.maxJerkY);
+        idleThreshold = properties.idleThreshold;
         FlipX = false;
     }
 

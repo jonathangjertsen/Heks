@@ -2,13 +2,6 @@
 
 public class StraightBulletBehaviour : SpellBehaviour
 {
-    private BulletPhysics physics;
-
-    private void Awake()
-    {
-        physics = new BulletPhysics(this);
-    }
-
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         int flipXAsInt = flipX ? 1 : -1;

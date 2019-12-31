@@ -9,17 +9,14 @@ public class BaseCreature
     public float regenPer = 0.02f;
 
     [Space] [Header("Physics")]
-    public float axCoeffX = 0.01f;
-    public float axCoeffY = 0.03f;
-    public float rotCoeff = 1f;
-    public float maxJerkX = 5f;
-    public float maxJerkY = 5f;
+    public CreaturePhysicsProperties physicsProperties;
 
     [Space] [Header("Damage")]
     public int hurtTimerTop = 60;
 
-    private readonly int deathToShrinkStartTimerTop = 100;
-    private readonly int shrinkTimerTop = 200;
+    [Space] [Header("Death timing")]
+    public int deathToShrinkStartTimerTop = 100;
+    public int shrinkTimerTop = 200;
 
     public FlipXCollection flipXItems;
     public BarCollection bars;
@@ -27,39 +24,24 @@ public class BaseCreature
     public TimerCollection timers;
 
     public ICreaturePhysics physics;
-    public void SetPhysics(ICreaturePhysics physics)
-    {
-        this.physics = physics;
-    }
-
-    public void SetPhysicsFromBehaviour(MonoBehaviour bh)
-    {
-        physics = new CreaturePhysics(
-            bh,
-            axCoeff: new Vector2(axCoeffX, axCoeffY),
-            rotCoeff: rotCoeff,
-            maxJerk: new Vector2(maxJerkX, maxJerkY)
-        );
-    }
 
     public void Init(
-        Timer.Timeout onDeathCompleted,
+        IRigidBody2d rigidBody2d,
+        ITransform transform,
         IBarDisplay healthBar,
+        Timer.Timeout onDeathCompleted,
         CreatureHealth.OnZeroHealth onDeathStart,
         Timer.Timeout onHurtCompleted
      )
     {
-        if (physics == null)
-        {
-            throw new Exception("Must call SetPhysics or SetPhysicsFromBehaviour before Init");
-        }
+        physics = new CreaturePhysics(rigidBody2d, transform, physicsProperties);
 
         bars = new BarCollection();
         bars.Add(healthBar);
         health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: onDeathStart);
 
         timers = new TimerCollection();
-        timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, ShrinkStart));
+        timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, () => timers.Start("shrink")));
         timers.Add("shrink", new Timer(shrinkTimerTop, onDeathCompleted, onTick: Shrinking));
         timers.Add("hurt", new Timer(hurtTimerTop, onHurtCompleted));
 
@@ -78,11 +60,6 @@ public class BaseCreature
     {
         float proportion = timers.Value("shrink") / (float)shrinkTimerTop;
         physics.Size = physics.InitialSize * proportion;
-    }
-
-    private void ShrinkStart()
-    {
-        timers.Start("shrink");
     }
 
     public void Die()
@@ -136,8 +113,14 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
 
     protected void Start()
     {
-        creature.SetPhysicsFromBehaviour(this);
-        creature.Init(OnDeathCompleted, healthBar, Die, OnHurtCompleted);
+        creature.Init(
+            new RigidBody2dWrapper(GetComponent<Rigidbody2D>()),
+            new TransformWrapper(transform),
+            healthBar,
+            OnDeathCompleted,
+            Die,
+            OnHurtCompleted
+        );
         creature.timers.logCallbacks = logTimerCallbacks;
 
         fsm = new CreatureFsm<StateEnum>(this);

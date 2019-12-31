@@ -97,24 +97,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature:
     maxHealth: 30
-  healthBar: {fileID: 4444203106989673559}
-  axCoeffX: 0.01
-  axCoeffY: 0.03
-  rotCoeff: 1
-  maxVelocityX: 10
-  maxVelocityY: 10
-  maxJerkX: 5
-  maxJerkY: 5
+    regenPer: 0.02
+    physicsProperties:
+      axCoeffX: 0.01
+      axCoeffY: 0.03
+      rotCoeff: 1
+      maxJerkX: 5
+      maxJerkY: 5
+      idleThreshold: 1
+    hurtTimerTop: 60
+    deathToShrinkStartTimerTop: 100
+    shrinkTimerTop: 200
   logFsmChanges: 0
   logTimerCallbacks: 0
+  healthBar: {fileID: 4444203106989673559}
   player: {fileID: 0}
   sprite: {fileID: 21300000, guid: da8d821b33cbaba4cac36322f853d2b2, type: 3}
   octopus:
-    freqX: 0
-    freqY: 0
-    ampX: 0
-    ampY: 0
-    uprightTorque: 0
+    freqX: 0.03
+    freqY: 0.037
+    ampX: 0.018
+    ampY: 0.014
+    uprightTorque: 5.7
 --- !u!50 &1269431479898106261
 Rigidbody2D:
   serializedVersion: 4

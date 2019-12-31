@@ -2,14 +2,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FadeInBehaviour : MonoBehaviour
+public delegate void FadeEndedCallback();
+
+public interface IFadeIn
+{
+    void StartFade(FadeEndedCallback fadeEndedCallback);
+}
+
+public class FadeInBehaviour : MonoBehaviour, IFadeIn
 {
     protected TimerCollection timers;
 
     private List<Graphic> components;
     public int fadeTop;
 
-    public delegate void FadeEndedCallback();
     private FadeEndedCallback endCallback = null;
 
     void Start()

@@ -26,11 +26,11 @@ public class Bird
     private ICreatureFsm<BirdState> fsm;
     private IFlipX flipX;
 
-    public void Init(ICreaturePhysics physics, ICreatureFsm<BirdState> fsm, IFlipX flipX)
+    public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm)
     {
-        this.physics = physics;
+        flipX = creature.flipXItems;
+        physics = creature.physics;
         this.fsm = fsm;
-        this.flipX = flipX;
 
         this.fsm.State = BirdState.MoveHome;
 
@@ -41,6 +41,36 @@ public class Bird
     {
         physics.ApproachVelocity(home - physics.Position());
         fsm.State = BirdState.MoveHome;
+    }
+
+    public void Die()
+    {
+        fsm.State = BirdState.Dead;
+    }
+
+    public bool Alive()
+    {
+        return fsm.State != BirdState.Dead;
+    }
+
+    public void Hurt()
+    {
+        if (!Alive())
+        {
+            return;
+        }
+
+        fsm.State = BirdState.Hurt;
+    }
+
+    public void OnHurtCompleted()
+    {
+        if (fsm.State == BirdState.Dead)
+        {
+            return;
+        }
+
+        fsm.State = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
     }
 
     public void NewPlayerPosition(Vector2 playerPosition, bool playerAlive)
@@ -89,39 +119,9 @@ public class Bird
         ));
     }
 
-    public void Die()
-    {
-        fsm.State = BirdState.Dead;
-    }
-
-    public bool Alive()
-    {
-        return fsm.State != BirdState.Dead;
-    }
-
     private bool CloseToPlayer()
     {
         return vectorToPlayer.magnitude < visionRadius;
-    }
-
-    public void Hurt()
-    {
-        if (!Alive())
-        {
-            return;
-        }
-
-        fsm.State = BirdState.Hurt;
-    }
-
-    public void OnHurtCompleted()
-    {
-        if (fsm.State == BirdState.Dead)
-        {
-            return;
-        }
-
-        fsm.State = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
     }
 }
 
@@ -155,13 +155,16 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
         fsm.Add(BirdState.Hurt, HurtSprite, CryClip);
         fsm.Add(BirdState.Dead, DeadSprite, null);
 
-        bird.Init(creature.physics, fsm, creature.flipXItems);
+        bird.Init(creature, fsm);
     }
 
     private new void FixedUpdate()
     {
         base.FixedUpdate();
-        bird.NewPlayerPosition(player.HeadPosition, player != null && player.Alive());
+        if (player != null)
+        {
+            bird.NewPlayerPosition(player.HeadPosition, player.Alive());
+        }
     }
 
     private void OnCollisionEnter2D()

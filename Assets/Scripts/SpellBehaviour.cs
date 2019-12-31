@@ -12,6 +12,16 @@ public class SpellBehaviour : MonoBehaviour, ISpell
     public int liveTimerTop = 50;
     private int liveTimer;
 
+    protected BulletPhysics physics;
+
+    public void Awake()
+    {
+        physics = new BulletPhysics(
+            new RigidBody2dWrapper(GetComponent<Rigidbody2D>()),
+            new TransformWrapper(transform)
+        );
+    }
+
     public virtual void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
     }

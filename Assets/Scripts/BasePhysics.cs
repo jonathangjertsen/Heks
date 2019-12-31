@@ -14,17 +14,61 @@ public interface IBasePhysics : IFlipX
     Vector2 UnitVector();
 }
 
+public interface ITransform
+{
+    Vector3 eulerAngles { get; set; }
+    Vector3 localScale { get; set; }
+    Vector3 position { get; set; }
+    Vector3 right { get; set; }
+}
+
+public class TransformWrapper : ITransform
+{
+    private Transform t;
+
+    public TransformWrapper(Transform t)
+    {
+        this.t = t;
+    }
+
+    public Vector3 eulerAngles { get => t.eulerAngles; set => t.eulerAngles = value; }
+    public Vector3 localScale { get => t.localScale; set => t.localScale = value; }
+    public Vector3 position { get => t.position; set => t.position = value; }
+    public Vector3 right { get => t.right; set => t.right = value; }
+}
+
+public interface IRigidBody2d
+{
+    float angularVelocity { get; set; }
+    float rotation { get; set; }
+    Vector2 velocity { get; set; }
+}
+
+public class RigidBody2dWrapper : IRigidBody2d
+{
+    private Rigidbody2D r;
+
+    public RigidBody2dWrapper(Rigidbody2D r)
+    {
+        this.r = r;
+    }
+
+    public float angularVelocity { get => r.angularVelocity; set => r.angularVelocity = value; }
+    public float rotation { get => r.rotation; set => r.rotation = value; }
+    public Vector2 velocity { get => r.velocity; set => r.velocity = value; }
+}
+
 public class BasePhysics : IFlipX, IBasePhysics
 {
     private readonly Vector3 initialScale;
-    protected readonly Transform transform;
-    protected readonly Rigidbody2D rigidBody2d;
+    protected readonly ITransform transform;
+    protected readonly IRigidBody2d rigidBody2d;
 
-    public BasePhysics(MonoBehaviour bh)
+    public BasePhysics(IRigidBody2d rigidBody2d, ITransform transform)
     {
-        rigidBody2d = bh.GetComponent<Rigidbody2D>();
-        transform = bh.transform;
-        initialScale = transform.localScale;
+        this.rigidBody2d = rigidBody2d;
+        this.transform = transform;
+        initialScale = this.transform.localScale;
     }
 
     private bool flipX;
@@ -58,7 +102,6 @@ public class BasePhysics : IFlipX, IBasePhysics
         rigidBody2d.velocity += ax;
     }
 
-
     public void AccelerateRelative(Vector2 relativeAx)
     {
         Vector2 unit = UnitVector();
@@ -83,12 +126,12 @@ public class BasePhysics : IFlipX, IBasePhysics
 
     public Vector2 Position()
     {
-        return rigidBody2d.transform.position;
+        return transform.position;
     }
 
     public void Translate(Vector2 offset)
     {
-        rigidBody2d.transform.position += new Vector3(offset.x, offset.y, 0);
+        transform.position += new Vector3(offset.x, offset.y, 0);
     }
 
     public Vector2 Velocity()
@@ -98,7 +141,7 @@ public class BasePhysics : IFlipX, IBasePhysics
 
     public float AngleDegrees()
     {
-        return rigidBody2d.transform.eulerAngles.z;
+        return transform.eulerAngles.z;
     }
 
     public float Angle()

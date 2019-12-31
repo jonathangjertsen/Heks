@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public interface IFlipX
 {
@@ -17,6 +18,11 @@ public class FlipXCollection : IFlipX
 
     public void Add(IFlipX item)
     {
+        if (item == null)
+        {
+            throw new Exception($"Item is null");
+        }
+
         items.Add(item);
     }
 
