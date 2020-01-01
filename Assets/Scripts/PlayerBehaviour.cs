@@ -54,7 +54,6 @@ public class Player
 
         timers.Add("angry", new Timer(angryTimerTop, () => {
             fsm.State = PlayerState.Flying;
-            timers.Stop("angry");
         }));
         timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => {
             fsm.State = PlayerState.Standing;
