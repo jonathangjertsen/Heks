@@ -27,26 +27,41 @@ public class BaseCreature
     public void Init(
         IRigidBody2d rigidBody2d,
         ITransform transform,
-        IBarDisplay healthBar,
-        Timer.Timeout onDeathCompleted,
-        CreatureHealth.OnZeroHealth onDeathStart,
-        Timer.Timeout onHurtCompleted
-     )
+        IBarDisplay healthBar
+    )
     {
         physics = new CreaturePhysics(rigidBody2d, transform, physicsProperties);
 
         bars = new BarCollection();
         bars.Add(healthBar);
-        health = new CreatureHealth(healthBar, maxHealth, onZeroHealth: onDeathStart);
+        health = new CreatureHealth(healthBar, maxHealth);
 
         timers = new TimerCollection();
         timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, () => timers.Start("shrink")));
-        timers.Add("shrink", new Timer(shrinkTimerTop, onDeathCompleted, onTick: Shrinking));
-        timers.Add("hurt", new Timer(hurtTimerTop, onHurtCompleted));
+        timers.Add("shrink", new Timer(shrinkTimerTop, null, onTick: Shrinking));
+        timers.Add("hurt", new Timer(hurtTimerTop, null));
 
         flipXItems = new FlipXCollection();
         flipXItems.Add(bars);
         flipXItems.Add(physics);
+    }
+
+    public void SetOnDeathStartedCallback(CreatureHealth.OnZeroHealth callback)
+    {
+        health.SetZeroHealthCallback(() => {
+            callback();
+            Die();
+        });
+    }
+
+    public void SetOnDeathFinishedCallback(Timer.Timeout callback)
+    {
+        timers.SetTimeoutCallback("shrink", callback);
+    }
+
+    public void SetOnHurtFinishedCallback(Timer.Timeout callback)
+    {
+        timers.SetTimeoutCallback("hurt", callback);
     }
 
     public bool FlipX
@@ -75,9 +90,12 @@ public class BaseCreature
 
     public void Hurt(float damage, float recoilTorque = 0f)
     {
-        timers.Start("hurt");
-        health.Health -= damage;
-        physics.Recoil(recoilTorque);
+        if (health.Health > 0)
+        {
+            timers.Start("hurt");
+            health.Health -= damage;
+            physics.Recoil(recoilTorque);
+        }
     }
 
     private void RegenerateHealth()
@@ -101,25 +119,14 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     public BarBehaviour healthBar;
     public PlayerBehaviour player;
 
-    public virtual void Die()
-    {
-        creature.Die();
-    }
-
-    public virtual void OnHurtCompleted()
-    {
-    }
-
     protected void Start()
     {
         creature.Init(
             new RigidBody2dWrapper(GetComponent<Rigidbody2D>()),
             new TransformWrapper(transform),
-            healthBar,
-            OnDeathCompleted,
-            Die,
-            OnHurtCompleted
+            healthBar
         );
+        creature.SetOnDeathFinishedCallback(() => Destroy(this));
         creature.timers.logCallbacks = logTimerCallbacks;
 
         fsm = new CreatureFsm<StateEnum>(this);
@@ -129,10 +136,5 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     protected void FixedUpdate()
     {
         creature.FixedUpdate();
-    }
-
-    private void OnDeathCompleted()
-    {
-        Destroy(this);
     }
 }

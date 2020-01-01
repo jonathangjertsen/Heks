@@ -51,7 +51,7 @@ public class Octopus
         this.fsm = fsm;
         health = creature.health;
         physics = creature.physics;
-
+        creature.SetOnDeathStartedCallback(() => fsm.State = OctopusState.Dead);
         fsm.State = OctopusState.Alive;
     }
 
@@ -82,12 +82,6 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
         fsm.Add(OctopusState.Dead, sprite, null);
 
         octopus.Init(creature, fsm);
-    }
-
-    public override void Die()
-    {
-        base.Die();
-        octopus.Die();
     }
 
     new private void FixedUpdate()

@@ -11,7 +11,7 @@ namespace Tests
         [Test]
         public void ConstructorDoesNotCrash()
         {
-            var player = GetPlayer();
+            GetPlayer();
         }
 
         [Test]
@@ -33,7 +33,8 @@ namespace Tests
                 new CreatureFsmMock<PlayerState>(),
                 new BarMock(),
                 new SpellCasterMock(),
-                new PlayerInputMock()
+                new PlayerInputMock(),
+                new EventBusMock()
             );
             return player;
         }

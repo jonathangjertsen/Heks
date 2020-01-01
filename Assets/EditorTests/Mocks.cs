@@ -155,6 +155,14 @@ namespace Tests
         }
     }
 
+    public class EventBusMock : IEventBus
+    {
+        public void PlayerDied()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class RigidBodyMock : IRigidBody2d
     {
         public float angularVelocity { get; set; }
@@ -173,7 +181,7 @@ namespace Tests
     public class BaseCreatureMock : BaseCreature
     {
         public bool mock_onDeathStartCalled = false;
-        public bool mock_onDeathCompletedCalled = false;
+        public bool mock_onDeathFinishedCalled = false;
         public bool mock_onHurtCompletedCalled = false;
 
         public void MockInit()
@@ -182,26 +190,11 @@ namespace Tests
             Init(
                 new RigidBodyMock(),
                 new TransformMock(),
-                new BarMock(),
-                OnDeathCompleted,
-                OnDeathStart,
-                OnHurtCompleted
+                new BarMock()
             );
-        }
-
-        public void OnDeathStart()
-        {
-            mock_onDeathStartCalled = true;
-        }
-
-        public void OnDeathCompleted()
-        {
-            mock_onDeathCompletedCalled = true;
-        }
-
-        public void OnHurtCompleted()
-        {
-            mock_onHurtCompletedCalled = true;
+            SetOnDeathStartedCallback(() => mock_onDeathStartCalled = true);
+            SetOnDeathFinishedCallback(() => mock_onDeathFinishedCalled = true);
+            SetOnHurtFinishedCallback(() => mock_onHurtCompletedCalled = true);
         }
     }
 }

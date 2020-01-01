@@ -28,28 +28,21 @@ public class Skull
     private IFlipX flipX;
     private ICreatureHealth health;
 
-    public void Init(TimerCollection timers, ICreatureFsm<SkullState> fsm, ICreaturePhysics physics, IFlipX flipX, ICreatureHealth health)
+    public void Init(BaseCreature creature, ICreatureFsm<SkullState> fsm)
     {
         this.fsm = fsm;
-        this.timers = timers;
-        this.physics = physics;
-        this.flipX = flipX;
-        this.health = health;
+        timers = creature.timers;
+        physics = creature.physics;
+        flipX = creature.flipXItems;
+        health = creature.health;
+
+        creature.SetOnDeathStartedCallback(() => fsm.State = SkullState.Dead);
+        creature.SetOnHurtFinishedCallback(() => fsm.UnsetSprite(SkullState.Hurt));
 
         this.fsm.State = SkullState.InAir;
 
-        this.timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
-        this.timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
-    }
-
-    public void Die()
-    {
-        fsm.State = SkullState.Dead;
-    }
-
-    public void OnHurtCompleted()
-    {
-        fsm.UnsetSprite(SkullState.Hurt);
+        timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
+        timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
     }
 
     private void OnHopTimerExpired()
@@ -138,12 +131,6 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     public Sprite DeadSprite;
     public Sprite HurtSprite;
 
-    public override void Die()
-    {
-        base.Die();
-        skull.Die();
-    }
-
     private new void Start()
     {
         base.Start();
@@ -154,18 +141,13 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
         fsm.Add(SkullState.Dead, DeadSprite, null);
         fsm.Add(SkullState.Hurt, HurtSprite, null);
 
-        skull.Init(creature.timers, fsm, creature.physics, creature.flipXItems, creature.health);
+        skull.Init(creature, fsm);
     }
 
     private new void FixedUpdate()
     {
         base.FixedUpdate();
         skull.NewPlayerPosition(player.HeadPosition, player != null && player.Alive());
-    }
-
-    override public void OnHurtCompleted()
-    {
-        skull.OnHurtCompleted();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

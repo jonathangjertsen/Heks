@@ -30,6 +30,8 @@ public class Bird
     {
         flipX = creature.flipXItems;
         physics = creature.physics;
+        creature.SetOnDeathStartedCallback(() => fsm.State = BirdState.Dead);
+        creature.SetOnHurtFinishedCallback(OnHurtCompleted);
         this.fsm = fsm;
 
         this.fsm.State = BirdState.MoveHome;
@@ -43,12 +45,7 @@ public class Bird
         fsm.State = BirdState.MoveHome;
     }
 
-    public void Die()
-    {
-        fsm.State = BirdState.Dead;
-    }
-
-    public bool Alive()
+    private bool Alive()
     {
         return fsm.State != BirdState.Dead;
     }
@@ -140,12 +137,6 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     [SerializeField] Sprite HurtSprite;
     [SerializeField] Sprite DeadSprite;
 
-    public override void Die()
-    {
-        bird.Die();
-        base.Die();
-    }
-
     private new void Start()
     {
         base.Start();
@@ -169,15 +160,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
 
     private void OnCollisionEnter2D()
     {
-        if (bird.Alive())
-        {
-            creature.Hurt(10, 100);
-            bird.Hurt();
-        }
-    }
-
-    override public void OnHurtCompleted()
-    {
-        bird.OnHurtCompleted();
+        creature.Hurt(10, 100);
+        bird.Hurt();
     }
 }

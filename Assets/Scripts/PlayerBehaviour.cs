@@ -124,7 +124,7 @@ public class Player
     TimerCollection timers;
     BarCollection bars;
 
-    public void Init(BaseCreature creature, ICreatureFsm<PlayerState> fsm, IBarDisplay chargeBar, ISpellCaster spellSpawner, IPlayerInput input)
+    public void Init(BaseCreature creature, ICreatureFsm<PlayerState> fsm, IBarDisplay chargeBar, ISpellCaster spellSpawner, IPlayerInput input, IEventBus events)
     {
         this.chargeBar = chargeBar;
         this.fsm = fsm;
@@ -135,6 +135,12 @@ public class Player
         bars = creature.bars;
         physics = creature.physics;
         health = creature.health;
+
+        creature.SetOnDeathStartedCallback(() => {
+            fsm.State = PlayerState.Dead;
+            events.PlayerDied();
+        });
+        creature.SetOnHurtFinishedCallback(OnHurtCompleted);
 
         InitTimers();
         InitCharge();
@@ -309,13 +315,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     private float HeadOffsetY => headOffsetY * transform.localScale.y;
     public Vector2 HeadPosition => new Vector2(transform.position.x + HeadOffsetX, transform.position.y + HeadOffsetY);
 
-    public override void Die()
-    {
-        base.Die();
-        self.Die();
-        gameState.PlayerDied();
-    }
-
     // Unity
 
     private new void Start()
@@ -336,7 +335,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
         creature.flipXItems.Add(spellSpawn);
 
-        self.Init(creature, fsm, chargeBar, spellSpawn, input);
+        self.Init(creature, fsm, chargeBar, spellSpawn, input, gameState.gameState);
     }
 
     private new void FixedUpdate()
@@ -353,7 +352,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
         if (Input.GetKey("x"))
         {
-            Die();
+            self.Die();
         }
     }
 
@@ -370,10 +369,5 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     public bool Alive()
     {
         return self.Alive();
-    }
-
-    public override void OnHurtCompleted()
-    {
-        self.OnHurtCompleted();
     }
 }

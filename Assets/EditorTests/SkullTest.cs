@@ -6,21 +6,21 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    public class BirdTest
+    public class SkullTest
     {
         [Test]
         public void ConstructorDoesNotCrash()
         {
-            GetBird();
+            GetSkull();
         }
 
-        private Bird GetBird()
+        private Skull GetSkull()
         {
-            Bird bird = new Bird();
+            Skull skull = new Skull();
             BaseCreatureMock creature = new BaseCreatureMock();
             creature.MockInit();
-            bird.Init(creature, new CreatureFsmMock<BirdState>());
-            return bird;
+            skull.Init(creature, new CreatureFsmMock<SkullState>());
+            return skull;
         }
     }
 }

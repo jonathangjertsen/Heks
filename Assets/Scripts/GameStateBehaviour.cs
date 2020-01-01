@@ -12,8 +12,13 @@ public enum GameStateEnum
     Won
 }
 
+public interface IEventBus
+{
+    void PlayerDied();
+}
+
 [Serializable]
-public class GameState
+public class GameState : IEventBus
 {
     GameStateEnum state;
     protected TimerCollection timers;
@@ -67,11 +72,6 @@ public class GameStateBehaviour : MonoBehaviour
     public void Start()
     {
         gameState.Init(fade);
-    }
-
-    public void PlayerDied()
-    {
-        gameState.PlayerDied();
     }
 
     public void FixedUpdate()

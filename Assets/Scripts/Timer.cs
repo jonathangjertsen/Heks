@@ -151,6 +151,11 @@ public class TimerCollection
         return Get(name).Running;
     }
 
+    public void SetTimeoutCallback(string name, Timer.Timeout callback)
+    {
+        Get(name).SetTimeoutCallback(callback);
+    }
+
     public void PropagateStartAndStop()
     {
         foreach (KeyValuePair<string, Timer> pair in startedTimers)

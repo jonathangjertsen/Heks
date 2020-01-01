@@ -14,17 +14,21 @@ public class CreatureHealth : ICreatureHealth
     private readonly IBarDisplay healthBar;
     private readonly float maxHealth;
     private float currentHealth;
-    private readonly OnZeroHealth onZeroHealth;
+    private OnZeroHealth onZeroHealth;
 
     public delegate void OnZeroHealth();
 
-    public CreatureHealth(IBarDisplay healthBar, float maxHealth, OnZeroHealth onZeroHealth)
+    public CreatureHealth(IBarDisplay healthBar, float maxHealth)
     {
         this.healthBar = healthBar;
         this.maxHealth = maxHealth;
         currentHealth = maxHealth;
-        this.onZeroHealth = onZeroHealth;
         Health = maxHealth;
+    }
+
+    public void SetZeroHealthCallback(OnZeroHealth callback)
+    {
+        onZeroHealth = callback;
     }
 
     public float Health
