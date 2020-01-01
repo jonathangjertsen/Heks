@@ -129,6 +129,14 @@ namespace Tests
         public void FillTo(float proportion) { }
     }
 
+    public class SpellCasterMock : ISpellCaster
+    {
+        public void Cast(Vector2 initialVelocity, float charge)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class RigidBodyMock : IRigidBody2d
     {
         public float angularVelocity { get; set; }
