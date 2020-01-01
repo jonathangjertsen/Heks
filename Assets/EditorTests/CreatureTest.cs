@@ -16,13 +16,13 @@ namespace Tests
         private float regenPer = 2f;
 
         [Test]
-        public void Creature_InitializerDoesNotCrash()
+        public void InitializerDoesNotCrash()
         {
             GetCreature();
         }
 
         [Test]
-        public void Creature_FlipXPersists()
+        public void FlipXPersists()
         {
             var creature = GetCreature();
             creature.FlipX = true;
@@ -34,7 +34,7 @@ namespace Tests
         }
 
         [Test]
-        public void Creature_DeathSequence()
+        public void DeathSequence()
         {
             var creature = GetCreature();
             Assert.IsFalse(creature.timers.Running("deathToShrinkStart"));
@@ -59,7 +59,7 @@ namespace Tests
         }
 
         [Test]
-        public void Creature_HealthRegen()
+        public void HealthRegen()
         {
             var creature = GetCreature();
             Assert.AreApproximatelyEqual(creature.health.Health, creature.maxHealth);
@@ -73,7 +73,7 @@ namespace Tests
         }
 
         [Test]
-        public void Creature_ZeroHealthCausesDeath()
+        public void ZeroHealthCausesDeath()
         {
             var creature = GetCreature();
 
@@ -84,7 +84,7 @@ namespace Tests
         }
 
         [Test]
-        public void Creature_HurtTimerCompletes()
+        public void HurtTimerCompletes()
         {
             var creature = GetCreature();
             var hurtPer = 1f;
@@ -103,7 +103,7 @@ namespace Tests
         }
 
         [Test]
-        public void Creature_HurtAffectsHealth()
+        public void HurtAffectsHealth()
         {
             var creature = GetCreature();
             var hurtPer = 1f;
@@ -120,7 +120,7 @@ namespace Tests
         }
 
         [Test]
-        public void Creature_HurtCausesDeath()
+        public void HurtCausesDeath()
         {
             int nRounds = 10;
 

@@ -9,13 +9,13 @@ namespace Tests
     public class OctopusTest
     {
         [Test]
-        public void Octopus_ConstructorDoesNotCrash()
+        public void ConstructorDoesNotCrash()
         {
             GetOctopus();
         }
 
         [Test]
-        public void Octopus_NextFrameDoesNotCrash()
+        public void NextFrameDoesNotCrash()
         {
             Octopus octopus = GetOctopus();
             octopus.NextFrame();

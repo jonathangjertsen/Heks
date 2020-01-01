@@ -9,13 +9,13 @@ namespace Tests
     public class BirdTest
     {
         [Test]
-        public void Bird_ConstructorDoesNotCrash()
+        public void ConstructorDoesNotCrash()
         {
             var bird = GetBird();
         }
 
         [Test]
-        public void Bird_CallDieThenAliveReturnsFalse()
+        public void CallDieThenAliveReturnsFalse()
         {
             var bird = GetBird();
             bird.Die();

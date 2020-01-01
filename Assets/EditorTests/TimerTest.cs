@@ -22,7 +22,7 @@ namespace Tests
         private int timerTop = 10;
 
         [Test]
-        public void Timer_StartStartsTimer()
+        public void StartStartsTimer()
         {
             var timer = new Timer(timerTop, null);
             Assert.AreEqual(timer.Value, timerTop);
@@ -33,7 +33,7 @@ namespace Tests
         }
 
         [Test]
-        public void Timer_StopStopsTimer()
+        public void StopStopsTimer()
         {
             var timer = new Timer(timerTop, null);
             Assert.False(timer.Running);
@@ -43,7 +43,7 @@ namespace Tests
         }
 
         [Test]
-        public void Timer_CallsTimeoutAndStopsItselfAtCorrectTime()
+        public void CallsTimeoutAndStopsItselfAtCorrectTime()
         {
             bool timeoutCalled = false;
             int timerTop = 10;
@@ -59,7 +59,7 @@ namespace Tests
         }
 
         [Test]
-        public void Timer_CanUpdateSetTimeoutCallback()
+        public void CanUpdateSetTimeoutCallback()
         {
             bool timeoutCalledOriginal = false;
             bool timeoutCalledNew = false;
@@ -73,7 +73,7 @@ namespace Tests
         }
 
         [Test]
-        public void Timer_StopResetsTimerValue()
+        public void StopResetsTimerValue()
         {
             var timer = new Timer(timerTop, null);
             Assert.False(timer.Running);
@@ -89,7 +89,7 @@ namespace Tests
         }
 
         [Test]
-        public void Timer_PauseStopsTimerButDoesNotResetTimerValue()
+        public void PauseStopsTimerButDoesNotResetTimerValue()
         {
             var timer = new Timer(timerTop, null);
             Assert.False(timer.Running);
@@ -110,13 +110,13 @@ namespace Tests
         private int timerTop = 10;
 
         [Test]
-        public void TimerCollection_CanCreateCollection()
+        public void CanCreateCollection()
         {
             var timers = new TimerCollection();
         }
 
         [Test]
-        public void TimerCollection_ReadTimerFails()
+        public void ReadTimerFails()
         {
             var timers = new TimerCollection();
             try
@@ -130,7 +130,7 @@ namespace Tests
         }
 
         [Test]
-        public void TimerCollection_CanReadFromAddedTimer()
+        public void CanReadFromAddedTimer()
         {
             var timers = new TimerCollection();
             timers.Add("a timer", new Timer(10, null));
@@ -139,7 +139,7 @@ namespace Tests
         }
 
         [Test]
-        public void TimerCollection_ExceptionMessageHasAvailableTimers()
+        public void ExceptionMessageHasAvailableTimers()
         {
             var timers = new TimerCollection();
             timers.Add("a timer", new Timer(10, null));
@@ -158,7 +158,7 @@ namespace Tests
         }
 
         [Test]
-        public void TimerCollection_StartAndStopOccursOnNextTickAll()
+        public void StartAndStopOccursOnNextTickAll()
         {
             int timerTop = 50;
             bool timerBTimedOut = false;
@@ -197,7 +197,7 @@ namespace Tests
         }
 
         [Test]
-        public void TimerCollection_TimerRing()
+        public void TimerRing()
         {
             int timerTop = 10;
 
@@ -262,7 +262,7 @@ namespace Tests
         }
 
         [Test]
-        public void TimerCollection_TickAllTicksAll()
+        public void TickAllTicksAll()
         {
             int timerTopA = 10;
             int timerTopB = 15;

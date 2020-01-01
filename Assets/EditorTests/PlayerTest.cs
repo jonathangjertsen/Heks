@@ -9,13 +9,13 @@ namespace Tests
     public class PlayerTest
     {
         [Test]
-        public void Player_ConstructorDoesNotCrash()
+        public void ConstructorDoesNotCrash()
         {
             var player = GetPlayer();
         }
 
         [Test]
-        public void Player_CallDieThenAliveReturnsFalse()
+        public void CallDieThenAliveReturnsFalse()
         {
             var player = GetPlayer();
             Assert.True(player.Alive());
