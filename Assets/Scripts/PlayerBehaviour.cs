@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerState
@@ -14,100 +13,6 @@ public enum PlayerState
     Dead,
 };
 
-public enum KeyInput
-{
-    Left,
-    Right,
-    Up,
-    Down,
-    Space,
-    DebugDie
-}
-
-public interface IPlayerInput
-{
-    void Latch();
-    bool IsHeld(KeyInput key);
-    bool IsAnyHeld();
-}
-
-public class PlayerInput : IPlayerInput
-{
-    // Allow a singleton interface
-    static PlayerInput instance;
-    public static PlayerInput Instance()
-    {
-        if (instance == null)
-        {
-            instance = new PlayerInput();
-        }
-        return instance;
-    }
-
-    private Dictionary<string, KeyInput> stringToKeyInput;
-    private Dictionary<KeyInput, bool> keysHeld;
-
-    public PlayerInput()
-    {
-        stringToKeyInput = new Dictionary<string, KeyInput>
-        {
-            { "up", KeyInput.Up },
-            { "left", KeyInput.Left },
-            { "down", KeyInput.Down },
-            { "right", KeyInput.Right },
-            { "w", KeyInput.Up },
-            { "a", KeyInput.Left },
-            { "s", KeyInput.Down },
-            { "d", KeyInput.Right },
-            { "space", KeyInput.Space },
-            { "x", KeyInput.DebugDie }
-        };
-        InitKeysHeld();
-    }
-
-    private void InitKeysHeld()
-    {
-        keysHeld = new Dictionary<KeyInput, bool>
-        {
-            { KeyInput.Up, false },
-            { KeyInput.Left, false },
-            { KeyInput.Down, false },
-            { KeyInput.Right, false },
-            { KeyInput.Space, false },
-            { KeyInput.DebugDie, false },
-        };
-    }
-
-    public void Latch()
-    {
-        InitKeysHeld();
-        foreach(KeyValuePair<string, KeyInput> pair in stringToKeyInput)
-        {
-            if (Input.GetKey(pair.Key))
-            {
-                keysHeld[pair.Value] = true;
-            }
-        }
-    }
-
-    public bool IsHeld(KeyInput key)
-    {
-        return keysHeld[key];
-    }
-
-    public bool IsAnyHeld()
-    {
-        foreach(KeyValuePair<KeyInput, bool> pair in keysHeld)
-        {
-            if (pair.Value)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
 [Serializable]
 public class Player
 {
@@ -121,7 +26,13 @@ public class Player
     float charge;
     int chargeDirection = 1;
     IBarDisplay chargeBar;
-    float Charge { get => charge; set => chargeBar.FillTo((charge = value) / chargeTop); }
+    float Charge
+    {
+        get => charge; set
+        {
+            chargeBar.FillTo((charge = value) / chargeTop);
+        }
+    }
 
     [Space]
     [Header("FSM timers")]
@@ -241,6 +152,7 @@ public class Player
             if (fsm.State == PlayerState.Flying)
             {
                 fsm.State = PlayerState.Charging;
+                events.ChargeStart();
             }
             else if (fsm.State == PlayerState.Charging)
             {
@@ -250,6 +162,7 @@ public class Player
         else if (fsm.State == PlayerState.Charging)
         {
             CastSpell();
+            events.ChargeStop();
         }
     }
 

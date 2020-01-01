@@ -40,13 +40,14 @@ public class BarBehaviour : MonoBehaviour, IBarDisplay
         parentInitialScale = transform.parent.localScale;
     }
 
-    public void FillTo(float proportion)
+    public virtual void FillTo(float proportion)
     {
         transform.localPosition = new Vector3(
             endX + proportion * (startX - endX),
             transform.localPosition.y,
             0
         );
+
     }
 
     public void Hide()
