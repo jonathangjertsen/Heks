@@ -52,9 +52,16 @@ public class Player
         health = creature.health;
         this.spellSpawner = spellSpawner;
 
-        timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
-        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
-        timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
+        timers.Add("angry", new Timer(angryTimerTop, () => {
+            fsm.State = PlayerState.Flying;
+            timers.Stop("angry");
+        }));
+        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => {
+            fsm.State = PlayerState.Standing;
+        }));
+        timers.Add("cast", new Timer(castTimerTop, () => {
+            fsm.State = PlayerState.Flying;
+        }));
 
         Charge = 0;
         chargeBar.FillTo(0);
@@ -69,22 +76,6 @@ public class Player
     public bool Alive()
     {
         return fsm.State != PlayerState.Dead;
-    }
-
-    private void OnAngryTimerExpired()
-    {
-        fsm.State = PlayerState.Flying;
-        timers.Stop("angry");
-    }
-
-    private void OnCastTimerExpired()
-    {
-        fsm.State = PlayerState.Flying;
-    }
-
-    private void OnFlyingToIdleTimerExpired()
-    {
-        fsm.State = PlayerState.Standing;
     }
 
     public void OnHurtCompleted()
