@@ -84,7 +84,6 @@ public class Player
     public void OnHurtCompleted()
     {
         fsm.State = PlayerState.Angry;
-        timers.Stop("hurt");
         timers.Start("angry");
     }
 
