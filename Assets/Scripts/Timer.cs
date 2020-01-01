@@ -42,35 +42,7 @@ public class Timer
             return;
         }
 
-        Value -= 1;
-        if (Value <= 0)
-        {
-            if (logCallbacks)
-            {
-                Debug.Log($"Invoking onTimeout callback for {name}");
-            }
-            onTimeout();
-
-            if (mode == TimerMode.Oneshot)
-            {
-                Stop();
-            }
-            else if (mode == TimerMode.Repeat)
-            {
-                Start();
-            }
-        }
-        else
-        {
-            if (onTick != null)
-            {
-                if (logCallbacks)
-                {
-                    Debug.Log($"Invoking onTick callback for {name}");
-                }
-                onTick();
-            }
-        }
+        DecrementTimer();
     }
 
     public void SetTimeoutCallback(Timeout callback)
@@ -93,6 +65,49 @@ public class Timer
     public void Pause()
     {
         Running = false;
+    }
+
+    private void DecrementTimer()
+    {
+        Value -= 1;
+        if (Value <= 0)
+        {
+            TimerReachedZero();
+        }
+        else
+        {
+            if (onTick != null)
+            {
+                TimerTickedNotZero();
+            }
+        }
+    }
+
+    private void TimerReachedZero()
+    {
+        if (logCallbacks)
+        {
+            Debug.Log($"Invoking onTimeout callback for {name}");
+        }
+        onTimeout();
+
+        if (mode == TimerMode.Oneshot)
+        {
+            Stop();
+        }
+        else if (mode == TimerMode.Repeat)
+        {
+            Start();
+        }
+    }
+
+    private void TimerTickedNotZero()
+    {
+        if (logCallbacks)
+        {
+            Debug.Log($"Invoking onTick callback for {name}");
+        }
+        onTick();
     }
 }
 
