@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -97,6 +98,14 @@ public class Timer
     public bool Running { get; set; }
 }
 
+public class TimerNotFoundException : Exception
+{
+    public TimerNotFoundException(string name, Dictionary<string, Timer> timers)
+        : base($"No timer named '{name}'. Available timers: {string.Join(", ", timers.Select(kvp => "'" + kvp.Key + "'"))}")
+    {
+    }
+}
+
 public class TimerCollection
 {
     private Dictionary<string, Timer> startedTimers;
@@ -121,21 +130,16 @@ public class TimerCollection
 
     public int Value(string name)
     {
-        return timers[name].Value;
+        return Get(name).Value;
     }
 
     public bool Running(string name)
     {
-        return timers[name].Running;
+        return Get(name).Running;
     }
 
-    public void TickAll()
+    public void PropagateStartAndStop()
     {
-        foreach (KeyValuePair<string, Timer> pair in timers)
-        {
-            pair.Value.Tick();
-        }
-
         foreach (KeyValuePair<string, Timer> pair in startedTimers)
         {
             pair.Value.Start();
@@ -149,34 +153,29 @@ public class TimerCollection
         stoppedTimers = new Dictionary<string, Timer>();
     }
 
-    public void Start(string name)
+    public void TickAll()
     {
-        if (timers.TryGetValue(name, out Timer timer))
+        foreach (KeyValuePair<string, Timer> pair in timers)
         {
-            if (!startedTimers.ContainsKey(name))
-            {
-                startedTimers.Add(name, timer);
-            }
-        }
-        else
-        {
-            throw new System.Exception($"No timer named {name}");
+            pair.Value.Tick();
         }
 
+        PropagateStartAndStop();
+    }
+
+    public void Start(string name)
+    {
+        if (!startedTimers.ContainsKey(name))
+        {
+            startedTimers.Add(name, Get(name));
+        }
     }
 
     public void Stop(string name)
     {
-        if (timers.TryGetValue(name, out Timer timer))
+        if (!stoppedTimers.ContainsKey(name))
         {
-            if (!stoppedTimers.ContainsKey(name))
-            {
-                stoppedTimers.Add(name, timer);
-            }
-        }
-        else
-        {
-            throw new System.Exception($"No timer named {name}");
+            stoppedTimers.Add(name, Get(name));
         }
     }
 
@@ -185,6 +184,18 @@ public class TimerCollection
         foreach (KeyValuePair<string, Timer> pair in timers)
         {
             pair.Value.Stop();
+        }
+    }
+
+    private Timer Get(string name)
+    {
+        if (timers.TryGetValue(name, out Timer timer))
+        {
+            return timer;
+        }
+        else
+        {
+            throw new TimerNotFoundException(name, timers);
         }
     }
 }
