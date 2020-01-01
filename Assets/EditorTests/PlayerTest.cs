@@ -32,7 +32,8 @@ namespace Tests
                 creature,
                 new CreatureFsmMock<PlayerState>(),
                 new BarMock(),
-                new SpellCasterMock()
+                new SpellCasterMock(),
+                new PlayerInputMock()
             );
             return player;
         }

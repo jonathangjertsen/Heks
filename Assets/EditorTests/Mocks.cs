@@ -137,6 +137,24 @@ namespace Tests
         }
     }
 
+    public class PlayerInputMock : IPlayerInput
+    {
+        public bool IsAnyHeld()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsHeld(KeyInput key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Latch()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class RigidBodyMock : IRigidBody2d
     {
         public float angularVelocity { get; set; }

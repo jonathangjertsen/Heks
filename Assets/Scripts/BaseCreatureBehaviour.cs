@@ -74,16 +74,16 @@ public class BaseCreature
         timers.TickAll();
     }
 
-    public void RegenerateHealth()
-    {
-        health.Health += regenPer;
-    }
-
     public void Hurt(float damage, float recoilTorque = 0f)
     {
         timers.Start("hurt");
         health.Health -= damage;
         physics.Recoil(recoilTorque);
+    }
+
+    private void RegenerateHealth()
+    {
+        health.Health += regenPer;
     }
 }
 
