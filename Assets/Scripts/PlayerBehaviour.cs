@@ -46,22 +46,26 @@ public class Player
     {
         this.chargeBar = chargeBar;
         this.fsm = fsm;
+        this.spellSpawner = spellSpawner;
+
         timers = creature.timers;
         bars = creature.bars;
         physics = creature.physics;
         health = creature.health;
-        this.spellSpawner = spellSpawner;
 
-        timers.Add("angry", new Timer(angryTimerTop, () => {
-            fsm.State = PlayerState.Flying;
-        }));
-        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => {
-            fsm.State = PlayerState.Standing;
-        }));
-        timers.Add("cast", new Timer(castTimerTop, () => {
-            fsm.State = PlayerState.Flying;
-        }));
+        InitTimers();
+        InitCharge();
+    }
 
+    private void InitTimers()
+    {
+        timers.Add("angry", new Timer(angryTimerTop, () => fsm.State = PlayerState.Flying));
+        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => fsm.State = PlayerState.Standing));
+        timers.Add("cast", new Timer(castTimerTop, () => fsm.State = PlayerState.Flying));
+    }
+
+    private void InitCharge()
+    {
         Charge = 0;
         chargeBar.FillTo(0);
         bars.Add(chargeBar);
