@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class BarBehaviour : MonoBehaviour, IBarDisplay
 {
+    [SerializeField] float endX;
+    [SerializeField] bool flipWithParent = true;
+
     private float startX;
-    public float endX;
     private bool flipX;
-    public bool flipWithParent = true;
 
     private Vector3 parentInitialScale;
 

@@ -20,11 +20,11 @@ public class GameState
     private IFadeIn fade;
 
     [Header("Debug")]
-    public bool logTimerCallbacks;
+    [SerializeField] bool logTimerCallbacks;
 
     [Space] [Header("Timing")]
-    public int deathToGameOverStartTop;
-    public int gameOverFadeTop;
+    [SerializeField] int deathToGameOverStartTop;
+    [SerializeField] int gameOverFadeTop;
 
     public void Init(IFadeIn fade)
     {

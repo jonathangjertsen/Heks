@@ -11,19 +11,19 @@ public enum OctopusState
 public class Octopus
 {
     [Range(-0.1f, 0.1f)]
-    public float freqX = 0.3f;
+    [SerializeField] float freqX = 0.3f;
 
     [Range(-0.1f, 0.1f)]
-    public float freqY = 0.2f;
+    [SerializeField] float freqY = 0.2f;
 
     [Range(0.0f, 0.04f)]
-    public float ampX = 0.02f;
+    [SerializeField] float ampX = 0.02f;
 
     [Range(0.0f, 0.04f)]
-    public float ampY = 0.03f;
+    [SerializeField] float ampY = 0.03f;
 
     [Range(0f, 10f)]
-    public float uprightTorque = 4;
+    [SerializeField] float uprightTorque = 4;
 
     private ICreaturePhysics physics;
     private ICreatureFsm<OctopusState> fsm;

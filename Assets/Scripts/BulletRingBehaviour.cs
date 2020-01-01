@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class BulletRingBehaviour : SpellBehaviour
 {
-    public float ringSize;
-    public float maxOutwardSpeed;
-    public int maxNum;
+    [SerializeField] float ringSize;
+    [SerializeField] float maxOutwardSpeed;
+    [SerializeField] int maxNum;
 
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {

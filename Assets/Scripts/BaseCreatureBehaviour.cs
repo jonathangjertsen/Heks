@@ -9,7 +9,7 @@ public class BaseCreature
     public float regenPer = 0.02f;
 
     [Space] [Header("Physics")]
-    public CreaturePhysicsProperties physicsProperties;
+    [SerializeField] protected CreaturePhysicsProperties physicsProperties;
 
     [Space] [Header("Damage")]
     public int hurtTimerTop = 60;
@@ -18,11 +18,10 @@ public class BaseCreature
     public int deathToShrinkStartTimerTop = 100;
     public int shrinkTimerTop = 200;
 
-    public FlipXCollection flipXItems;
+    public FlipXCollection flipXItems { get; protected set; }
     public BarCollection bars;
     public CreatureHealth health;
     public TimerCollection timers;
-
     public ICreaturePhysics physics;
 
     public void Init(

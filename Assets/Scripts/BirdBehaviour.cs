@@ -15,10 +15,10 @@ public class Bird
 {
     [Space]
     [Header("Chasing behaviour")]
-    public float visionRadius = 15f;
-    public float overshoot = 0.01f;
-    public float maxVelocityX = 10.0f;
-    public float maxVelocityY = 10.0f;
+    [SerializeField] float visionRadius = 15f;
+    [SerializeField] float overshoot = 0.01f;
+    [SerializeField] float maxVelocityX = 10.0f;
+    [SerializeField] float maxVelocityY = 10.0f;
 
     private Vector2 vectorToPlayer;
     private Vector2 home;
@@ -135,10 +135,10 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     public AudioClip CryClip;
 
     [Space] [Header("Sprites")]
-    public Sprite DefaultSprite;
-    public Sprite ChargingSprite;
-    public Sprite HurtSprite;
-    public Sprite DeadSprite;
+    [SerializeField] Sprite DefaultSprite;
+    [SerializeField] Sprite ChargingSprite;
+    [SerializeField] Sprite HurtSprite;
+    [SerializeField] Sprite DeadSprite;
 
     public override void Die()
     {

@@ -14,13 +14,15 @@ public class Timer
     private readonly int top;
     private Timeout onTimeout;
     private readonly OnTick onTick;
-    private int timer;
     private readonly TimerMode mode;
     public bool logCallbacks = false;
     public string name = "unnamed";
 
     public delegate void OnTick();
     public delegate void Timeout();
+
+    public int Value { get; private set; }
+    public bool Running { get; private set; }
 
     public Timer(int top, Timeout onTimeout, TimerMode mode = TimerMode.Oneshot, OnTick onTick = null)
     {
@@ -29,11 +31,9 @@ public class Timer
         this.onTick = onTick;
         this.mode = mode;
 
-        timer = top;
+        Value = top;
         Running = false;
     }
-
-    public int Value => timer;
 
     public void Tick()
     {
@@ -42,8 +42,8 @@ public class Timer
             return;
         }
 
-        timer -= 1;
-        if (timer <= 0)
+        Value -= 1;
+        if (Value <= 0)
         {
             if (logCallbacks)
             {
@@ -81,21 +81,19 @@ public class Timer
     public void Start()
     {
         Running = true;
-        timer = top;
+        Value = top;
     }
 
     public void Stop()
     {
         Running = false;
-        timer = top;
+        Value = top;
     }
 
     public void Pause()
     {
         Running = false;
     }
-
-    public bool Running { get; set; }
 }
 
 public class TimerNotFoundException : Exception

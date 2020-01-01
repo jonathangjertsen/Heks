@@ -2,10 +2,10 @@
 
 public class CameraFollowBehaviour : MonoBehaviour
 {
-    public float minY;
-    public float maxY;
-    public float minX;
-    public float maxX;
+    [SerializeField] float minY;
+    [SerializeField] float maxY;
+    [SerializeField] float minX;
+    [SerializeField] float maxX;
     private readonly float updateCoeffX = 0.1f;
     private readonly float updateCoeffY = 0.1f;
 

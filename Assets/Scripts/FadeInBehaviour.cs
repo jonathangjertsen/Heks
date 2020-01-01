@@ -14,7 +14,7 @@ public class FadeInBehaviour : MonoBehaviour, IFadeIn
     protected TimerCollection timers;
 
     private List<Graphic> components;
-    public int fadeTop;
+    [SerializeField] int fadeTop;
 
     private FadeEndedCallback endCallback = null;
 

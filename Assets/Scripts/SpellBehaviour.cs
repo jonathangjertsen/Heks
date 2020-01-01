@@ -9,7 +9,7 @@ public interface ISpell
 
 public class SpellBehaviour : MonoBehaviour, ISpell
 {
-    public int liveTimerTop = 50;
+    [SerializeField] int liveTimerTop = 50;
     private int liveTimer;
 
     protected BulletPhysics physics;

@@ -1090,6 +1090,8 @@ MonoBehaviour:
       maxJerkY: 5
       idleThreshold: 1
     hurtTimerTop: 60
+    deathToShrinkStartTimerTop: 100
+    shrinkTimerTop: 200
   logFsmChanges: 0
   logTimerCallbacks: 1
   healthBar: {fileID: 1035123455}
@@ -2869,7 +2871,7 @@ PrefabInstance:
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}

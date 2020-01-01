@@ -23,7 +23,7 @@ public class SpellSpawner
 {
     private ISpell activeSpell;
     private System.Random random;
-    public ISpell[] spells;
+    [SerializeField] ISpell[] spells;
     private ISpellInstantiator instantiator;
     private ISpellVisualizer viz;
 

@@ -14,13 +14,13 @@ public enum SkullState
 public class Skull
 {
     [Space] [Header("Jumping and chasing behaviour")]
-    public float visionRadius = 15f;
-    public int hopTimerTop = 50;
-    public int hopForce = 10;
-    public int hurtTimerTop = 10;
+    [SerializeField] float visionRadius = 15f;
+    [SerializeField] int hopTimerTop = 50;
+    [SerializeField] int hopForce = 10;
+    [SerializeField] int hurtTimerTop = 10;
 
     [Space] [Header("Glitch filtering")]
-    public int collisionExitToNotGroundedTimerTop = 10;
+    [SerializeField] int collisionExitToNotGroundedTimerTop = 10;
 
     private TimerCollection timers;
     private ICreatureFsm<SkullState> fsm;

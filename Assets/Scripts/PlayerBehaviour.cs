@@ -97,32 +97,32 @@ public class PlayerInput : IPlayerInput
 [Serializable]
 public class Player
 {
-    public float maxVelocityX = 10.0f;
-    public float maxVelocityY = 10.0f;
+    [SerializeField] float maxVelocityX = 10.0f;
+    [SerializeField] float maxVelocityY = 10.0f;
 
     [Space]
     [Header("Charging and casting")]
-    public float chargeTop = 50;
-    public int castTorque = 150;
-    private float charge;
-    private int chargeDirection = 1;
-    private IBarDisplay chargeBar;
-    private float Charge { get => charge; set => chargeBar.FillTo((charge = value) / chargeTop); }
+    [SerializeField] float chargeTop = 50;
+    [SerializeField] int castTorque = 150;
+    float charge;
+    int chargeDirection = 1;
+    IBarDisplay chargeBar;
+    float Charge { get => charge; set => chargeBar.FillTo((charge = value) / chargeTop); }
 
     [Space]
     [Header("FSM timers")]
-    public int hurtTimerTop = 30;
-    public int angryTimerTop = 60;
-    public int flyingToIdleTimerTop = 60;
-    public int castTimerTop = 30;
+    [SerializeField] int hurtTimerTop = 30;
+    [SerializeField] int angryTimerTop = 60;
+    [SerializeField] int flyingToIdleTimerTop = 60;
+    [SerializeField] int castTimerTop = 30;
 
-    private ISpellCaster spellSpawner;
-    private ICreatureFsm<PlayerState> fsm;
-    private ICreaturePhysics physics;
-    private ICreatureHealth health;
-    private IPlayerInput input;
-    private TimerCollection timers;
-    private BarCollection bars;
+    ISpellCaster spellSpawner;
+    ICreatureFsm<PlayerState> fsm;
+    ICreaturePhysics physics;
+    ICreatureHealth health;
+    IPlayerInput input;
+    TimerCollection timers;
+    BarCollection bars;
 
     public void Init(BaseCreature creature, ICreatureFsm<PlayerState> fsm, IBarDisplay chargeBar, ISpellCaster spellSpawner, IPlayerInput input)
     {
@@ -275,34 +275,33 @@ public class Player
 
 public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 {
-    public BarBehaviour chargeBar;
-    public GameStateBehaviour gameState;
-    public SpellSpawnBehaviour spellSpawn;
+    [SerializeField] BarBehaviour chargeBar;
+    [SerializeField] GameStateBehaviour gameState;
+    [SerializeField] SpellSpawnBehaviour spellSpawn;
 
     [Space] [Header("Movement")]
-    public Player self;
+    [SerializeField] Player self;
 
     [Space] [Header("Head position")]
-    public float headOffsetX = 4.87f;
-    public float headOffsetY = 6.06f;
+    [SerializeField] float headOffsetX = 4.87f;
+    [SerializeField] float headOffsetY = 6.06f;
 
     [Space] [Header("Audio clips")]
-    public AudioClip YellClip;
-    public AudioClip HurtClip;
-    public AudioClip ChargeClip;
-    public AudioClip CastClip;
+    [SerializeField] AudioClip YellClip;
+    [SerializeField] AudioClip HurtClip;
+    [SerializeField] AudioClip ChargeClip;
+    [SerializeField] AudioClip CastClip;
 
     [Space] [Header("Sprites")]
-    public Sprite FlyingSprite;
-    public Sprite StandingSprite;
-    public Sprite ChargingSprite;
-    public Sprite CastingSprite;
-    public Sprite HurtSprite;
-    public Sprite AngrySprite;
-    public Sprite DeadSprite;
+    [SerializeField] Sprite FlyingSprite;
+    [SerializeField] Sprite StandingSprite;
+    [SerializeField] Sprite ChargingSprite;
+    [SerializeField] Sprite CastingSprite;
+    [SerializeField] Sprite HurtSprite;
+    [SerializeField] Sprite AngrySprite;
+    [SerializeField] Sprite DeadSprite;
 
-    // 
-    private IPlayerInput input;
+    IPlayerInput input;
 
     // Simple properties
 
