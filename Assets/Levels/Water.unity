@@ -1377,6 +1377,16 @@ PrefabInstance:
       propertyPath: creature.logFsmChanges
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2071136512551164443, guid: cfb32e77694556d4e8cc33e43f1fe123,
+        type: 3}
+      propertyPath: logTimerCallbacks
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071136512551164443, guid: cfb32e77694556d4e8cc33e43f1fe123,
+        type: 3}
+      propertyPath: logFsmChanges
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2071136512681157912, guid: cfb32e77694556d4e8cc33e43f1fe123,
         type: 3}
       propertyPath: m_LocalPosition.x

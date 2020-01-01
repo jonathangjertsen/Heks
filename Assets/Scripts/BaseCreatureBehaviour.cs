@@ -18,7 +18,7 @@ public class BaseCreature
     public int deathToShrinkStartTimerTop = 100;
     public int shrinkTimerTop = 200;
 
-    public FlipXCollection flipXItems { get; protected set; }
+    public FlipXCollection FlipXItems { get; protected set; }
     public BarCollection bars;
     public CreatureHealth health;
     public TimerCollection timers;
@@ -41,9 +41,9 @@ public class BaseCreature
         timers.Add("shrink", new Timer(shrinkTimerTop, null, onTick: Shrinking));
         timers.Add("hurt", new Timer(hurtTimerTop, null));
 
-        flipXItems = new FlipXCollection();
-        flipXItems.Add(bars);
-        flipXItems.Add(physics);
+        FlipXItems = new FlipXCollection();
+        FlipXItems.Add(bars);
+        FlipXItems.Add(physics);
     }
 
     public void SetOnDeathStartedCallback(CreatureHealth.OnZeroHealth callback)
@@ -59,6 +59,11 @@ public class BaseCreature
         timers.SetTimeoutCallback("shrink", callback);
     }
 
+    public void SetOnHurtStartedCallback(CreatureHealth.OnHurt callback)
+    {
+        health.SetHurtCallback(callback);
+    }
+
     public void SetOnHurtFinishedCallback(Timer.Timeout callback)
     {
         timers.SetTimeoutCallback("hurt", callback);
@@ -66,14 +71,16 @@ public class BaseCreature
 
     public bool FlipX
     {
-        get => flipXItems.FlipX;
-        set => flipXItems.FlipX = value;
+        get => FlipXItems.FlipX;
+        set => FlipXItems.FlipX = value;
     }
 
     private void Shrinking()
     {
         float proportion = timers.Value("shrink") / (float)shrinkTimerTop;
         physics.Size = physics.InitialSize * proportion;
+
+        Debug.Log($"Shrinking, {proportion}");
     }
 
     public void Die()
@@ -93,14 +100,14 @@ public class BaseCreature
         if (health.Health > 0)
         {
             timers.Start("hurt");
-            health.Health -= damage;
+            health.Hurt(damage);
             physics.Recoil(recoilTorque);
         }
     }
 
     private void RegenerateHealth()
     {
-        health.Health += regenPer;
+        health.Heal(regenPer);
     }
 }
 
@@ -129,12 +136,20 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
         creature.SetOnDeathFinishedCallback(() => Destroy(this));
         creature.timers.logCallbacks = logTimerCallbacks;
 
-        fsm = new CreatureFsm<StateEnum>(this);
-        fsm.logChanges = logFsmChanges;
+        fsm = new CreatureFsm<StateEnum>(this)
+        {
+            logChanges = logFsmChanges
+        };
+
+        AddFsmStates();
     }
 
     protected void FixedUpdate()
     {
         creature.FixedUpdate();
+    }
+
+    protected virtual void AddFsmStates()
+    {
     }
 }

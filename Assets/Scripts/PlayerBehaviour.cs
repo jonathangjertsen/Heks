@@ -20,7 +20,8 @@ public enum KeyInput
     Right,
     Up,
     Down,
-    Space
+    Space,
+    DebugDie
 }
 
 public interface IPlayerInput
@@ -32,6 +33,17 @@ public interface IPlayerInput
 
 public class PlayerInput : IPlayerInput
 {
+    // Allow a singleton interface
+    static PlayerInput instance;
+    public static PlayerInput Instance()
+    {
+        if (instance == null)
+        {
+            instance = new PlayerInput();
+        }
+        return instance;
+    }
+
     private Dictionary<string, KeyInput> stringToKeyInput;
     private Dictionary<KeyInput, bool> keysHeld;
 
@@ -48,6 +60,7 @@ public class PlayerInput : IPlayerInput
             { "s", KeyInput.Down },
             { "d", KeyInput.Right },
             { "space", KeyInput.Space },
+            { "x", KeyInput.DebugDie }
         };
         InitKeysHeld();
     }
@@ -61,6 +74,7 @@ public class PlayerInput : IPlayerInput
             { KeyInput.Down, false },
             { KeyInput.Right, false },
             { KeyInput.Space, false },
+            { KeyInput.DebugDie, false },
         };
     }
 
@@ -116,13 +130,20 @@ public class Player
     [SerializeField] int flyingToIdleTimerTop = 60;
     [SerializeField] int castTimerTop = 30;
 
+    [Space]
+    [Header("Head position")]
+    [SerializeField] float headOffsetX = 4.87f;
+    [SerializeField] float headOffsetY = 6.06f;
+
+    private float HeadOffsetX => headOffsetX * creature.physics.Size.x;
+    private float HeadOffsetY => headOffsetY * creature.physics.Size.y;
+    public Vector2 HeadPosition => new Vector2(creature.physics.Position().x + HeadOffsetX, creature.physics.Position().y + HeadOffsetY);
+
+    BaseCreature creature;
     ISpellCaster spellSpawner;
     ICreatureFsm<PlayerState> fsm;
-    ICreaturePhysics physics;
-    ICreatureHealth health;
+    IEventBus events;
     IPlayerInput input;
-    TimerCollection timers;
-    BarCollection bars;
 
     public void Init(BaseCreature creature, ICreatureFsm<PlayerState> fsm, IBarDisplay chargeBar, ISpellCaster spellSpawner, IPlayerInput input, IEventBus events)
     {
@@ -130,25 +151,26 @@ public class Player
         this.fsm = fsm;
         this.spellSpawner = spellSpawner;
         this.input = input;
+        this.events = events;
 
-        timers = creature.timers;
-        bars = creature.bars;
-        physics = creature.physics;
-        health = creature.health;
-
-        creature.SetOnDeathStartedCallback(() => {
-            fsm.State = PlayerState.Dead;
-            events.PlayerDied();
-        });
+        this.creature = creature;
+        creature.SetOnDeathStartedCallback(Die);
         creature.SetOnHurtFinishedCallback(OnHurtCompleted);
+        creature.FlipXItems.Add(spellSpawner);
 
         InitTimers();
         InitCharge();
+
+        fsm.State = PlayerState.Flying;
     }
 
-    public void Die()
+    private void Die()
     {
+        creature.timers.Stop("flyingToIdle");
+        creature.timers.Stop("cast");
+        creature.timers.Stop("angry");
         fsm.State = PlayerState.Dead;
+        events.PlayerDied();
     }
 
     public bool Alive()
@@ -159,7 +181,7 @@ public class Player
     public void OnHurtCompleted()
     {
         fsm.State = PlayerState.Angry;
-        timers.Start("angry");
+        creature.timers.Start("angry");
     }
 
     public void OnTriggerEnter2D()
@@ -172,13 +194,24 @@ public class Player
         if (fsm.State != PlayerState.Hurt && fsm.State != PlayerState.Angry)
         {
             fsm.State = PlayerState.Hurt;
-            timers.Start("hurt");
-            health.Health -= 10;
+            creature.Hurt(10, -400);
         }
     }
 
     public void FixedUpdate()
     {
+        if (fsm.State == PlayerState.Dead)
+        {
+            return;
+        }
+
+        if (input.IsHeld(KeyInput.DebugDie))
+        {
+            creature.health.Hurt(creature.maxHealth * 2);
+        }
+
+        creature.FlipX = input.IsHeld(KeyInput.Right) ? false : input.IsHeld(KeyInput.Left) ? true : creature.FlipX;
+
         bool right = input.IsHeld(KeyInput.Right);
         bool left = input.IsHeld(KeyInput.Left);
         bool down = input.IsHeld(KeyInput.Down);
@@ -191,8 +224,8 @@ public class Player
         bool updateY = up ^ down;
         target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
         target.y = maxVelocityY * (up ? 1 : down ? -1 : 0);
-        physics.ApproachVelocity(updateX, updateY, target);
-        physics.ApproachAngularVelocity(target);
+        creature.physics.ApproachVelocity(updateX, updateY, target);
+        creature.physics.ApproachAngularVelocity(target);
 
         // Cast
         UpdateCastCycleStates(space);
@@ -222,17 +255,17 @@ public class Player
 
     private void UpdateToIdleIfIdle(bool anyKeyHeld)
     {
-        if (physics.IsIdle())
+        if (creature.physics.IsIdle())
         {
             if (fsm.State == PlayerState.Flying)
             {
                 fsm.State = PlayerState.Still;
-                timers.Start("flyingToIdle");
+                creature.timers.Start("flyingToIdle");
             }
         }
         else
         {
-            timers.Stop("flyingToIdle");
+            creature.timers.Stop("flyingToIdle");
         }
 
         if ((fsm.State == PlayerState.Standing || fsm.State == PlayerState.Still) && anyKeyHeld)
@@ -257,24 +290,24 @@ public class Player
 
     private void InitTimers()
     {
-        timers.Add("angry", new Timer(angryTimerTop, () => fsm.State = PlayerState.Flying));
-        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => fsm.State = PlayerState.Standing));
-        timers.Add("cast", new Timer(castTimerTop, () => fsm.State = PlayerState.Flying));
+        creature.timers.Add("angry", new Timer(angryTimerTop, () => fsm.State = PlayerState.Flying));
+        creature.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => fsm.State = PlayerState.Standing));
+        creature.timers.Add("cast", new Timer(castTimerTop, () => fsm.State = PlayerState.Flying));
     }
 
     private void InitCharge()
     {
         Charge = 0;
         chargeBar.FillTo(0);
-        bars.Add(chargeBar);
+        creature.bars.Add(chargeBar);
     }
 
     private void CastSpell()
     {
         fsm.State = PlayerState.Casting;
-        timers.Start("cast");
-        spellSpawner.Cast(physics.Velocity(), charge / chargeTop);
-        physics.Recoil(castTorque);
+        creature.timers.Start("cast");
+        spellSpawner.Cast(creature.physics.Velocity(), charge / chargeTop);
+        creature.physics.Recoil(castTorque);
         Charge = 0;
     }
 }
@@ -287,10 +320,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
     [Space] [Header("Movement")]
     [SerializeField] Player self;
-
-    [Space] [Header("Head position")]
-    [SerializeField] float headOffsetX = 4.87f;
-    [SerializeField] float headOffsetY = 6.06f;
 
     [Space] [Header("Audio clips")]
     [SerializeField] AudioClip YellClip;
@@ -307,58 +336,23 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     [SerializeField] Sprite AngrySprite;
     [SerializeField] Sprite DeadSprite;
 
-    IPlayerInput input;
-
-    // Simple properties
-
-    private float HeadOffsetX => headOffsetX * transform.localScale.x;
-    private float HeadOffsetY => headOffsetY * transform.localScale.y;
-    public Vector2 HeadPosition => new Vector2(transform.position.x + HeadOffsetX, transform.position.y + HeadOffsetY);
-
     // Unity
 
     private new void Start()
     {
         base.Start();
-
-        input = new PlayerInput();
-
-        fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
-        fsm.Add(PlayerState.Hurt, HurtSprite, HurtClip);
-        fsm.Add(PlayerState.Casting, CastingSprite, CastClip);
-        fsm.Add(PlayerState.Dead, DeadSprite, null);
-        fsm.Add(PlayerState.Flying, FlyingSprite, null);
-        fsm.Add(PlayerState.Standing, StandingSprite, null);
-        fsm.Add(PlayerState.Still, FlyingSprite, null);
-        fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
-        fsm.State = PlayerState.Flying;
-
-        creature.flipXItems.Add(spellSpawn);
-
-        self.Init(creature, fsm, chargeBar, spellSpawn, input, gameState.gameState);
+        self.Init(creature, fsm, chargeBar, spellSpawn, PlayerInput.Instance(), gameState.gameState);
     }
 
     private new void FixedUpdate()
     {
         base.FixedUpdate();
-
-        if (fsm.State == PlayerState.Dead)
-        {
-            return;
-        }
-
-        creature.FlipX = input.IsHeld(KeyInput.Right) ? false : input.IsHeld(KeyInput.Left) ? true : creature.FlipX;
         self.FixedUpdate();
-
-        if (Input.GetKey("x"))
-        {
-            self.Die();
-        }
     }
 
     private void Update()
     {
-        input.Latch();
+        PlayerInput.Instance().Latch();
     }
 
     private void OnTriggerEnter2D()
@@ -369,5 +363,19 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     public bool Alive()
     {
         return self.Alive();
+    }
+
+    public Vector2 HeadPosition => self.HeadPosition;
+
+    protected override void AddFsmStates()
+    {
+        fsm.Add(PlayerState.Angry, AngrySprite, YellClip);
+        fsm.Add(PlayerState.Hurt, HurtSprite, HurtClip);
+        fsm.Add(PlayerState.Casting, CastingSprite, CastClip);
+        fsm.Add(PlayerState.Dead, DeadSprite, null);
+        fsm.Add(PlayerState.Flying, FlyingSprite, null);
+        fsm.Add(PlayerState.Standing, StandingSprite, null);
+        fsm.Add(PlayerState.Still, FlyingSprite, null);
+        fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
     }
 }

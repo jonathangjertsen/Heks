@@ -16,10 +16,10 @@ public interface IBasePhysics : IFlipX
 
 public interface ITransform
 {
-    Vector3 eulerAngles { get; set; }
-    Vector3 localScale { get; set; }
-    Vector3 position { get; set; }
-    Vector3 right { get; set; }
+    Vector3 EulerAngles { get; set; }
+    Vector3 LocalScale { get; set; }
+    Vector3 Position { get; set; }
+    Vector3 Right { get; set; }
 }
 
 public class TransformWrapper : ITransform
@@ -31,17 +31,17 @@ public class TransformWrapper : ITransform
         this.t = t;
     }
 
-    public Vector3 eulerAngles { get => t.eulerAngles; set => t.eulerAngles = value; }
-    public Vector3 localScale { get => t.localScale; set => t.localScale = value; }
-    public Vector3 position { get => t.position; set => t.position = value; }
-    public Vector3 right { get => t.right; set => t.right = value; }
+    public Vector3 EulerAngles { get => t.eulerAngles; set => t.eulerAngles = value; }
+    public Vector3 LocalScale { get => t.localScale; set => t.localScale = value; }
+    public Vector3 Position { get => t.position; set => t.position = value; }
+    public Vector3 Right { get => t.right; set => t.right = value; }
 }
 
 public interface IRigidBody2d
 {
-    float angularVelocity { get; set; }
-    float rotation { get; set; }
-    Vector2 velocity { get; set; }
+    float AngularVelocity { get; set; }
+    float Rotation { get; set; }
+    Vector2 Velocity { get; set; }
 }
 
 public class RigidBody2dWrapper : IRigidBody2d
@@ -53,9 +53,9 @@ public class RigidBody2dWrapper : IRigidBody2d
         this.r = r;
     }
 
-    public float angularVelocity { get => r.angularVelocity; set => r.angularVelocity = value; }
-    public float rotation { get => r.rotation; set => r.rotation = value; }
-    public Vector2 velocity { get => r.velocity; set => r.velocity = value; }
+    public float AngularVelocity { get => r.angularVelocity; set => r.angularVelocity = value; }
+    public float Rotation { get => r.rotation; set => r.rotation = value; }
+    public Vector2 Velocity { get => r.velocity; set => r.velocity = value; }
 }
 
 public class BasePhysics : IFlipX, IBasePhysics
@@ -68,7 +68,7 @@ public class BasePhysics : IFlipX, IBasePhysics
     {
         this.rigidBody2d = rigidBody2d;
         this.transform = transform;
-        initialScale = this.transform.localScale;
+        initialScale = this.transform.LocalScale;
     }
 
     private bool flipX;
@@ -80,11 +80,11 @@ public class BasePhysics : IFlipX, IBasePhysics
             flipX = value;
             if (value)
             {
-                transform.localScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z);
+                transform.LocalScale = new Vector3(-initialScale.x, initialScale.y, initialScale.z);
             }
             else
             {
-                transform.localScale = initialScale;
+                transform.LocalScale = initialScale;
             }
         }
     }
@@ -93,13 +93,13 @@ public class BasePhysics : IFlipX, IBasePhysics
 
     public Vector3 Size
     {
-        get => transform.localScale;
-        set => transform.localScale = value;
+        get => transform.LocalScale;
+        set => transform.LocalScale = value;
     }
 
     public void Accelerate(Vector2 ax)
     {
-        rigidBody2d.velocity += ax;
+        rigidBody2d.Velocity += ax;
     }
 
     public void AccelerateRelative(Vector2 relativeAx)
@@ -116,32 +116,32 @@ public class BasePhysics : IFlipX, IBasePhysics
     {
         if (FlipX)
         {
-            rigidBody2d.angularVelocity += torque;
+            rigidBody2d.AngularVelocity += torque;
         }
         else
         {
-            rigidBody2d.angularVelocity -= torque;
+            rigidBody2d.AngularVelocity -= torque;
         }
     }
 
     public Vector2 Position()
     {
-        return transform.position;
+        return transform.Position;
     }
 
     public void Translate(Vector2 offset)
     {
-        transform.position += new Vector3(offset.x, offset.y, 0);
+        transform.Position += new Vector3(offset.x, offset.y, 0);
     }
 
     public Vector2 Velocity()
     {
-        return rigidBody2d.velocity;
+        return rigidBody2d.Velocity;
     }
 
     public float AngleDegrees()
     {
-        return transform.eulerAngles.z;
+        return transform.EulerAngles.z;
     }
 
     public float Angle()

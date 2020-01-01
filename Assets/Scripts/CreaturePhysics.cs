@@ -48,12 +48,12 @@ public class CreaturePhysics : BasePhysics, ICreaturePhysics
 
         if (updateX)
         {
-            axX = Math.Min(axCoeff.x * (target.x - rigidBody2d.velocity.x), maxJerk.x);
+            axX = Math.Min(axCoeff.x * (target.x - rigidBody2d.Velocity.x), maxJerk.x);
         }
 
         if (updateY)
         {
-            axY = Math.Min(axCoeff.y * (target.y - rigidBody2d.velocity.y), maxJerk.y);
+            axY = Math.Min(axCoeff.y * (target.y - rigidBody2d.Velocity.y), maxJerk.y);
         }
 
         if (updateX || updateY)
@@ -70,15 +70,15 @@ public class CreaturePhysics : BasePhysics, ICreaturePhysics
     public void ApproachAngularVelocity(Vector2 target)
     {
         float targetRotation = (float)System.Math.Atan2(target.y, target.x);
-        float currentRotation = rigidBody2d.rotation;
-        rigidBody2d.angularVelocity += rotCoeff * (targetRotation - currentRotation);
+        float currentRotation = rigidBody2d.Rotation;
+        rigidBody2d.AngularVelocity += rotCoeff * (targetRotation - currentRotation);
     }
 
     public void ApproachAngle(Vector2 diff)
     {
         float targetRotation = (float)System.Math.Atan2(diff.y, diff.x);
-        float currentRotation = rigidBody2d.rotation;
-        rigidBody2d.rotation += rotCoeff * (targetRotation - currentRotation);
+        float currentRotation = rigidBody2d.Rotation;
+        rigidBody2d.Rotation += rotCoeff * (targetRotation - currentRotation);
     }
 
     public void LookAt(Vector2 position)
@@ -86,11 +86,11 @@ public class CreaturePhysics : BasePhysics, ICreaturePhysics
         Vector3 position3 = position;
         if (FlipX)
         {
-            this.transform.right = position3 - this.transform.position;
+            this.transform.Right = position3 - this.transform.Position;
         }
         else
         {
-            this.transform.right = this.transform.position - position3;
+            this.transform.Right = this.transform.Position - position3;
         }
     }
 
@@ -106,12 +106,12 @@ public class CreaturePhysics : BasePhysics, ICreaturePhysics
 
     public bool IsIdle()
     {
-        return rigidBody2d.velocity.magnitude < idleThreshold;
+        return rigidBody2d.Velocity.magnitude < idleThreshold;
     }
 
     public void GetUpright(float torque)
     {
         float dir = AngleDegrees() < 180 ? -1f : +1f;
-        rigidBody2d.angularVelocity += torque * dir;
+        rigidBody2d.AngularVelocity += torque * dir;
     }
 }

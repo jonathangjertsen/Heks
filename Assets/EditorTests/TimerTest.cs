@@ -112,7 +112,7 @@ namespace Tests
         [Test]
         public void CanCreateCollection()
         {
-            var timers = new TimerCollection();
+            new TimerCollection();
         }
 
         [Test]

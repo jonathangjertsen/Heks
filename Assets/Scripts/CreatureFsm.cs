@@ -48,7 +48,7 @@ public class CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : str
         }
         else
         {
-            throwStateNotFound(state);
+            ThrowStateNotFound(state);
         }
     }
 
@@ -63,11 +63,11 @@ public class CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : str
         }
         else
         {
-            throwStateNotFound(state);
+            ThrowStateNotFound(state);
         }
     }
 
-    private void throwStateNotFound(EnumType state)
+    private void ThrowStateNotFound(EnumType state)
     {
         IEnumerable<string> lines = sprites.Select(kvp => kvp.Key + ": " + kvp.Value.name);
         throw new System.Exception($"There is no sprite for {state}. Available: {string.Join(",", lines)}");

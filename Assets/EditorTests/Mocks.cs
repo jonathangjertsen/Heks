@@ -99,7 +99,17 @@ namespace Tests
 
     class CreatureHealthMock : ICreatureHealth
     {
-        public float Health { get; set; }
+        public float Health { get; private set; }
+
+        public void Heal(float amount)
+        {
+            Health += amount;
+        }
+
+        public void Hurt(float amount)
+        {
+            Health -= amount;
+        }
     }
 
     public class CreatureFsmMock<EnumType> : ICreatureFsm<EnumType> where EnumType : struct, Enum
@@ -131,6 +141,8 @@ namespace Tests
 
     public class SpellCasterMock : ISpellCaster
     {
+        public bool FlipX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void Cast(Vector2 initialVelocity, float charge)
         {
             throw new NotImplementedException();
@@ -165,17 +177,17 @@ namespace Tests
 
     public class RigidBodyMock : IRigidBody2d
     {
-        public float angularVelocity { get; set; }
-        public float rotation { get; set; }
-        public Vector2 velocity { get; set; }
+        public float AngularVelocity { get; set; }
+        public float Rotation { get; set; }
+        public Vector2 Velocity { get; set; }
     }
 
     public class TransformMock : ITransform
     {
-        public Vector3 eulerAngles { get; set; }
-        public Vector3 localScale { get; set; }
-        public Vector3 position { get; set; }
-        public Vector3 right { get; set; }
+        public Vector3 EulerAngles { get; set; }
+        public Vector3 LocalScale { get; set; }
+        public Vector3 Position { get; set; }
+        public Vector3 Right { get; set; }
     }
 
     public class BaseCreatureMock : BaseCreature
@@ -192,7 +204,7 @@ namespace Tests
                 new TransformMock(),
                 new BarMock()
             );
-            SetOnDeathStartedCallback(() => mock_onDeathStartCalled = true);
+            health.PrependZeroHealthCallback(() => mock_onDeathStartCalled = true);
             SetOnDeathFinishedCallback(() => mock_onDeathFinishedCalled = true);
             SetOnHurtFinishedCallback(() => mock_onHurtCompletedCalled = true);
         }

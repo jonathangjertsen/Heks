@@ -64,7 +64,7 @@ public class Octopus
     {
         if (fsm.State != OctopusState.Dead)
         {
-            health.Health -= 10;
+            health.Hurt(10);
         }
     }
 }
@@ -77,10 +77,6 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
     new private void Start()
     {
         base.Start();
-
-        fsm.Add(OctopusState.Alive, sprite, null);
-        fsm.Add(OctopusState.Dead, sprite, null);
-
         octopus.Init(creature, fsm);
     }
 
@@ -93,5 +89,11 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
     private void OnCollisionEnter2D()
     {
         octopus.OnCollisionEnter2D();
+    }
+
+    protected override void AddFsmStates()
+    {
+        fsm.Add(OctopusState.Alive, sprite, null);
+        fsm.Add(OctopusState.Dead, sprite, null);
     }
 }

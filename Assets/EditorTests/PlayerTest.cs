@@ -14,15 +14,6 @@ namespace Tests
             GetPlayer();
         }
 
-        [Test]
-        public void CallDieThenAliveReturnsFalse()
-        {
-            var player = GetPlayer();
-            Assert.True(player.Alive());
-            player.Die();
-            Assert.False(player.Alive());
-        }
-
         private Player GetPlayer()
         {
             Player player = new Player();

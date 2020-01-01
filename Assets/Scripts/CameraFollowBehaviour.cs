@@ -11,12 +11,12 @@ public class CameraFollowBehaviour : MonoBehaviour
 
     public Transform player;
 
-    private float weightedDistanceX(float targetX)
+    private float WeightedDistanceX(float targetX)
     {
         return updateCoeffX * (targetX - transform.position.x);
     }
 
-    private float weightedDistanceY(float targetY)
+    private float WeightedDistanceY(float targetY)
     {
         return updateCoeffY * (targetY - transform.position.y);
     }
@@ -28,28 +28,28 @@ public class CameraFollowBehaviour : MonoBehaviour
 
         if (player.position.x <= minX)
         {
-            diffX = weightedDistanceX(minX);
+            diffX = WeightedDistanceX(minX);
         }
         else if (player.position.x >= maxX)
         {
-            diffX = weightedDistanceX(maxX);
+            diffX = WeightedDistanceX(maxX);
         }
         else
         {
-            diffX = weightedDistanceX(player.position.x);
+            diffX = WeightedDistanceX(player.position.x);
         }
 
         if (player.position.y <= minY)
         {
-            diffY = weightedDistanceY(minY);
+            diffY = WeightedDistanceY(minY);
         }
         else if (player.position.y >= maxY)
         {
-            diffY = weightedDistanceY(maxY);
+            diffY = WeightedDistanceY(maxY);
         }
         else
         {
-            diffY = weightedDistanceY(player.position.y);
+            diffY = WeightedDistanceY(player.position.y);
         }
 
         transform.position += new Vector3(diffX, diffY, 0);

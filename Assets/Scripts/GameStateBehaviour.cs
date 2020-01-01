@@ -37,8 +37,10 @@ public class GameState : IEventBus
 
         state = GameStateEnum.Playing;
 
-        timers = new TimerCollection();
-        timers.logCallbacks = logTimerCallbacks;
+        timers = new TimerCollection
+        {
+            logCallbacks = logTimerCallbacks
+        };
         timers.Add("deathToGameOverStart", new Timer(deathToGameOverStartTop, GameOverStart));
     }
 

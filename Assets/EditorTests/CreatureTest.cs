@@ -64,7 +64,7 @@ namespace Tests
             var creature = GetCreature();
             Assert.AreApproximatelyEqual(creature.health.Health, creature.maxHealth);
 
-            creature.health.Health = maxHealth / 2;
+            creature.health.Hurt(creature.maxHealth / 2);
             for(int i = 0; i < 10; i++)
             {
                 Assert.AreApproximatelyEqual(creature.health.Health, maxHealth / 2 + regenPer * i);
@@ -78,7 +78,7 @@ namespace Tests
             var creature = GetCreature();
 
             Assert.IsFalse(creature.mock_onDeathStartCalled);
-            creature.health.Health = 0;
+            creature.health.Hurt(creature.maxHealth + 10);
             creature.FixedUpdate();
             Assert.IsTrue(creature.mock_onDeathStartCalled);
         }

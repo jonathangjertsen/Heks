@@ -55,7 +55,6 @@ public class FadeInBehaviour : MonoBehaviour, IFadeIn
         {
             var color = component.color;
             color.a = (1f - ((float)timers.Value("fade") / (float)fadeTop));
-            Debug.Log($"{component}, {color}");
             component.color = color;
         }
     }

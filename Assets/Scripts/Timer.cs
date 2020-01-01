@@ -52,12 +52,22 @@ public class Timer
 
     public void Start()
     {
+        if (logCallbacks && !Running)
+        {
+            Debug.Log($"Starting timer '{name}'");
+        }
+
         Running = true;
         Value = top;
     }
 
     public void Stop()
     {
+        if (logCallbacks && Running)
+        {
+            Debug.Log($"Stopping timer '{name}'");
+        }
+
         Running = false;
         Value = top;
     }
@@ -87,7 +97,7 @@ public class Timer
     {
         if (logCallbacks)
         {
-            Debug.Log($"Invoking onTimeout callback for {name}");
+            Debug.Log($"Invoking onTimeout callback for '{name}'");
         }
         onTimeout();
 

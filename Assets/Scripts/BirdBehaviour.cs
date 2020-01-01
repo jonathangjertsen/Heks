@@ -28,7 +28,7 @@ public class Bird
 
     public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm)
     {
-        flipX = creature.flipXItems;
+        flipX = creature.FlipXItems;
         physics = creature.physics;
         creature.SetOnDeathStartedCallback(() => fsm.State = BirdState.Dead);
         creature.SetOnHurtFinishedCallback(OnHurtCompleted);
@@ -140,12 +140,6 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     private new void Start()
     {
         base.Start();
-
-        fsm.Add(BirdState.MoveHome, DefaultSprite, null);
-        fsm.Add(BirdState.MoveToPlayer, ChargingSprite, CryClip);
-        fsm.Add(BirdState.Hurt, HurtSprite, CryClip);
-        fsm.Add(BirdState.Dead, DeadSprite, null);
-
         bird.Init(creature, fsm);
     }
 
@@ -162,5 +156,13 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     {
         creature.Hurt(10, 100);
         bird.Hurt();
+    }
+
+    protected override void AddFsmStates()
+    {
+        fsm.Add(BirdState.MoveHome, DefaultSprite, null);
+        fsm.Add(BirdState.MoveToPlayer, ChargingSprite, CryClip);
+        fsm.Add(BirdState.Hurt, HurtSprite, CryClip);
+        fsm.Add(BirdState.Dead, DeadSprite, null);
     }
 }

@@ -33,7 +33,7 @@ public class Skull
         this.fsm = fsm;
         timers = creature.timers;
         physics = creature.physics;
-        flipX = creature.flipXItems;
+        flipX = creature.FlipXItems;
         health = creature.health;
 
         creature.SetOnDeathStartedCallback(() => fsm.State = SkullState.Dead);
@@ -99,7 +99,7 @@ public class Skull
         }
         else
         {
-            health.Health -= 10;
+            health.Hurt(10);
             fsm.SetSprite(SkullState.Hurt);
             timers.Start("hurt");
         }
@@ -134,13 +134,6 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     private new void Start()
     {
         base.Start();
-
-        fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
-        fsm.Add(SkullState.GroundedWaiting, GroundedSprite, null);
-        fsm.Add(SkullState.InAir, InAirSprite, null);
-        fsm.Add(SkullState.Dead, DeadSprite, null);
-        fsm.Add(SkullState.Hurt, HurtSprite, null);
-
         skull.Init(creature, fsm);
     }
 
@@ -158,5 +151,14 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     private void OnCollisionExit2D(Collision2D collision)
     {
         skull.OnCollisionExit2D(collision);
+    }
+
+    protected override void AddFsmStates()
+    {
+        fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
+        fsm.Add(SkullState.GroundedWaiting, GroundedSprite, null);
+        fsm.Add(SkullState.InAir, InAirSprite, null);
+        fsm.Add(SkullState.Dead, DeadSprite, null);
+        fsm.Add(SkullState.Hurt, HurtSprite, null);
     }
 }

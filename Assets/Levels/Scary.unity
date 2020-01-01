@@ -1093,7 +1093,7 @@ MonoBehaviour:
     deathToShrinkStartTimerTop: 100
     shrinkTimerTop: 200
   logFsmChanges: 0
-  logTimerCallbacks: 1
+  logTimerCallbacks: 0
   healthBar: {fileID: 1035123455}
   player: {fileID: 840480129}
   chargeBar: {fileID: 965610641}
@@ -1108,8 +1108,8 @@ MonoBehaviour:
     angryTimerTop: 60
     flyingToIdleTimerTop: 60
     castTimerTop: 30
-  headOffsetX: 4.87
-  headOffsetY: 6.06
+    headOffsetX: 4.87
+    headOffsetY: 6.06
   YellClip: {fileID: 8300000, guid: 8b29819c5a69a514da3ad65002d844c2, type: 3}
   HurtClip: {fileID: 8300000, guid: ed50d34e0d690ca4286ddec924ffe3ed, type: 3}
   ChargeClip: {fileID: 8300000, guid: 8ca4badd63910d646867b1ed95cec437, type: 3}
@@ -2766,7 +2766,17 @@ PrefabInstance:
     - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: logFsmChanges
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: logTimerCallbacks
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -2871,7 +2881,7 @@ PrefabInstance:
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
