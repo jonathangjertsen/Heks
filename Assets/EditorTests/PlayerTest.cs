@@ -18,6 +18,7 @@ namespace Tests
         public void Player_CallDieThenAliveReturnsFalse()
         {
             var player = GetPlayer();
+            Assert.True(player.Alive());
             player.Die();
             Assert.False(player.Alive());
         }
