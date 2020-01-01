@@ -42,23 +42,23 @@ public class Player
     private TimerCollection timers;
     private BarCollection bars;
 
-    public void Init(ICreaturePhysics physics, ICreatureFsm<PlayerState> fsm, TimerCollection timers, BarCollection bars, IBarDisplay chargeBar, ISpellCaster spellSpawner, ICreatureHealth health)
+    public void Init(BaseCreature creature, ICreatureFsm<PlayerState> fsm, IBarDisplay chargeBar, ISpellCaster spellSpawner)
     {
         this.chargeBar = chargeBar;
         this.fsm = fsm;
-        this.timers = timers;
-        this.bars = bars;
-        this.physics = physics;
+        timers = creature.timers;
+        bars = creature.bars;
+        physics = creature.physics;
+        health = creature.health;
         this.spellSpawner = spellSpawner;
-        this.health = health;
 
-        this.timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
-        this.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
-        this.timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
+        timers.Add("angry", new Timer(angryTimerTop, OnAngryTimerExpired));
+        timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, OnFlyingToIdleTimerExpired));
+        timers.Add("cast", new Timer(castTimerTop, OnCastTimerExpired));
 
         Charge = 0;
         chargeBar.FillTo(0);
-        this.bars.Add(chargeBar);
+        bars.Add(chargeBar);
     }
 
     public void Die()
@@ -252,7 +252,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 
         creature.flipXItems.Add(spellSpawn);
 
-        self.Init(creature.physics, fsm, creature.timers, creature.bars, chargeBar, spellSpawn, creature.health);
+        self.Init(creature, fsm, chargeBar, spellSpawn);
     }
 
     private new void FixedUpdate()

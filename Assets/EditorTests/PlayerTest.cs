@@ -28,14 +28,11 @@ namespace Tests
             BaseCreatureMock creature = new BaseCreatureMock();
             creature.MockInit();
             player.Init(
-                creature.physics,
+                creature,
                 new CreatureFsmMock<PlayerState>(),
-                creature.timers,
-                creature.bars,
                 new BarMock(),
-                new SpellCasterMock(),
-                new CreatureHealthMock()
-             );
+                new SpellCasterMock()
+            );
             return player;
         }
     }
