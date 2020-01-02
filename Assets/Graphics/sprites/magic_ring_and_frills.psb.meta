@@ -1,0 +1,273 @@
+fileFormatVersion: 2
+guid: 8c2d3576b9f8a3445a5bb0888928104e
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: magic_ring_and_frills_GO/magic_ring_and_frills_GO
+    100002: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 1
+    100004: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 2
+    100006: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 3
+    100008: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Ring Back
+    100010: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Ring Front
+    400000: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Transform
+    400002: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 1/Transform
+    400004: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 2/Transform
+    400006: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 3/Transform
+    400008: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Ring Back/Transform
+    400010: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Ring Front/Transform
+    2800000: magic_ring_and_frills
+    21200000: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 1/SpriteRenderer
+    21200002: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 2/SpriteRenderer
+    21200004: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Frills 3/SpriteRenderer
+    21200006: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Ring Back/SpriteRenderer
+    21200008: magic_ring_and_frills_GO/magic_ring_and_frills_GO/Ring Front/SpriteRenderer
+    21300000: 9995260f2dec28e4f965a33088994ec3
+    21300002: aa7a1529c127bf64a97d7f1df6190cd3
+    21300004: 0da0efafc31a3264699bf5b8da325227
+    21300006: 6cc25baafe2d67e4a8d356bafd65b85e
+    21300008: 54fb6710e6d77b54893c8baaf0ed3486
+    100100000: magic_ring_and_frills_GO
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 0, y: 0}
+  mosaicSpriteImportData: []
+  rigSpriteImportData:
+  - name: Ring Front
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 835
+      y: 1372
+      width: 448
+      height: 434
+    spriteID: 9995260f2dec28e4f965a33088994ec3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 623, y: 1161}
+  - name: Ring Back
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 835
+      y: 805
+      width: 589
+      height: 559
+    spriteID: aa7a1529c127bf64a97d7f1df6190cd3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 694, y: 660}
+  - name: Frills 1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 843
+      width: 823
+      height: 809
+    spriteID: 0da0efafc31a3264699bf5b8da325227
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -24, y: 823}
+  - name: Frills 2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 823
+      height: 831
+    spriteID: 6cc25baafe2d67e4a8d356bafd65b85e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 4}
+  - name: Frills 3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 835
+      y: 4
+      width: 771
+      height: 793
+    spriteID: 54fb6710e6d77b54893c8baaf0ed3486
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 769, y: -31}
+  platformSettings: []
+  mosaicLayers: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  importedTextureWidth: 2048
+  importedTextureHeight: 2048
+  documentSize: {x: 851, y: 831}
+  textureActualWidth: 2048
+  textureActualHeight: 2048
+  spritePackingTag: 
+  resliceFromLayer: 0
+  characterMode: 1
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: Ring Front
+    spriteName: Ring Front
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 9995260f2dec28e4f965a33088994ec3
+    layerID: 691144179
+    mosaicPosition: {x: 835, y: 1372}
+  - name: Ring Back
+    spriteName: Ring Back
+    isGroup: 0
+    parentIndex: -1
+    spriteID: aa7a1529c127bf64a97d7f1df6190cd3
+    layerID: -870867067
+    mosaicPosition: {x: 835, y: 805}
+  - name: Frills 1
+    spriteName: Frills 1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 0da0efafc31a3264699bf5b8da325227
+    layerID: -1383808093
+    mosaicPosition: {x: 4, y: 843}
+  - name: Frills 2
+    spriteName: Frills 2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 6cc25baafe2d67e4a8d356bafd65b85e
+    layerID: 182275848
+    mosaicPosition: {x: 4, y: 4}
+  - name: Frills 3
+    spriteName: Frills 3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 54fb6710e6d77b54893c8baaf0ed3486
+    layerID: 1748359789
+    mosaicPosition: {x: 835, y: 4}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+  boneGOs: []
+  generateGOHierarchy: 0
+  textureAssetName: magic_ring_and_frills
+  prefabAssetName: magic_ring_and_frills_GO

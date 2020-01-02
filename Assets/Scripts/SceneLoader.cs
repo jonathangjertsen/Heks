@@ -21,7 +21,7 @@ public class SceneLoader : MonoBehaviour, ISceneLoader
 
     public void Start()
     {
-        //animator.StartPlayback();
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     public void LoadBackgroundMusic()

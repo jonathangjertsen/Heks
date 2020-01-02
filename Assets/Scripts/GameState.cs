@@ -69,6 +69,8 @@ public class GameState : IEventBus
             logCallbacks = logTimerCallbacks
         };
         timers.Add("deathToGameOverStart", new Timer(deathToGameOverStartTop, GameOverStart));
+
+        Time.timeScale = 1f;
     }
 
     public void PlayerDied()

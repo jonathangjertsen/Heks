@@ -1,0 +1,452 @@
+fileFormatVersion: 2
+guid: e1191891a5920a9458f37dd89ea07334
+ScriptedImporter:
+  fileIDToRecycleName:
+    2800000: health_ring_and_frills
+    21300012: 73d9663bc0caf8b4bab517f8d3ccd30f
+    21300014: d7a98f39bea5ef949af49bf28e3f1151
+    21300016: d3fe1062bea56ca42be7c8769e5ee080
+    21300018: ea3144847e6a08342aeb39d482fbec7a
+    21300020: e15beebe83130b6488eba34085e17739
+    21300022: 87d813aaefd400943a80183f88e735e8
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 0, y: 0}
+  mosaicSpriteImportData:
+  - name: Plus
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1660
+      width: 165
+      height: 160
+    spriteID: 73d9663bc0caf8b4bab517f8d3ccd30f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -218, y: 1432}
+  - name: Layer
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1214
+      width: 469
+      height: 438
+    spriteID: d7a98f39bea5ef949af49bf28e3f1151
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -65, y: 1119}
+  - name: Frills 1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 574
+      height: 594
+    spriteID: d3fe1062bea56ca42be7c8769e5ee080
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -9, y: 1}
+  - name: Frills 2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1174
+      y: 4
+      width: 600
+      height: 546
+    spriteID: ea3144847e6a08342aeb39d482fbec7a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 1174, y: -23}
+  - name: Frills 3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 586
+      y: 4
+      width: 580
+      height: 570
+    spriteID: e15beebe83130b6488eba34085e17739
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 576, y: -11}
+  - name: Frills 4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 606
+      width: 524
+      height: 600
+    spriteID: 87d813aaefd400943a80183f88e735e8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -34, y: 606}
+  rigSpriteImportData:
+  - name: Plus
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1660
+      width: 165
+      height: 160
+    spriteID: 840810b7f9cc10f4f89fa575275c8e5b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -218, y: 1432}
+  - name: Layer
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1214
+      width: 469
+      height: 438
+    spriteID: e24d37b7402198647b3273b2b43de711
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -65, y: 1119}
+  - name: Frills 1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 574
+      height: 594
+    spriteID: 010431da50989bc4fae6023cf2509cba
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -9, y: 1}
+  - name: Frills 2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1174
+      y: 4
+      width: 600
+      height: 546
+    spriteID: 13ea84fc15b0107449d19990f51b157a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 1174, y: -23}
+  - name: Frills 3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 586
+      y: 4
+      width: 580
+      height: 570
+    spriteID: 047199f7eee42314cb250c18bfbe3923
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 576, y: -11}
+  - name: Frills 4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 606
+      width: 524
+      height: 600
+    spriteID: ec22c71ec91899b439bd191c72502c0f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -34, y: 606}
+  platformSettings: []
+  mosaicLayers: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  importedTextureWidth: 2048
+  importedTextureHeight: 2048
+  documentSize: {x: 600, y: 600}
+  textureActualWidth: 2048
+  textureActualHeight: 2048
+  spritePackingTag: 
+  resliceFromLayer: 0
+  characterMode: 0
+  mosaicPSDLayers:
+  - name: Plus
+    spriteName: Plus
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 73d9663bc0caf8b4bab517f8d3ccd30f
+    layerID: -1449151070
+    mosaicPosition: {x: 4, y: 1660}
+  - name: Layer
+    spriteName: Layer
+    isGroup: 0
+    parentIndex: -1
+    spriteID: d7a98f39bea5ef949af49bf28e3f1151
+    layerID: -1779155193
+    mosaicPosition: {x: 4, y: 1214}
+  - name: Frills 1
+    spriteName: Frills 1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: d3fe1062bea56ca42be7c8769e5ee080
+    layerID: -1383808093
+    mosaicPosition: {x: 4, y: 4}
+  - name: Frills 2
+    spriteName: Frills 2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ea3144847e6a08342aeb39d482fbec7a
+    layerID: 182275848
+    mosaicPosition: {x: 1174, y: 4}
+  - name: Frills 3
+    spriteName: Frills 3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e15beebe83130b6488eba34085e17739
+    layerID: 1748359789
+    mosaicPosition: {x: 586, y: 4}
+  - name: Frills 4
+    spriteName: Frills 4
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 87d813aaefd400943a80183f88e735e8
+    layerID: -980523566
+    mosaicPosition: {x: 4, y: 606}
+  rigPSDLayers:
+  - name: Plus
+    spriteName: Plus
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 840810b7f9cc10f4f89fa575275c8e5b
+    layerID: -1449151070
+    mosaicPosition: {x: 4, y: 1660}
+  - name: Layer
+    spriteName: Layer
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e24d37b7402198647b3273b2b43de711
+    layerID: -1779155193
+    mosaicPosition: {x: 4, y: 1214}
+  - name: Frills 1
+    spriteName: Frills 1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 010431da50989bc4fae6023cf2509cba
+    layerID: -1383808093
+    mosaicPosition: {x: 4, y: 4}
+  - name: Frills 2
+    spriteName: Frills 2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 13ea84fc15b0107449d19990f51b157a
+    layerID: 182275848
+    mosaicPosition: {x: 1174, y: 4}
+  - name: Frills 3
+    spriteName: Frills 3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 047199f7eee42314cb250c18bfbe3923
+    layerID: 1748359789
+    mosaicPosition: {x: 586, y: 4}
+  - name: Frills 4
+    spriteName: Frills 4
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ec22c71ec91899b439bd191c72502c0f
+    layerID: -980523566
+    mosaicPosition: {x: 4, y: 606}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+  boneGOs: []
+  generateGOHierarchy: 0
+  textureAssetName: health_ring_and_frills
+  prefabAssetName: health_ring_and_frills_GO
