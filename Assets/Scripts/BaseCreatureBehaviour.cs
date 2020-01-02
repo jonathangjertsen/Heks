@@ -48,7 +48,7 @@ public class BaseCreature
 
     public void SetOnDeathStartedCallback(CreatureHealth.OnZeroHealth callback)
     {
-        health.SetZeroHealthCallback(() => {
+        health.PrependZeroHealthCallback(() => {
             callback();
             Die();
         });

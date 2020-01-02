@@ -19,15 +19,6 @@
         Health = maxHealth;
     }
 
-    public void SetZeroHealthCallback(OnZeroHealth callback)
-    {
-        if (onZeroHealth != null)
-        {
-            throw new System.Exception("Can't set zero health callback twice");
-        }
-        onZeroHealth = callback;
-    }
-
     public void PrependZeroHealthCallback(OnZeroHealth callback)
     {
         OnZeroHealth original = onZeroHealth;
