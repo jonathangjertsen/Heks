@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class GameStateBehaviour : MonoBehaviour
 {
+    [SerializeField] SceneLoader sceneLoader;
     public GameState gameState;
     public FadeInBehaviour fade;
     public PauseMenuBehaviour pauseMenu;
@@ -10,7 +11,7 @@ public class GameStateBehaviour : MonoBehaviour
 
     public void Start()
     {
-        gameState.Init(fade, pauseMenu, chargeEffect);
+        gameState.Init(fade, pauseMenu, chargeEffect, sceneLoader);
     }
 
     public void FixedUpdate()
@@ -26,5 +27,15 @@ public class GameStateBehaviour : MonoBehaviour
     public void ResumeClicked()
     {
         gameState.Unpaused();
+    }
+
+    public void MenuClicked()
+    {
+        gameState.LevelExited();
+    }
+
+    public void OnFadeoutCompleted()
+    {
+        gameState.LevelExited();
     }
 }

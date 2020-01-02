@@ -20,6 +20,7 @@ public interface IEventBus
     void ChargeStart();
     void ChargeStop();
     void LevelRestarted();
+    void LevelExited();
 }
 
 public interface ICanBeActivated
@@ -39,6 +40,7 @@ public class GameState : IEventBus
     private IFadeIn fade;
     private IPauseMenu pauseMenu;
     private ICanBeActivated chargeEffect;
+    private ISceneLoader sceneLoader;
 
     [Header("Debug")]
     [SerializeField] bool logTimerCallbacks;
@@ -47,11 +49,20 @@ public class GameState : IEventBus
     [SerializeField] int deathToGameOverStartTop;
     [SerializeField] int gameOverFadeTop;
 
-    public void Init(IFadeIn fade, IPauseMenu pauseMenu, ICanBeActivated chargeEffect)
+    [Space] [Header("Game")]
+    [SerializeField] string mainLevelSceneName;
+
+    public void Init(
+        IFadeIn fade,
+        IPauseMenu pauseMenu,
+        ICanBeActivated chargeEffect,
+        ISceneLoader sceneLoader
+    )
     {
         this.fade = fade;
         this.pauseMenu = pauseMenu;
         this.chargeEffect = chargeEffect;
+        this.sceneLoader = sceneLoader;
 
         timers = new TimerCollection
         {
@@ -85,7 +96,13 @@ public class GameState : IEventBus
 
     public void LevelRestarted()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        sceneLoader.StartReloading();
+        Unpaused();
+    }
+
+    public void LevelExited()
+    {
+        sceneLoader.StartLoading(mainLevelSceneName);
         Unpaused();
     }
 

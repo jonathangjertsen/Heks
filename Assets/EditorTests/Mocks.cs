@@ -184,6 +184,11 @@ namespace Tests
             throw new NotImplementedException();
         }
 
+        public void LevelExited()
+        {
+            throw new NotImplementedException();
+        }
+
         public void LevelRestarted()
         {
             throw new NotImplementedException();

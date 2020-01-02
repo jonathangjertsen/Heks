@@ -79,8 +79,6 @@ public class BaseCreature
     {
         float proportion = timers.Value("shrink") / (float)shrinkTimerTop;
         physics.Size = physics.InitialSize * proportion;
-
-        Debug.Log($"Shrinking, {proportion}");
     }
 
     public void Die()
