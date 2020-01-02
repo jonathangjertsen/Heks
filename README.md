@@ -19,6 +19,7 @@ A game where you play a witch. Also my first game.
 
 ```
 Assets
+├───Animations        - Animations (.anim)
 ├───Audio
 │   ├───Music         - Music (.mp3)
 │   └───SFX           - Sound effects (.wav)
