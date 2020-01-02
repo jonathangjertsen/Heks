@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
+public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IPlayerLocator
 {
     [SerializeField] BarBehaviour chargeBar;
     [SerializeField] GameStateBehaviour gameState;
@@ -48,9 +48,9 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         self.OnTriggerEnter2D();
     }
 
-    public bool Alive()
+    public bool IsAlive()
     {
-        return self.Alive();
+        return self.IsAlive();
     }
 
     public Vector2 HeadPosition => self.HeadPosition;

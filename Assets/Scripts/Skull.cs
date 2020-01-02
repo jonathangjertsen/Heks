@@ -13,13 +13,14 @@ public class Skull
     [Space] [Header("Glitch filtering")]
     [SerializeField] int collisionExitToNotGroundedTimerTop = 10;
 
+    private IPlayerLocator playerLocator;
     private TimerCollection timers;
     private ICreatureFsm<SkullState> fsm;
     private ICreaturePhysics physics;
     private IFlipX flipX;
     private ICreatureHealth health;
 
-    public void Init(BaseCreature creature, ICreatureFsm<SkullState> fsm)
+    public void Init(BaseCreature creature, ICreatureFsm<SkullState> fsm, IPlayerLocator playerLocator)
     {
         this.fsm = fsm;
         timers = creature.timers;
@@ -34,6 +35,7 @@ public class Skull
 
         timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
         timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
+        this.playerLocator = playerLocator;
     }
 
     private void OnHopTimerExpired()
@@ -52,8 +54,11 @@ public class Skull
         }
     }
 
-    public void NewPlayerPosition(Vector2 playerPosition, bool playerAlive)
+    public void FixedUpdate()
     {
+        Vector2 playerPosition = playerLocator.HeadPosition;
+        bool playerAlive = playerLocator != null && playerLocator.IsAlive();
+
         if ((fsm.State == SkullState.Dead) || !playerAlive)
         {
             return;

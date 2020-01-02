@@ -72,7 +72,7 @@ public class Player
         events.PlayerDied();
     }
 
-    public bool Alive()
+    public bool IsAlive()
     {
         return fsm.State != PlayerState.Dead;
     }

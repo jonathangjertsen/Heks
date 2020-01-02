@@ -19,7 +19,7 @@ namespace Tests
             Bird bird = new Bird();
             BaseCreatureMock creature = new BaseCreatureMock();
             creature.MockInit();
-            bird.Init(creature, new CreatureFsmMock<BirdState>());
+            bird.Init(creature, new CreatureFsmMock<BirdState>(), new PlayerLocatorMock());
             return bird;
         }
     }

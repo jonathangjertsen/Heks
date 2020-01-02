@@ -49,11 +49,6 @@ public class Octopus
         fsm.State = OctopusState.Alive;
     }
 
-    public void Die()
-    {
-        fsm.State = OctopusState.Dead;
-    }
-
     public void OnCollisionEnter2D()
     {
         if (fsm.State != OctopusState.Dead)

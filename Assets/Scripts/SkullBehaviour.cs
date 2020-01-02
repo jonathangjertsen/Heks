@@ -3,6 +3,7 @@
 public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
 {
     public Skull skull;
+    public PlayerBehaviour playerLocator;
 
     [Space] [Header("Sprites")]
     public Sprite GroundedSprite;
@@ -13,13 +14,13 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     private new void Start()
     {
         base.Start();
-        skull.Init(creature, fsm);
+        skull.Init(creature, fsm, playerLocator);
     }
 
     private new void FixedUpdate()
     {
         base.FixedUpdate();
-        skull.NewPlayerPosition(player.HeadPosition, player != null && player.Alive());
+        skull.FixedUpdate();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

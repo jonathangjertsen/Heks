@@ -244,4 +244,14 @@ namespace Tests
             SetOnHurtFinishedCallback(() => mock_onHurtCompletedCalled = true);
         }
     }
+
+    public class PlayerLocatorMock : IPlayerLocator
+    {
+        public Vector2 HeadPosition => throw new NotImplementedException();
+
+        public bool IsAlive()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -16,53 +16,29 @@ public class Bird
     private ICreaturePhysics physics;
     private ICreatureFsm<BirdState> fsm;
     private IFlipX flipX;
+    private IPlayerLocator playerLocator;
 
-    public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm)
+    public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm, IPlayerLocator playerLocator)
     {
+        this.playerLocator = playerLocator;
+
         flipX = creature.FlipXItems;
         physics = creature.physics;
         creature.SetOnDeathStartedCallback(() => fsm.State = BirdState.Dead);
         creature.SetOnHurtFinishedCallback(OnHurtCompleted);
+        // creature.SetOnHurtStartedCallback(Hurt);
         this.fsm = fsm;
 
         this.fsm.State = BirdState.MoveHome;
 
-        home = this.physics.Position();
+        home = physics.Position();
     }
 
-    public void ApproachHome()
+    public void FixedUpdate()
     {
-        physics.ApproachVelocity(home - physics.Position());
-        fsm.State = BirdState.MoveHome;
-    }
+        Vector2 playerPosition = playerLocator.HeadPosition;
+        bool playerAlive = playerLocator.IsAlive();
 
-    private bool Alive()
-    {
-        return fsm.State != BirdState.Dead;
-    }
-
-    public void Hurt()
-    {
-        if (!Alive())
-        {
-            return;
-        }
-
-        fsm.State = BirdState.Hurt;
-    }
-
-    public void OnHurtCompleted()
-    {
-        if (fsm.State == BirdState.Dead)
-        {
-            return;
-        }
-
-        fsm.State = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
-    }
-
-    public void NewPlayerPosition(Vector2 playerPosition, bool playerAlive)
-    {
         if (fsm.State == BirdState.Dead)
         {
             physics.Accelerate(new Vector2(0, -0.5f));
@@ -110,5 +86,36 @@ public class Bird
     private bool CloseToPlayer()
     {
         return vectorToPlayer.magnitude < visionRadius;
+    }
+
+    private void ApproachHome()
+    {
+        physics.ApproachVelocity(home - physics.Position());
+        fsm.State = BirdState.MoveHome;
+    }
+
+    private bool Alive()
+    {
+        return fsm.State != BirdState.Dead;
+    }
+
+    private void OnHurtCompleted()
+    {
+        if (fsm.State == BirdState.Dead)
+        {
+            return;
+        }
+
+        fsm.State = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
+    }
+
+    public void Hurt(float amount)
+    {
+        if (!Alive())
+        {
+            return;
+        }
+
+        fsm.State = BirdState.Hurt;
     }
 }

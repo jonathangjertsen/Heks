@@ -32,7 +32,7 @@
     {
         if (onZeroHealth != null)
         {
-            throw new System.Exception("Can't set zero health callback twice");
+            throw new System.Exception("Can't set hurt callback twice");
         }
         onHurt = callback;
     }
