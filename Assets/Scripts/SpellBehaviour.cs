@@ -1,12 +1,5 @@
 ﻿using UnityEngine;
 
-public interface ISpell
-{
-    void Launch(Vector2 initialVelocity, float charge, bool flipX);
-    Sprite GetSprite();
-    Color GetColor();
-}
-
 public class SpellBehaviour : MonoBehaviour, ISpell
 {
     [SerializeField] int liveTimerTop = 50;
@@ -17,8 +10,8 @@ public class SpellBehaviour : MonoBehaviour, ISpell
     public void Awake()
     {
         physics = new BulletPhysics(
-            new RigidBody2dWrapper(GetComponent<Rigidbody2D>()),
-            new TransformWrapper(transform)
+            new WrapperRigidbody2d(GetComponent<Rigidbody2D>()),
+            new WrapperTransform(transform)
         );
     }
 

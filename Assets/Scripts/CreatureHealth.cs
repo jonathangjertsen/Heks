@@ -1,17 +1,4 @@
-﻿public interface IBarDisplay : IFlipX
-{
-    void FillTo(float proportion);
-    void Hide();
-}
-
-public interface ICreatureHealth
-{
-    float Health { get; }
-    void Heal(float amount);
-    void Hurt(float amount);
-}
-
-public class CreatureHealth : ICreatureHealth
+﻿public class CreatureHealth : ICreatureHealth
 {
     private readonly IBarDisplay healthBar;
     private readonly float maxHealth;

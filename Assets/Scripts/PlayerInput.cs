@@ -1,26 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum KeyInput
-{
-    Left,
-    Right,
-    Up,
-    Down,
-    Space,
-    Pause,
-    Restart,
-    DebugDie,
-}
-
-public interface IPlayerInput
-{
-    void Latch();
-    bool IsHeld(KeyInput key);
-    bool IsPressedThisFrame(KeyInput key);
-    bool IsAnyHeld();
-}
-
 public class PlayerInput : IPlayerInput
 {
     // Allow a singleton interface
@@ -34,35 +14,35 @@ public class PlayerInput : IPlayerInput
         return instance;
     }
 
-    private Dictionary<string, KeyInput> stringToKeyInput;
-    private Dictionary<KeyInput, bool> keysHeld;
-    private Dictionary<KeyInput, bool> keysPressedThisFrame;
+    private Dictionary<string, PlayerInputKey> stringToKeyInput;
+    private Dictionary<PlayerInputKey, bool> keysHeld;
+    private Dictionary<PlayerInputKey, bool> keysPressedThisFrame;
 
     public PlayerInput()
     {
-        stringToKeyInput = new Dictionary<string, KeyInput>
+        stringToKeyInput = new Dictionary<string, PlayerInputKey>
         {
-            { "up", KeyInput.Up },
-            { "left", KeyInput.Left },
-            { "down", KeyInput.Down },
-            { "right", KeyInput.Right },
-            { "w", KeyInput.Up },
-            { "a", KeyInput.Left },
-            { "s", KeyInput.Down },
-            { "d", KeyInput.Right },
-            { "p", KeyInput.Pause },
-            { "space", KeyInput.Space },
-            { "x", KeyInput.DebugDie },
-            { "r", KeyInput.Restart }
+            { "up", PlayerInputKey.Up },
+            { "left", PlayerInputKey.Left },
+            { "down", PlayerInputKey.Down },
+            { "right", PlayerInputKey.Right },
+            { "w", PlayerInputKey.Up },
+            { "a", PlayerInputKey.Left },
+            { "s", PlayerInputKey.Down },
+            { "d", PlayerInputKey.Right },
+            { "p", PlayerInputKey.Pause },
+            { "space", PlayerInputKey.Space },
+            { "x", PlayerInputKey.DebugDie },
+            { "r", PlayerInputKey.Restart }
         };
         InitKeysHeld();
     }
 
     private void InitKeysHeld()
     {
-        keysHeld = new Dictionary<KeyInput, bool>();
-        keysPressedThisFrame = new Dictionary<KeyInput, bool>();
-        foreach (KeyValuePair<string, KeyInput> pair in stringToKeyInput)
+        keysHeld = new Dictionary<PlayerInputKey, bool>();
+        keysPressedThisFrame = new Dictionary<PlayerInputKey, bool>();
+        foreach (KeyValuePair<string, PlayerInputKey> pair in stringToKeyInput)
         {
             if (!keysHeld.ContainsKey(pair.Value))
             {
@@ -78,7 +58,7 @@ public class PlayerInput : IPlayerInput
     public void Latch()
     {
         InitKeysHeld();
-        foreach(KeyValuePair<string, KeyInput> pair in stringToKeyInput)
+        foreach(KeyValuePair<string, PlayerInputKey> pair in stringToKeyInput)
         {
             if (Input.GetKey(pair.Key))
             {
@@ -92,19 +72,19 @@ public class PlayerInput : IPlayerInput
         }
     }
 
-    public bool IsHeld(KeyInput key)
+    public bool IsHeld(PlayerInputKey key)
     {
         return keysHeld[key];
     }
 
-    public bool IsPressedThisFrame(KeyInput key)
+    public bool IsPressedThisFrame(PlayerInputKey key)
     {
         return keysPressedThisFrame[key];
     }
 
     public bool IsAnyHeld()
     {
-        foreach(KeyValuePair<KeyInput, bool> pair in keysHeld)
+        foreach(KeyValuePair<PlayerInputKey, bool> pair in keysHeld)
         {
             if (pair.Value)
             {

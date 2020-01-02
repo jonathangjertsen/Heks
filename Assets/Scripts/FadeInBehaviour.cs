@@ -4,11 +4,6 @@ using UnityEngine.UI;
 
 public delegate void FadeEndedCallback();
 
-public interface IFadeIn
-{
-    void StartFade(FadeEndedCallback fadeEndedCallback);
-}
-
 public class FadeInBehaviour : MonoBehaviour, IFadeIn
 {
     protected TimerCollection timers;

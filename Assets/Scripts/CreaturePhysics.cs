@@ -1,30 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-public interface ICreaturePhysics : IBasePhysics
-{
-    void GetUpright(float torque);
-    void ApproachVelocity(Vector2 target);
-    void ApproachVelocity(bool updateX, bool updateY, Vector2 target);
-    void ApproachAngularVelocity(Vector2 target);
-    void ApproachAngle(Vector2 diff);
-    void LookAt(Vector2 transform);
-    void Jump(float force);
-    void Recoil(float torque);
-    bool IsIdle();
-}
-
-[Serializable]
-public class CreaturePhysicsProperties
-{
-    public float axCoeffX = 0.01f;
-    public float axCoeffY = 0.03f;
-    public float rotCoeff = 1f;
-    public float maxJerkX = 5f;
-    public float maxJerkY = 5f;
-    public float idleThreshold = 1f;
-}
-
 public class CreaturePhysics : BasePhysics, ICreaturePhysics
 {
     private readonly Vector2 axCoeff;

@@ -1,37 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public enum GameStateEnum
-{
-    Playing,
-    Dead,
-    FadingGameOver,
-    GameOverDisplayed,
-    Won
-}
-
-public interface IEventBus
-{
-    void PlayerDied();
-    void Paused();
-    void Unpaused();
-    void ChargeStart();
-    void ChargeStop();
-    void LevelRestarted();
-    void LevelExited();
-}
-
-public interface ICanBeActivated
-{
-    void SetActive(bool active);
-    bool IsActive();
-}
-
-public interface IPauseMenu : ICanBeActivated
-{
-}
 
 [Serializable]
 public class GameState : IEventBus

@@ -1,16 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 using UnityEngine;
-
-public interface ISceneLoader
-{
-    void OnFadeOutCompleted();
-    void Start();
-    void StartLoading(string scene);
-    void StartReloading();
-}
 
 public class SceneLoader : MonoBehaviour, ISceneLoader
 {

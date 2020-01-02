@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class StraightBulletBehaviour : SpellBehaviour
+public class SpellStraightBehaviour : SpellBehaviour
 {
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {

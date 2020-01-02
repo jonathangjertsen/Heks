@@ -127,8 +127,8 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     protected void Start()
     {
         creature.Init(
-            new RigidBody2dWrapper(GetComponent<Rigidbody2D>()),
-            new TransformWrapper(transform),
+            new WrapperRigidbody2d(GetComponent<Rigidbody2D>()),
+            new WrapperTransform(transform),
             healthBar
         );
         creature.SetOnDeathFinishedCallback(() => Destroy(this));

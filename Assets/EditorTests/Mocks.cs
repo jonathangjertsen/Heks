@@ -156,12 +156,12 @@ namespace Tests
             throw new NotImplementedException();
         }
 
-        public bool IsHeld(KeyInput key)
+        public bool IsHeld(PlayerInputKey key)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsPressedThisFrame(KeyInput key)
+        public bool IsPressedThisFrame(PlayerInputKey key)
         {
             throw new NotImplementedException();
         }
