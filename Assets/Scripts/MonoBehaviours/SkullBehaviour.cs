@@ -2,8 +2,9 @@
 
 public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
 {
+    public PlayerLocatorBehaviour playerLocator;
+
     public Skull skull;
-    public PlayerBehaviour player;
 
     [Space] [Header("Sprites")]
     public Sprite GroundedSprite;
@@ -14,7 +15,13 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     private new void Start()
     {
         base.Start();
-        skull.Init(creature, fsm, player.self);
+
+        if (playerLocator == null)
+        {
+            throw new System.Exception("No PlayerLocator registered");
+        }
+
+        skull.Init(creature, fsm, playerLocator);
     }
 
     protected override void AddFsmStates()

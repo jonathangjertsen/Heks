@@ -13,10 +13,10 @@ public class CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : str
     public bool logChanges { get; set; }
     private EnumType state;
 
-    public CreatureFsm(BaseCreatureBehaviour<EnumType> creature)
+    public CreatureFsm(IHasSpriteRendererAndAudioSource sourceObject)
     {
-        renderer = creature.gameObject.GetComponent<SpriteRenderer>();
-        source = creature.gameObject.GetComponent<AudioSource>();
+        renderer = sourceObject.GetSpriteRenderer();
+        source = sourceObject.GetAudioSource();
 
         sprites = new Dictionary<EnumType, Sprite>();
         clips = new Dictionary<EnumType, AudioClip>();

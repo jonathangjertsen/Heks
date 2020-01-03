@@ -2,7 +2,7 @@
 
 public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
 {
-    public PlayerBehaviour player;
+    public PlayerLocatorBehaviour playerLocator;
 
     public Bird bird;
 
@@ -18,7 +18,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     private new void Start()
     {
         base.Start();
-        bird.Init(creature, fsm, player.self);
+        bird.Init(creature, fsm, playerLocator);
     }
 
     protected override void AddFsmStates()

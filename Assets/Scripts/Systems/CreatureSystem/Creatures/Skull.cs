@@ -24,13 +24,11 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
     private BaseCreature creature;
     private IPlayerLocator playerLocator;
     private ICreatureFsm<SkullState> fsm;
-    private IFlipX flipX;
 
     public void Init(BaseCreature creature, ICreatureFsm<SkullState> fsm, IPlayerLocator playerLocator)
     {
         this.fsm = fsm;
         this.creature = creature;
-        flipX = creature.FlipXItems;
 
         creature.SetDeathStartedCallback(() => fsm.State = SkullState.Dead);
         creature.SetHurtFinishedCallback(() => fsm.UnsetSprite(SkullState.Hurt));
@@ -71,7 +69,7 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
         }
 
         float distanceToPlayerX = playerPosition.x - creature.physics.Position().x;
-        flipX.FlipX = distanceToPlayerX < 0;
+        creature.FlipX = distanceToPlayerX < 0;
 
         if (fsm.State == SkullState.InAir)
         {

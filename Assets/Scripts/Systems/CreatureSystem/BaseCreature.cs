@@ -8,9 +8,6 @@ public class BaseCreature
     public float maxHealth;
     public float regenPer = 0.02f;
 
-    [Space] [Header("Physics")]
-    [SerializeField] protected CreaturePhysicsProperties physicsProperties;
-
     [Space] [Header("Damage")]
     public int hurtTimerTop = 60;
 
@@ -24,13 +21,9 @@ public class BaseCreature
     public TimerCollection timers;
     public ICreaturePhysics physics;
 
-    public void Init(
-        IRigidBody2d rigidBody2d,
-        ITransform transform,
-        IBarDisplay healthBar
-    )
+    public void Init(ICreaturePhysics physics, IBarDisplay healthBar)
     {
-        physics = new CreaturePhysics(rigidBody2d, transform, physicsProperties);
+        this.physics = physics;
 
         bars = new BarCollection();
         bars.Add(healthBar);

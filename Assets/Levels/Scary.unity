@@ -112,6 +112,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &76339186 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1410760639251258402, guid: cfb32e77694556d4e8cc33e43f1fe123,
+    type: 3}
+  m_PrefabInstance: {fileID: 1779623171}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d82365328198945a679f15c789c47b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &112732794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -735,6 +747,11 @@ PrefabInstance:
       propertyPath: logFsmChanges
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: playerLocator
+      value: 
+      objectReference: {fileID: 76339186}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -830,6 +847,11 @@ PrefabInstance:
       propertyPath: visionRadius
       value: 6.29
       objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: playerLocator
+      value: 
+      objectReference: {fileID: 76339186}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -1485,7 +1507,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerLocator
       value: 
-      objectReference: {fileID: 608142820}
+      objectReference: {fileID: 76339186}
     - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: bird.physicalDefense
@@ -1571,6 +1593,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 608142820}
+    - target: {fileID: 3928532932381065454, guid: c9e69b350fab34b4786720fb29b66371,
+        type: 3}
+      propertyPath: playerLocator
+      value: 
+      objectReference: {fileID: 76339186}
     - target: {fileID: 4963661199220884409, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
       propertyPath: m_Layer

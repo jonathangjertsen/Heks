@@ -246,10 +246,12 @@ namespace Tests
         public void InitWithMocks(float maxHealth)
         {
             this.maxHealth = maxHealth;
-            physicsProperties = new CreaturePhysicsProperties();
             Init(
-                new RigidBodyMock(),
-                new TransformMock(),
+                new CreaturePhysics(
+                    new RigidBodyMock(),
+                    new TransformMock(),
+                    new CreaturePhysicsProperties()
+                ),
                 new BarMock()
             );
             health.PrependZeroHealthCallback(() => mock_onDeathStartCalled = true);

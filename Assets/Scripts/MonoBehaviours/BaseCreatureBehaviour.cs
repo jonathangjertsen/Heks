@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatureControllerWrapper, ICollisionSystemParticipatorWrapper where StateEnum : struct, Enum
+public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatureControllerWrapper, ICollisionSystemParticipatorWrapper, IHasSpriteRendererAndAudioSource where StateEnum : struct, Enum
 {
     public BaseCreature creature;
     protected CreatureFsm<StateEnum> fsm;
@@ -12,16 +12,21 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatur
     public bool logTimerCallbacks = false;
 
     [Space]
+    [Header("Physics")]
+    [SerializeField] protected CreaturePhysicsProperties physicsProperties;
+
+    [Space]
     [Header("Behaviour references")]
     public BarBehaviour healthBar;
 
     protected void Start()
     {
-        creature.Init(
+        var physics = new CreaturePhysics(
             new WrapperRigidbody2d(GetComponent<Rigidbody2D>()),
             new WrapperTransform(transform),
-            healthBar
+            physicsProperties
         );
+        creature.Init(physics, healthBar);
         creature.SetDeathFinishedCallback(() => Destroy(this));
         creature.timers.logCallbacks = logTimerCallbacks;
 
@@ -78,4 +83,14 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatur
         }
     }
     public ICollisionSystemParticipator GetCollisionSystemParticipator() => GetCreatureController();
+
+    public SpriteRenderer GetSpriteRenderer()
+    {
+        return gameObject.GetComponent<SpriteRenderer>();
+    }
+
+    public AudioSource GetAudioSource()
+    {
+        return gameObject.GetComponent<AudioSource>();
+    }
 }

@@ -23,7 +23,6 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
     private Vector2 home;
     BaseCreature creature;
     public ICreatureFsm<BirdState> fsm { get; private set; }
-    private IFlipX flipX;
     private IPlayerLocator playerLocator;
 
     public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm, IPlayerLocator playerLocator)
@@ -32,7 +31,6 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
         this.fsm = fsm;
         this.playerLocator = playerLocator;
 
-        flipX = creature.FlipXItems;
         creature.SetDeathStartedCallback(() => fsm.State = BirdState.Dead);
         creature.SetHurtFinishedCallback(OnHurtCompleted);
 
@@ -130,7 +128,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
     {
         Vector2 playerPosition = playerLocator.HeadPosition;
         vectorToPlayer = playerPosition - creature.physics.Position();
-        flipX.FlipX = vectorToPlayer.x > 0;
+        creature.FlipX = vectorToPlayer.x > 0;
         creature.physics.LookAt(playerPosition);
     }
 
