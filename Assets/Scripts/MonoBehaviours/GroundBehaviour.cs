@@ -4,32 +4,32 @@ public interface IGround
 {
 }
 
-public class Ground : SysParticipator, ISysCollisionParticipator, IGround
+public class Ground : SystemParticipator, ICollisionSystemParticipator, IGround
 {
-    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 
-    public void CollidedWith(ISysCollisionParticipator other)
+    public void CollidedWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    public void ExitedCollisionWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void TriggeredWith(ISysCollisionParticipator other)
+    public void TriggeredWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    public void ExitedTriggerWith(ICollisionSystemParticipator other)
     {
     }
 }
 
-public class GroundBehaviour : MonoBehaviour, ISysCollisionParticipatorWrapper
+public class GroundBehaviour : MonoBehaviour, ICollisionSystemParticipatorWrapper
 {
     private Ground ground;
 
-    public ISysCollisionParticipator GetSysCollisionParticipator() => ground;
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => ground;
 
     void Start()
     {

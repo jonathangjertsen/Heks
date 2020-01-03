@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-public class SpellBehaviour : MonoBehaviour, ISpell, ISysCollisionParticipator
+public class SpellBehaviour : MonoBehaviour, ISpell, ICollisionSystemParticipator
 {
     [SerializeField] int liveTimerTop = 50;
     private int liveTimer;
     private bool touching = false;
 
-    protected BulletPhysics physics;
+    protected BasePhysics physics;
     public bool As<T>(out T converted) => ConvertToInterface.As(this, out converted);
     private TimerCollection timers;
 
     public void Awake()
     {
-        physics = new BulletPhysics(
+        physics = new BasePhysics(
             new WrapperRigidbody2d(GetComponent<Rigidbody2D>()),
             new WrapperTransform(transform)
         );
@@ -44,9 +44,9 @@ public class SpellBehaviour : MonoBehaviour, ISpell, ISysCollisionParticipator
         Destroy(gameObject);
     }
 
-    public void CollidedWith(ISysCollisionParticipator other) => timers.Start("contact");
-    public void ExitedCollisionWith(ISysCollisionParticipator other) => timers.Pause("contact");
-    public void TriggeredWith(ISysCollisionParticipator other) { }
-    public void ExitedTriggerWith(ISysCollisionParticipator other) { }
-    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+    public void CollidedWith(ICollisionSystemParticipator other) => timers.Start("contact");
+    public void ExitedCollisionWith(ICollisionSystemParticipator other) => timers.Pause("contact");
+    public void TriggeredWith(ICollisionSystemParticipator other) { }
+    public void ExitedTriggerWith(ICollisionSystemParticipator other) { }
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 }

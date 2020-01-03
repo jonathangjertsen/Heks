@@ -231,7 +231,7 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     {
     }
 
-    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 
     public void TakeDamage(float amount)
     {
@@ -247,20 +247,20 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         }
     }
 
-    public void TriggeredWith(ISysCollisionParticipator other)
+    public void TriggeredWith(ICollisionSystemParticipator other)
     {
-        SysCollision.RegisterCollision(this, other);
+        CollisionSystem.RegisterCollision(this, other);
     }
 
-    public void ExitedTriggerWith(ISysCollisionParticipator other)
-    {
-    }
-
-    public void CollidedWith(ISysCollisionParticipator other)
+    public void ExitedTriggerWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    public void CollidedWith(ICollisionSystemParticipator other)
+    {
+    }
+
+    public void ExitedCollisionWith(ICollisionSystemParticipator other)
     {
     }
 

@@ -134,22 +134,22 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
         creature.physics.LookAt(playerPosition);
     }
 
-    public void TriggeredWith(ISysCollisionParticipator other)
+    public void TriggeredWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    public void ExitedTriggerWith(ICollisionSystemParticipator other)
     {
     }
 
-    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 
-    public void CollidedWith(ISysCollisionParticipator other)
+    public void CollidedWith(ICollisionSystemParticipator other)
     {
-        SysCollision.RegisterCollision(this, other);
+        CollisionSystem.RegisterCollision(this, other);
     }
 
-    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    public void ExitedCollisionWith(ICollisionSystemParticipator other)
     {
     }
 

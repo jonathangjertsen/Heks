@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Octopus : Creature, ICreatureController, ISysCollisionParticipator, ITakesDamage, IDealsDamage
+public class Octopus : Creature, ICreatureController, ICollisionSystemParticipator, ITakesDamage, IDealsDamage
 {
     [Range(-0.1f, 0.1f)]
     [SerializeField] float freqX = 0.3f;
@@ -69,22 +69,22 @@ public class Octopus : Creature, ICreatureController, ISysCollisionParticipator,
     {
     }
 
-    public void TriggeredWith(ISysCollisionParticipator other)
+    public void TriggeredWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    public void ExitedTriggerWith(ICollisionSystemParticipator other)
     {
     }
 
-    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 
-    public void CollidedWith(ISysCollisionParticipator other)
+    public void CollidedWith(ICollisionSystemParticipator other)
     {
-        SysCollision.RegisterCollision(this, other);
+        CollisionSystem.RegisterCollision(this, other);
     }
 
-    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    public void ExitedCollisionWith(ICollisionSystemParticipator other)
     {
     }
 }

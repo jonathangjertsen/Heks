@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public interface IFlipX
-{
-    bool FlipX { get; set; }
-}
-
 public class FlipXCollection : IFlipX
 {
     private bool flipX;

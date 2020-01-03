@@ -1,0 +1,176 @@
+digraph G {
+    compound=true;
+    ratio="compress";
+    overlap=prism;
+    overlap_scaling=0.01;
+    ratio=0.3;
+
+    subgraph cluster_systems {
+        SystemParticipator;
+
+        subgraph cluster_collision_system {
+            label = "Collision System";
+            CollisionSystem -> ICollisionSystemParticipator [style="dashed"];
+            ICollisionSystemParticipator -> ICollisionSystemParticipatorWrapper
+            ICollisionSystemParticipatorWrapper -> ICollisionSystemParticipator
+        }
+        CollisionSystem -> IDealsDamage [lhead=cluster_damage_system]
+        CollisionSystem -> ITakesStatusEffect [lhead=cluster_status_effect_system]
+    
+        subgraph cluster_color_system {
+            label = "Color System";
+            ColorExtensions;
+        }
+        
+        subgraph cluster_flipx_system {
+            label = "FlipX system";
+            FlipXCollection -> IFlipX [style="dashed"];
+            FlipXCollection -> IFlipX [style="dashed"];
+        }
+        
+        subgraph cluster_damage_system {
+            label = "Damage system";
+            ITakesDamage;
+            IDealsDamage;
+        }
+        
+        subgraph cluster_status_effect_system {
+            label = "Status effect system";
+            IStatusEffect -> StatusEffectType;
+            ITakesStatusEffect -> IStatusEffect;
+            IDealsStatusEffect -> IStatusEffect;
+        }
+        
+        subgraph cluster_game_state_system {
+            label = "Game state system";
+            GameStateEnum;
+            GameState -> IEventBus [style="dashed"];
+            GameState -> ISceneLoader;
+            UiKeyboardListener -> IEventBus;
+            
+            GameState -> IFadeIn;
+            GameState -> ICanBeActiuvated;
+            GameState -> IPauseMenu;
+            UiKeyboardListener -> UiPauseState;
+            
+            subgraph cluster_ui_system {
+                label = "UI system";
+                IFadeIn;
+                ICanBeActivated;
+                IPauseMenu;
+                UiPauseState;
+            }
+        }
+        GameState -> TimerCollection;
+        UiKeyboardListener -> IPlayerInput;
+        
+        subgraph cluster_timer_system {
+            label = "Timer system";
+            Timer -> TimerMode;
+            Timer -> TimerNotFoundException;
+            TimerCollection -> Timer;
+            TimerCollection -> TimerNotFoundException;
+        }
+        
+        subgraph cluster_player_input {
+            label = "Player input system";
+            IPlayerInput -> PlayerInputKey;
+            PlayerInput -> IPlayerInput [style="dashed"];
+            PlayerInput -> PlayerInputKey;
+        }
+        
+        subgraph cluster_physics {
+            label = "Physics system";
+            BasePhysics -> IBasePhysics [style="dashed"];
+            BasePhysics -> ITransform;
+            BasePhysics -> IRigidBody2d;
+            TransformWrapper -> ITransform [style="dashed"];
+            RigidBody2DWrapper -> IRigidBody2d [style="dashed"];
+        }
+        IBasePhysics -> IFlipX [style="dashed"];
+        
+        subgraph cluster_logging {
+            label = "Logging system";
+            Debug;
+        }
+        
+        subgraph cluster_spell {
+            label = "Spell system";
+            ISpellInstantiator -> ISpell;
+            ISpellVisualizer -> ISpell;
+            ISpellCaster;
+            SpellSpawner -> ISpell;
+            SpellSpawner -> ISpellVisualizer;
+            SpellSpawner -> ISpellInstantiator;
+        }
+        ISpellCaster -> IFlipX [style="dashed"];
+        
+        subgraph cluster_creature {
+            label = "Creature system";
+            BaseCreature -> CreaturePhysicsProperties;
+            BaseCreature -> BarCollection;
+            BaseCreature -> CreatureHealth;
+            BaseCreature -> ICreaturePhysics;
+            BaseCreature -> CreaturePhysics;
+            CreaturePhysics -> ICreaturePhysics [style="dashed"];
+            CreaturePhysics -> CreaturePhysicsProperties;
+            Creature;
+            CreatureFsm -> ICreatureFsm [style="dashed"];
+            CreatureHealth -> ICreatureHealth [style="dashed"];
+            CreatureHealth -> IBarDisplay;
+            ICreatureControllerWrapper -> ICreatureController;
+            
+            subgraph cluster_creatures {
+                label = "Creatures"
+                Bird;
+                Octopus;
+                Skull;
+                subgraph cluster_player {
+                    label = "Player";
+                    IPlayerLocator;
+                    Player -> IPlayerLocator [style="dashed"];
+                }
+                Bird -> IPlayerLocator;
+            }
+            Bird -> Creature [style="dashed"];
+            Bird -> BaseCreature;
+            Bird -> ICreatureController [style="dashed"];
+            Bird -> ICreatureFsm;
+            Bird -> IDealsDamage [lhead=cluster_damage_system]
+            Bird -> IFlipX [style="dashed"];
+            Octopus -> Creature [style="dashed"];
+            Octopus -> BaseCreature;
+            Octopus -> ICreatureFsm;
+            Octopus -> ICreatureController [style="dashed"];
+            Octopus -> IDealsDamage [lhead=cluster_damage_system]
+            Skull -> Creature [style="dashed"];
+            Skull -> ICreatureFsm;
+            Skull -> BaseCreature;
+            Skull -> ICreatureController [style="dashed"];
+            Skull -> IDealsDamage [lhead=cluster_damage_system]
+            Skull -> IFlipX [style="dashed"];
+            Player -> Creature [style="dashed"];
+            Player -> ICreatureFsm;
+            Player -> IBarDisplay;
+            Player -> ISpellCaster;
+            Player -> IEventBus;
+            Player -> IPlayerInput;
+            Player -> BaseCreature;
+            Player -> ICreatureController [style="dashed"];
+            Player -> IDealsDamage [lhead=cluster_damage_system]
+            Player -> IFlipX [style="dashed"];
+        }
+        BaseCreature -> FlipXCollection;
+        BaseCreature -> TimerCollection;
+        BaseCreature -> IRigidBody2d;
+        BaseCreature -> ITransform;
+        Creature -> SystemParticipator;
+        ICreaturePhysics -> IBasePhysics [style="dashed"];
+        CreaturePhysics -> BasePhysics [style="dashed"];
+        CreaturePhysics -> IRigidBody2d;
+        CreaturePhysics -> ITransform;
+        IBarDisplay -> IFlipX [style="dashed"];
+        ICreatureController -> ICollisionSystemParticipator [style="dashed"];
+        ICreatureControllerWrapper -> ICollisionSystemParticipatorWrapper [style="dashed"];
+    }
+}

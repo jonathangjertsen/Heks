@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Skull : Creature, ICreatureController, ISysCollisionParticipator, ITakesDamage, IDealsDamage
+public class Skull : Creature, ICreatureController, ICollisionSystemParticipator, ITakesDamage, IDealsDamage
 {
     [Space] [Header("Jumping and chasing behaviour")]
     [SerializeField] float visionRadius = 15f;
@@ -86,17 +86,17 @@ public class Skull : Creature, ICreatureController, ISysCollisionParticipator, I
         }
     }
 
-    public void TriggeredWith(ISysCollisionParticipator other)
+    public void TriggeredWith(ICollisionSystemParticipator other)
     {
     }
 
-    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    public void ExitedTriggerWith(ICollisionSystemParticipator other)
     {
     }
 
-    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 
-    public void CollidedWith(ISysCollisionParticipator other)
+    public void CollidedWith(ICollisionSystemParticipator other)
     {
         if (!Alive())
         {
@@ -110,10 +110,10 @@ public class Skull : Creature, ICreatureController, ISysCollisionParticipator, I
             creature.timers.Stop("collisionExitToNotGrounded");
         }
 
-        SysCollision.RegisterCollision(this, other);
+        CollisionSystem.RegisterCollision(this, other);
     }
 
-    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    public void ExitedCollisionWith(ICollisionSystemParticipator other)
     {
         if (fsm.State == SkullState.Dead)
         {

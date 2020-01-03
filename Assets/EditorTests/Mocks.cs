@@ -265,22 +265,22 @@ namespace Tests
         public bool IsAlive() => isAlive;
     }
 
-    public class SysCollisionParticipatorMock : SysParticipator, ISysCollisionParticipator
+    public class SysCollisionParticipatorMock : SystemParticipator, ICollisionSystemParticipator
     {
-        public void CollidedWith(ISysCollisionParticipator other)
+        public void CollidedWith(ICollisionSystemParticipator other)
         {
         }
 
-        public void ExitedCollisionWith(ISysCollisionParticipator other)
+        public void ExitedCollisionWith(ICollisionSystemParticipator other)
         {
         }
 
-        public void ExitedTriggerWith(ISysCollisionParticipator other)
+        public void ExitedTriggerWith(ICollisionSystemParticipator other)
         {
             throw new NotImplementedException();
         }
 
-        public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+        public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
 
         public void OnTriggerEnter2D(Collider2D other)
         {
@@ -292,7 +292,7 @@ namespace Tests
             throw new NotImplementedException();
         }
 
-        public void TriggeredWith(ISysCollisionParticipator other)
+        public void TriggeredWith(ICollisionSystemParticipator other)
         {
             throw new NotImplementedException();
         }
