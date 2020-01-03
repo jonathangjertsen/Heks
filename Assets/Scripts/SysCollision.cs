@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public static class SysCollision
 {
@@ -7,17 +8,28 @@ public static class SysCollision
     public static void RegisterCollision(ISysCollisionParticipator first, ISysCollisionParticipator other)
     {
         CollisionDamage(first, other);
+        CollisionStatusEffect(first, other);
     }
 
     private static void CollisionDamage(ISysCollisionParticipator first, ISysCollisionParticipator other)
     {
-        if (first.As(out ITakesDamage attacked) && other.As(out IDealsDamage attacker))
+        if (first.As(out ITakesDamage taker) && other.As(out IDealsDamage dealer))
         {
-            float defense = Mathf.Max(minDefense, attacked.CollisionDefense);
-            float damage = attacker.CollisionAttack / defense;
-            attacked.TakeDamage(damage);
-            attacker.DealDamage(damage);
-            // Debug.Log($"Dealt {damage} from {attacker} to {attacked}");
+            float defense = Mathf.Max(minDefense, taker.CollisionDefense);
+            float damage = dealer.CollisionAttack / defense;
+            taker.TakeDamage(damage);
+            dealer.DealDamage(damage);
+            // Debug.Log($"Dealt {damage} from {dealer} to {taker}");
+        }
+    }
+
+    private static void CollisionStatusEffect(ISysCollisionParticipator first, ISysCollisionParticipator other)
+    {
+        if (first.As(out ITakesStatusEffect taker) && other.As(out IDealsStatusEffect dealer))
+        {
+            IStatusEffect statusEffect = dealer.DealStatusEffect(taker);
+            taker.TakeStatusEffect(statusEffect);
+            // Debug.Log($"Dealt {statusEffect} from {dealer} to {taker}")
         }
     }
 }
