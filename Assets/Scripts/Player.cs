@@ -41,9 +41,19 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     [Space]
     [Header("SysCollision")]
     [Range(1f, 5f)] [SerializeField] float collisionDefense;
+    [Range(1f, 4f)] [SerializeField] float defenseReductionWhileCharging = 1f;
     [Range(0f, 100f)] [SerializeField] float collisionAttack;
 
-    public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
+    public float CollisionDefense {
+        get {
+            if (fsm.State == PlayerState.Charging)
+            {
+                return collisionDefense / defenseReductionWhileCharging;
+            }
+            return collisionDefense;
+        }
+        set => collisionDefense = value;
+    }
     public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
 
     BaseCreature creature;

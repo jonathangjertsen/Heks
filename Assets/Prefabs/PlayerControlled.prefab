@@ -448,6 +448,7 @@ MonoBehaviour:
     headOffsetX: 4.87
     headOffsetY: 6.06
     collisionDefense: 2
+    defenseReductionWhileCharging: 1.65
     collisionAttack: 10
   YellClip: {fileID: 8300000, guid: 8b29819c5a69a514da3ad65002d844c2, type: 3}
   HurtClip: {fileID: 8300000, guid: ed50d34e0d690ca4286ddec924ffe3ed, type: 3}
