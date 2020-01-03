@@ -2,6 +2,7 @@
 
 namespace Tests
 {
+
     public class EventBusMock : IEventBus
     {
         public void ChargeStart()
