@@ -10,7 +10,7 @@ public class CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : str
     private readonly SpriteRenderer renderer;
     private readonly AudioSource source;
 
-    public bool logChanges = false;
+    public bool logChanges { get; set; }
     private EnumType state;
 
     public CreatureFsm(BaseCreatureBehaviour<EnumType> creature)

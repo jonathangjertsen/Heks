@@ -100,27 +100,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature:
     maxHealth: 30
-    axCoeffX: 0.01
-    axCoeffY: 0.03
-    rotCoeff: 1
-    maxVelocityX: 10
-    maxVelocityY: 10
-    maxJerkX: 5
-    maxJerkY: 5
-    logFsmChanges: 0
-    logTimerCallbacks: 0
+    regenPer: 0.02
+    physicsProperties:
+      axCoeffX: 0.01
+      axCoeffY: 0.03
+      rotCoeff: 1
+      maxJerkX: 5
+      maxJerkY: 5
+      idleThreshold: 1
+    hurtTimerTop: 60
+    deathToShrinkStartTimerTop: 100
+    shrinkTimerTop: 200
+  logFsmChanges: 0
+  logTimerCallbacks: 0
   healthBar: {fileID: 3862123022452878145}
   player: {fileID: 0}
-  regenPer: 0.02
-  visionRadius: 32.12
-  overshoot: 0.8
-  hurtTimerTop: 60
+  bird:
+    visionRadius: 7
+    overshoot: 0.01
+    maxVelocityX: 10
+    maxVelocityY: 10
   CryClip: {fileID: 8300000, guid: 06a9f2253b75a16408053ccde609fed4, type: 3}
   DefaultSprite: {fileID: 21300000, guid: 5b23960d99d83324baf00723512bdae7, type: 3}
   ChargingSprite: {fileID: 21300000, guid: 4531585be0e2f10429fc8c6515b5049d, type: 3}
   HurtSprite: {fileID: 21300000, guid: 93e31cf73b1409741890af4ce5847a6f, type: 3}
   DeadSprite: {fileID: 21300000, guid: 93e31cf73b1409741890af4ce5847a6f, type: 3}
-  playerTransform: {fileID: 0}
 --- !u!50 &2852255323461275844
 Rigidbody2D:
   serializedVersion: 4

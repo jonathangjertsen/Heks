@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IPlayerLocator
+public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
 {
     [SerializeField] BarBehaviour chargeBar;
     [SerializeField] GameStateBehaviour gameState;
     [SerializeField] SpellSpawnerBehaviour spellSpawn;
 
     [Space] [Header("Movement")]
-    [SerializeField] Player self;
+    public Player self;
 
     [Space] [Header("Audio clips")]
     [SerializeField] AudioClip YellClip;
@@ -32,11 +32,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IPlayerLocato
         self.Init(creature, fsm, chargeBar, spellSpawn, PlayerInput.Instance(), gameState.gameState);
     }
 
-    private new void FixedUpdate()
-    {
-        base.FixedUpdate();
-        self.FixedUpdate();
-    }
+    private void FixedUpdate() => self.FixedUpdate();
 
     private void Update()
     {
@@ -47,13 +43,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>, IPlayerLocato
     {
         self.OnTriggerEnter2D();
     }
-
-    public bool IsAlive()
-    {
-        return self.IsAlive();
-    }
-
-    public Vector2 HeadPosition => self.HeadPosition;
 
     protected override void AddFsmStates()
     {

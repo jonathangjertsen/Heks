@@ -19,9 +19,8 @@ public class Octopus
     [Range(0f, 10f)]
     [SerializeField] float uprightTorque = 4;
 
-    private ICreaturePhysics physics;
+    private BaseCreature creature;
     private ICreatureFsm<OctopusState> fsm;
-    private ICreatureHealth health;
     private int counter;
 
     public Octopus()
@@ -29,23 +28,24 @@ public class Octopus
         counter = 0;
     }
 
-    public void NextFrame()
+    public void FixedUpdate()
     {
+        creature.FixedUpdate();
+
         counter++;
         Vector2 target = new Vector2(
             ampX * Mathf.Cos(freqX * counter),
             ampY * Mathf.Sin(freqY * counter)
         );
-        physics.GetUpright(uprightTorque);
-        physics.AccelerateRelative(target);
+        creature.physics.GetUpright(uprightTorque);
+        creature.physics.AccelerateRelative(target);
     }
 
     public void Init(BaseCreature creature, ICreatureFsm<OctopusState> fsm)
     {
         this.fsm = fsm;
-        health = creature.health;
-        physics = creature.physics;
-        creature.SetOnDeathStartedCallback(() => fsm.State = OctopusState.Dead);
+        this.creature = creature;
+        creature.SetDeathStartedCallback(() => fsm.State = OctopusState.Dead);
         fsm.State = OctopusState.Alive;
     }
 
@@ -53,7 +53,7 @@ public class Octopus
     {
         if (fsm.State != OctopusState.Dead)
         {
-            health.Hurt(10);
+            creature.health.Hurt(10);
         }
     }
 }

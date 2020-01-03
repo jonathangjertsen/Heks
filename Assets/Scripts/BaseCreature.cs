@@ -46,7 +46,7 @@ public class BaseCreature
         FlipXItems.Add(physics);
     }
 
-    public void SetOnDeathStartedCallback(CreatureHealth.OnZeroHealth callback)
+    public void SetDeathStartedCallback(CreatureHealth.OnZeroHealth callback)
     {
         health.PrependZeroHealthCallback(() => {
             callback();
@@ -54,17 +54,17 @@ public class BaseCreature
         });
     }
 
-    public void SetOnDeathFinishedCallback(Timer.Timeout callback)
+    public void SetDeathFinishedCallback(Timer.Timeout callback)
     {
         timers.SetTimeoutCallback("shrink", callback);
     }
 
-    public void SetOnHurtStartedCallback(CreatureHealth.OnHurt callback)
+    public void SetHurtCallback(CreatureHealth.OnHurt callback)
     {
         health.SetHurtCallback(callback);
     }
 
-    public void SetOnHurtFinishedCallback(Timer.Timeout callback)
+    public void SetHurtFinishedCallback(Timer.Timeout callback)
     {
         timers.SetTimeoutCallback("hurt", callback);
     }

@@ -9,11 +9,25 @@ namespace Tests
 {
     public class CreatureTest
     {
-        private int deathToShrinkStartTimerTop = 2;
-        private int shrinkTimerTop = 2;
-        private int hurtTimerTop = 2;
-        private float maxHealth = 100f;
-        private float regenPer = 2f;
+        public static int deathToShrinkStartTimerTop = 2;
+        public static int shrinkTimerTop = 2;
+        public static int hurtTimerTop = 10;
+        public static float maxHealth = 100f;
+        public static float regenPer = 2f;
+
+        public static BaseCreatureWithTestPoints GetCreature()
+        {
+            BaseCreatureWithTestPoints creature = new BaseCreatureWithTestPoints
+            {
+                deathToShrinkStartTimerTop = deathToShrinkStartTimerTop,
+                shrinkTimerTop = shrinkTimerTop,
+                regenPer = regenPer,
+                maxHealth = maxHealth,
+                hurtTimerTop = hurtTimerTop
+            };
+            creature.InitWithMocks(maxHealth);
+            return creature;
+        }
 
         [Test]
         public void InitializerDoesNotCrash()
@@ -141,20 +155,6 @@ namespace Tests
             creature.Hurt(hurtPer);
             creature.FixedUpdate();
             Assert.IsTrue(creature.mock_onDeathStartCalled);
-        }
-
-        private BaseCreatureMock GetCreature()
-        {
-            BaseCreatureMock creature = new BaseCreatureMock
-            {
-                deathToShrinkStartTimerTop = deathToShrinkStartTimerTop,
-                shrinkTimerTop = shrinkTimerTop,
-                regenPer = regenPer,
-                maxHealth = maxHealth,
-                hurtTimerTop = hurtTimerTop
-            };
-            creature.MockInit();
-            return creature;
         }
     }
 }

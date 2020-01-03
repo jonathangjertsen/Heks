@@ -13,49 +13,44 @@ public class Bird
 
     private Vector2 vectorToPlayer;
     private Vector2 home;
-    private ICreaturePhysics physics;
-    private ICreatureFsm<BirdState> fsm;
+    BaseCreature creature;
+    public ICreatureFsm<BirdState> fsm { get; private set; }
     private IFlipX flipX;
     private IPlayerLocator playerLocator;
 
     public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm, IPlayerLocator playerLocator)
     {
+        this.creature = creature;
+        this.fsm = fsm;
         this.playerLocator = playerLocator;
 
         flipX = creature.FlipXItems;
-        physics = creature.physics;
-        creature.SetOnDeathStartedCallback(() => fsm.State = BirdState.Dead);
-        creature.SetOnHurtFinishedCallback(OnHurtCompleted);
-        // creature.SetOnHurtStartedCallback(Hurt);
-        this.fsm = fsm;
+        creature.SetDeathStartedCallback(() => fsm.State = BirdState.Dead);
+        creature.SetHurtFinishedCallback(OnHurtCompleted);
+        creature.SetHurtCallback(Hurt);
 
         this.fsm.State = BirdState.MoveHome;
 
-        home = physics.Position();
+        home = creature.physics.Position();
     }
 
     public void FixedUpdate()
     {
-        Vector2 playerPosition = playerLocator.HeadPosition;
-        bool playerAlive = playerLocator.IsAlive();
+        creature.FixedUpdate();
 
         if (fsm.State == BirdState.Dead)
         {
-            physics.Accelerate(new Vector2(0, -0.5f));
+            creature.physics.Accelerate(new Vector2(0, -0.5f));
             return;
         }
 
-        if (!playerAlive)
+        if (PlayerIsNullOrDead())
         {
             ApproachHome();
             return;
         }
 
-        vectorToPlayer = playerPosition - physics.Position();
-
-        flipX.FlipX = vectorToPlayer.x > 0;
-        physics.LookAt(playerPosition);
-
+        FindPlayerLocation();
         if (CloseToPlayer())
         {
             DoBehaviourCloseToPlayer();
@@ -77,7 +72,7 @@ public class Bird
             fsm.State = BirdState.MoveToPlayer;
         }
 
-        physics.ApproachVelocity(new Vector2(
+        creature.physics.ApproachVelocity(new Vector2(
             Math.Min(vectorToPlayer.x, maxVelocityX) * (1 + overshoot),
             Math.Min(vectorToPlayer.y, maxVelocityY) * (1 + overshoot)
         ));
@@ -90,7 +85,7 @@ public class Bird
 
     private void ApproachHome()
     {
-        physics.ApproachVelocity(home - physics.Position());
+        creature.physics.ApproachVelocity(home - creature.physics.Position());
         fsm.State = BirdState.MoveHome;
     }
 
@@ -109,7 +104,7 @@ public class Bird
         fsm.State = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
     }
 
-    public void Hurt(float amount)
+    private void Hurt(float amount)
     {
         if (!Alive())
         {
@@ -117,5 +112,18 @@ public class Bird
         }
 
         fsm.State = BirdState.Hurt;
+    }
+
+    private bool PlayerIsNullOrDead()
+    {
+        return playerLocator == null || !playerLocator.IsAlive();
+    }
+
+    private void FindPlayerLocation()
+    {
+        Vector2 playerPosition = playerLocator.HeadPosition;
+        vectorToPlayer = playerPosition - creature.physics.Position();
+        flipX.FlipX = vectorToPlayer.x > 0;
+        creature.physics.LookAt(playerPosition);
     }
 }

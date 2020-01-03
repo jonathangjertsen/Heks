@@ -1,4 +1,6 @@
-﻿public class CreatureHealth : ICreatureHealth
+﻿using UnityEngine;
+
+public class CreatureHealth : ICreatureHealth
 {
     private readonly IBarDisplay healthBar;
     private readonly float maxHealth;
@@ -30,11 +32,13 @@
 
     public void SetHurtCallback(OnHurt callback)
     {
-        if (onZeroHealth != null)
+        if (onHurt != null)
         {
             throw new System.Exception("Can't set hurt callback twice");
         }
+
         onHurt = callback;
+
     }
 
     public void Hurt(float amount)

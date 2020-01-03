@@ -114,7 +114,19 @@ namespace Tests
 
     public class CreatureFsmMock<EnumType> : ICreatureFsm<EnumType> where EnumType : struct, Enum
     {
-        public EnumType State { get; set; }
+        public bool logChanges { get; set; }
+        private EnumType state;
+        public EnumType State
+        {
+            get => state;
+            set {
+                if (logChanges)
+                {
+                    Debug.Log($"{state} -> {value}");
+                }
+                state = value;
+            }
+        }
 
         public void Add(EnumType state, Sprite sprite, AudioClip clip)
         {
@@ -225,14 +237,15 @@ namespace Tests
         public Vector3 Right { get; set; }
     }
 
-    public class BaseCreatureMock : BaseCreature
+    public class BaseCreatureWithTestPoints : BaseCreature
     {
         public bool mock_onDeathStartCalled = false;
         public bool mock_onDeathFinishedCalled = false;
         public bool mock_onHurtCompletedCalled = false;
 
-        public void MockInit()
+        public void InitWithMocks(float maxHealth)
         {
+            this.maxHealth = maxHealth;
             physicsProperties = new CreaturePhysicsProperties();
             Init(
                 new RigidBodyMock(),
@@ -240,18 +253,15 @@ namespace Tests
                 new BarMock()
             );
             health.PrependZeroHealthCallback(() => mock_onDeathStartCalled = true);
-            SetOnDeathFinishedCallback(() => mock_onDeathFinishedCalled = true);
-            SetOnHurtFinishedCallback(() => mock_onHurtCompletedCalled = true);
+            SetDeathFinishedCallback(() => mock_onDeathFinishedCalled = true);
+            SetHurtFinishedCallback(() => mock_onHurtCompletedCalled = true);
         }
     }
 
     public class PlayerLocatorMock : IPlayerLocator
     {
-        public Vector2 HeadPosition => throw new NotImplementedException();
-
-        public bool IsAlive()
-        {
-            throw new NotImplementedException();
-        }
+        public Vector2 HeadPosition { get; set; }
+        public bool isAlive { get; set; } = false;
+        public bool IsAlive() => isAlive;
     }
 }

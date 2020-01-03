@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Player
+public class Player : IPlayerLocator
 {
     [SerializeField] float maxVelocityX = 10.0f;
     [SerializeField] float maxVelocityY = 10.0f;
@@ -53,8 +53,8 @@ public class Player
         this.events = events;
 
         this.creature = creature;
-        creature.SetOnDeathStartedCallback(Die);
-        creature.SetOnHurtFinishedCallback(OnHurtCompleted);
+        creature.SetDeathStartedCallback(Die);
+        creature.SetHurtFinishedCallback(OnHurtCompleted);
         creature.FlipXItems.Add(spellSpawner);
 
         InitTimers();
@@ -99,6 +99,8 @@ public class Player
 
     public void FixedUpdate()
     {
+        creature.FixedUpdate();
+
         if (fsm.State == PlayerState.Dead)
         {
             return;

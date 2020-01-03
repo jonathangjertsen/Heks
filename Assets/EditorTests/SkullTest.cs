@@ -17,8 +17,8 @@ namespace Tests
         private Skull GetSkull()
         {
             Skull skull = new Skull();
-            BaseCreatureMock creature = new BaseCreatureMock();
-            creature.MockInit();
+            BaseCreatureWithTestPoints creature = new BaseCreatureWithTestPoints();
+            creature.InitWithMocks(100f);
             skull.Init(creature, new CreatureFsmMock<SkullState>(), new PlayerLocatorMock());
             return skull;
         }

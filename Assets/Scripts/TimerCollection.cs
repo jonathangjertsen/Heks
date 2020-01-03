@@ -32,6 +32,12 @@ public class TimerCollection
         return Get(name).Running;
     }
 
+    public void TickThrough(string name)
+    {
+        Get(name).TickThrough();
+        PropagateStartAndStop();
+    }
+
     public void SetTimeoutCallback(string name, Timer.Timeout callback)
     {
         Get(name).SetTimeoutCallback(callback);

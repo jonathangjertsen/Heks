@@ -2,7 +2,7 @@
 
 public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
 {
-    public PlayerBehaviour playerLocator;
+    public PlayerBehaviour player;
 
     public Bird bird;
 
@@ -18,19 +18,14 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     private new void Start()
     {
         base.Start();
-        bird.Init(creature, fsm, playerLocator);
+        bird.Init(creature, fsm, player.self);
     }
 
-    private new void FixedUpdate()
-    {
-        base.FixedUpdate();
-        bird.FixedUpdate();
-    }
+    private void FixedUpdate() => bird.FixedUpdate();
 
     private void OnCollisionEnter2D()
     {
         creature.Hurt(10, 100);
-        bird.Hurt(10);
     }
 
     protected override void AddFsmStates()

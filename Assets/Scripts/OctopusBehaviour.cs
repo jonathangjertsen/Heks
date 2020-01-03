@@ -11,11 +11,7 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
         octopus.Init(creature, fsm);
     }
 
-    new private void FixedUpdate()
-    {
-        base.FixedUpdate();
-        octopus.NextFrame();
-    }
+    private void FixedUpdate() => octopus.FixedUpdate();
 
     private void OnCollisionEnter2D()
     {

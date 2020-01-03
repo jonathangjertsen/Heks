@@ -18,13 +18,12 @@ namespace Tests
         public void NextFrameDoesNotCrash()
         {
             Octopus octopus = GetOctopus();
-            octopus.NextFrame();
+            octopus.FixedUpdate();
         }
 
         private Octopus GetOctopus()
         {
-            BaseCreatureMock creature = new BaseCreatureMock();
-            creature.MockInit();
+            BaseCreatureWithTestPoints creature = CreatureTest.GetCreature();
             Octopus octopus = new Octopus();
             octopus.Init(creature, new CreatureFsmMock<OctopusState>());
             return octopus;

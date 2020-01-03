@@ -6,17 +6,6 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    static class TimerExtensionsForTesting
-    {
-        public static void TickThrough(this Timer timer)
-        {
-            while (timer.Running && timer.Value > 0)
-            {
-                timer.Tick();
-            }
-        }
-    }
-
     public class TimerTest
     {
         private int timerTop = 10;

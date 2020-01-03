@@ -68,6 +68,14 @@ public class Timer
         Running = false;
     }
 
+    public void TickThrough()
+    {
+        while (Running && Value > 0)
+        {
+            Tick();
+        }
+    }
+
     private void DecrementTimer()
     {
         Value -= 1;

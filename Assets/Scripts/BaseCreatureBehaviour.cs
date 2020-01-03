@@ -22,7 +22,7 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
             new WrapperTransform(transform),
             healthBar
         );
-        creature.SetOnDeathFinishedCallback(() => Destroy(this));
+        creature.SetDeathFinishedCallback(() => Destroy(this));
         creature.timers.logCallbacks = logTimerCallbacks;
 
         fsm = new CreatureFsm<StateEnum>(this)
@@ -31,11 +31,6 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
         };
 
         AddFsmStates();
-    }
-
-    protected void FixedUpdate()
-    {
-        creature.FixedUpdate();
     }
 
     protected virtual void AddFsmStates()

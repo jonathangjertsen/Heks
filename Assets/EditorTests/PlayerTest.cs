@@ -17,8 +17,8 @@ namespace Tests
         private Player GetPlayer()
         {
             Player player = new Player();
-            BaseCreatureMock creature = new BaseCreatureMock();
-            creature.MockInit();
+            BaseCreatureWithTestPoints creature = new BaseCreatureWithTestPoints();
+            creature.InitWithMocks(100f);
             player.Init(
                 creature,
                 new CreatureFsmMock<PlayerState>(),
