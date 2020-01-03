@@ -8,7 +8,8 @@ public class BulletBehaviour : SpellBehaviour, IDealsDamage
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         int flipXAsInt = flipX ? 1 : -1;
-        physics.Accelerate(initialVelocity + new Vector2(5f * charge * -flipXAsInt, 5f * charge));
+        Vector2 launchVelocity = new Vector2(-flipXAsInt, 1) * 5f * charge;
+        physics.Accelerate(initialVelocity + launchVelocity);
         physics.Torque(5000f * charge * -flipXAsInt);
     }
 }

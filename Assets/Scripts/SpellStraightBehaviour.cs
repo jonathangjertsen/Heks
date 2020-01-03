@@ -8,6 +8,8 @@ public class SpellStraightBehaviour : SpellBehaviour, IDealsDamage
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         int flipXAsInt = flipX ? 1 : -1;
-        physics.Accelerate(initialVelocity + ((initialVelocity.normalized * 20 + new Vector2(-1, -5) * 10) * charge * flipXAsInt));
+        int launchY = initialVelocity.y >= 0.01f ? 1 : -1;
+        Vector2 launchVelocity = new Vector2(-flipXAsInt, launchY) * 10f * charge;
+        physics.Accelerate(initialVelocity + launchVelocity);
     }
 }
