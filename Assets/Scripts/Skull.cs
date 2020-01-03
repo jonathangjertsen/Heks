@@ -19,7 +19,7 @@ public class Skull : Creature, ICreatureController, ISysCollisionParticipator, I
     [Range(0f, 100f)] [SerializeField] float collisionAttack;
 
     public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
-    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
+    public float CollisionAttack { get => Alive() ? collisionAttack : 0; set => collisionAttack = value; }
 
     private BaseCreature creature;
     private IPlayerLocator playerLocator;
@@ -65,7 +65,7 @@ public class Skull : Creature, ICreatureController, ISysCollisionParticipator, I
         Vector2 playerPosition = playerLocator.HeadPosition;
         bool playerAlive = playerLocator != null && playerLocator.IsAlive();
 
-        if ((fsm.State == SkullState.Dead) || !playerAlive)
+        if (!Alive() || !playerAlive)
         {
             return;
         }
@@ -98,7 +98,7 @@ public class Skull : Creature, ICreatureController, ISysCollisionParticipator, I
 
     public void CollidedWith(ISysCollisionParticipator other)
     {
-        if (fsm.State == SkullState.Dead)
+        if (!Alive())
         {
             return;
         }
@@ -133,5 +133,14 @@ public class Skull : Creature, ICreatureController, ISysCollisionParticipator, I
         creature.health.Hurt(10);
         fsm.SetSprite(SkullState.Hurt);
         creature.timers.Start("hurt");
+    }
+
+    public void DealDamage(float amount)
+    {
+    }
+
+    private bool Alive()
+    {
+        return fsm.State != SkullState.Dead;
     }
 }

@@ -5,6 +5,11 @@ public class BulletBehaviour : SpellBehaviour, IDealsDamage
     public float collisionAttack = 60;
     public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
 
+    public void DealDamage(float amount)
+    {
+        collisionAttack /= 2;
+    }
+
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         int flipXAsInt = flipX ? 1 : -1;

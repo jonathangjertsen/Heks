@@ -1842,6 +1842,11 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 5174488676995312085, guid: d15118acfc737584d86b1fcd6f96a74b,
+        type: 3}
+      propertyPath: octopus.collisionDefense
+      value: 2.87
+      objectReference: {fileID: 0}
     - target: {fileID: 8378140650693797961, guid: d15118acfc737584d86b1fcd6f96a74b,
         type: 3}
       propertyPath: m_LocalPosition.x

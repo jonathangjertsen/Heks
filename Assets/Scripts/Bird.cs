@@ -17,7 +17,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
     [Range(0f, 100f)] [SerializeField] float collisionAttack;
 
     public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
-    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
+    public float CollisionAttack { get => Alive() ? collisionAttack : 0; set => collisionAttack = value; }
 
     private Vector2 vectorToPlayer;
     private Vector2 home;
@@ -150,6 +150,10 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
     }
 
     public void ExitedCollisionWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void DealDamage(float amount)
     {
     }
 }

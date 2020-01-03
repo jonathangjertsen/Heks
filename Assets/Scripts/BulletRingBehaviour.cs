@@ -10,6 +10,11 @@ public class BulletRingBehaviour : SpellBehaviour, IDealsDamage
     [SerializeField] float maxOutwardSpeed;
     [SerializeField] int maxNum;
 
+    public void DealDamage(float amount)
+    {
+        collisionAttack /= 2;
+    }
+
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         float outwardSpeed = maxOutwardSpeed * charge;

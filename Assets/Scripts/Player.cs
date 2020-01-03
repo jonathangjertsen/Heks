@@ -54,7 +54,16 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         }
         set => collisionDefense = value;
     }
-    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
+    public float CollisionAttack {
+        get {
+            if (!IsAlive())
+            {
+                return 0;
+            }
+            return collisionAttack;
+        }
+        set => collisionAttack = value;
+    }
 
     BaseCreature creature;
     ISpellCaster spellSpawner;
@@ -252,6 +261,10 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     }
 
     public void ExitedCollisionWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void DealDamage(float amount)
     {
     }
 }

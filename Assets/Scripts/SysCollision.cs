@@ -6,16 +6,18 @@ public static class SysCollision
 
     public static void RegisterCollision(ISysCollisionParticipator first, ISysCollisionParticipator other)
     {
-        if (first.As(out ITakesDamage attacked))
-        {
-            if (other.As(out IDealsDamage attacker))
-            {
-                float defense = Mathf.Max(minDefense, attacked.CollisionDefense);
-                float damage = attacker.CollisionAttack / defense;
-                attacked.TakeDamage(damage);
+        CollisionDamage(first, other);
+    }
 
-                // Debug.Log($"Dealt {damage} from {attacker} to {attacked}");
-            }
+    private static void CollisionDamage(ISysCollisionParticipator first, ISysCollisionParticipator other)
+    {
+        if (first.As(out ITakesDamage attacked) && other.As(out IDealsDamage attacker))
+        {
+            float defense = Mathf.Max(minDefense, attacked.CollisionDefense);
+            float damage = attacker.CollisionAttack / defense;
+            attacked.TakeDamage(damage);
+            attacker.DealDamage(damage);
+            // Debug.Log($"Dealt {damage} from {attacker} to {attacked}");
         }
     }
 }

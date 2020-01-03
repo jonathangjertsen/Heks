@@ -65,6 +65,10 @@ public class Octopus : Creature, ICreatureController, ISysCollisionParticipator,
         }
     }
 
+    public void DealDamage(float amount)
+    {
+    }
+
     public void TriggeredWith(ISysCollisionParticipator other)
     {
     }
