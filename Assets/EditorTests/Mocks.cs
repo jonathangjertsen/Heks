@@ -264,4 +264,43 @@ namespace Tests
         public bool isAlive { get; set; } = false;
         public bool IsAlive() => isAlive;
     }
+
+    public class SysCollisionParticipatorMock : SysParticipator, ISysCollisionParticipator
+    {
+        public void CollidedWith(ISysCollisionParticipator other)
+        {
+        }
+
+        public void ExitedCollisionWith(ISysCollisionParticipator other)
+        {
+        }
+
+        public void ExitedTriggerWith(ISysCollisionParticipator other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+
+        public void OnTriggerEnter2D(Collider2D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnTriggerExit2D(Collider2D other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TriggeredWith(ISysCollisionParticipator other)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AttackerMock : SysCollisionParticipatorMock, IDealsDamage
+    {
+        public float CollisionAttack { get; set; }
+    }
+
 }

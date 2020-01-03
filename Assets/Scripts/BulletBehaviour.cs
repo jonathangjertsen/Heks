@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public class BulletBehaviour : SpellBehaviour
+public class BulletBehaviour : SpellBehaviour, IDealsDamage
 {
+    public float collisionAttack = 60;
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
+
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         int flipXAsInt = flipX ? 1 : -1;

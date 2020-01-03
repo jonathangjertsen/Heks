@@ -25,23 +25,15 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     [SerializeField] Sprite DeadSprite;
 
     // Unity
-
     private new void Start()
     {
         base.Start();
         self.Init(creature, fsm, chargeBar, spellSpawn, PlayerInput.Instance(), gameState.gameState);
     }
 
-    private void FixedUpdate() => self.FixedUpdate();
-
     private void Update()
     {
         PlayerInput.Instance().Latch();
-    }
-
-    private void OnTriggerEnter2D()
-    {
-        self.OnTriggerEnter2D();
     }
 
     protected override void AddFsmStates()
@@ -55,4 +47,6 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         fsm.Add(PlayerState.Still, FlyingSprite, null);
         fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
     }
+
+    public override ICreatureController GetCreatureController() => self;
 }

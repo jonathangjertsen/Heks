@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class TimerCollection
 {
     private Dictionary<string, Timer> startedTimers;
+    private Dictionary<string, Timer> pausedTimers;
     private Dictionary<string, Timer> stoppedTimers;
 
     private readonly Dictionary<string, Timer> timers;
@@ -13,6 +15,7 @@ public class TimerCollection
         timers = new Dictionary<string, Timer>();
         startedTimers = new Dictionary<string, Timer>();
         stoppedTimers = new Dictionary<string, Timer>();
+        pausedTimers = new Dictionary<string, Timer>();
     }
 
     public void Add(string name, Timer timer)
@@ -56,6 +59,12 @@ public class TimerCollection
             pair.Value.Stop();
         }
         stoppedTimers = new Dictionary<string, Timer>();
+
+        foreach (KeyValuePair<string, Timer> pair in pausedTimers)
+        {
+            pair.Value.Pause();
+        }
+        pausedTimers = new Dictionary<string, Timer>();
     }
 
     public void TickAll()
@@ -66,6 +75,14 @@ public class TimerCollection
         }
 
         PropagateStartAndStop();
+    }
+
+    public void Pause(string name)
+    {
+        if (!pausedTimers.ContainsKey(name))
+        {
+            pausedTimers.Add(name, Get(name));
+        }
     }
 
     public void Start(string name)

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Skull
+public class Skull : Creature, ICreatureController, ISysCollisionParticipator, ITakesDamage, IDealsDamage
 {
     [Space] [Header("Jumping and chasing behaviour")]
     [SerializeField] float visionRadius = 15f;
@@ -12,6 +12,14 @@ public class Skull
 
     [Space] [Header("Glitch filtering")]
     [SerializeField] int collisionExitToNotGroundedTimerTop = 10;
+
+    [Space]
+    [Header("SysCollision")]
+    [Range(1f, 5f)] [SerializeField] float collisionDefense;
+    [Range(0f, 100f)] [SerializeField] float collisionAttack;
+
+    public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
 
     private BaseCreature creature;
     private IPlayerLocator playerLocator;
@@ -78,39 +86,52 @@ public class Skull
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void TriggeredWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+
+    public void CollidedWith(ISysCollisionParticipator other)
     {
         if (fsm.State == SkullState.Dead)
         {
             return;
         }
 
-        if (collision.gameObject.CompareTag("ground"))
+        if (other.As(out IGround ground))
         {
             fsm.State = SkullState.GroundedWaiting;
             creature.timers.Start("hop");
             creature.timers.Stop("collisionExitToNotGrounded");
         }
-        else
-        {
-            creature.health.Hurt(10);
-            fsm.SetSprite(SkullState.Hurt);
-            creature.timers.Start("hurt");
-        }
+
+        SysCollision.RegisterCollision(this, other);
     }
 
-    public void OnCollisionExit2D(Collision2D collision)
+    public void ExitedCollisionWith(ISysCollisionParticipator other)
     {
         if (fsm.State == SkullState.Dead)
         {
             return;
         }
 
-        if (collision.gameObject.CompareTag("ground"))
+        if (other.As(out IGround ground))
         {
             fsm.State = SkullState.GroundedWaiting;
             creature.timers.Stop("hop");
             creature.timers.Start("collisionExitToNotGrounded");
         }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        creature.health.Hurt(10);
+        fsm.SetSprite(SkullState.Hurt);
+        creature.timers.Start("hurt");
     }
 }

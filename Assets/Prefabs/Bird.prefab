@@ -117,9 +117,11 @@ MonoBehaviour:
   player: {fileID: 0}
   bird:
     visionRadius: 7
-    overshoot: 0.01
+    overshoot: 0.02
     maxVelocityX: 10
     maxVelocityY: 10
+    collisionDefense: 2.47
+    collisionAttack: 20
   CryClip: {fileID: 8300000, guid: 06a9f2253b75a16408053ccde609fed4, type: 3}
   DefaultSprite: {fileID: 21300000, guid: 5b23960d99d83324baf00723512bdae7, type: 3}
   ChargingSprite: {fileID: 21300000, guid: 4531585be0e2f10429fc8c6515b5049d, type: 3}

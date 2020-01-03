@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Bird
+public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
 {
     [Space]
     [Header("Chasing behaviour")]
@@ -10,6 +10,14 @@ public class Bird
     [SerializeField] float overshoot = 0.01f;
     [SerializeField] float maxVelocityX = 10.0f;
     [SerializeField] float maxVelocityY = 10.0f;
+
+    [Space]
+    [Header("SysCollision")]
+    [Range(1f, 5f)] [SerializeField] float collisionDefense;
+    [Range(0f, 100f)] [SerializeField] float collisionAttack;
+
+    public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
 
     private Vector2 vectorToPlayer;
     private Vector2 home;
@@ -27,7 +35,6 @@ public class Bird
         flipX = creature.FlipXItems;
         creature.SetDeathStartedCallback(() => fsm.State = BirdState.Dead);
         creature.SetHurtFinishedCallback(OnHurtCompleted);
-        creature.SetHurtCallback(Hurt);
 
         this.fsm.State = BirdState.MoveHome;
 
@@ -104,13 +111,13 @@ public class Bird
         fsm.State = CloseToPlayer() ? BirdState.MoveToPlayer : BirdState.MoveHome;
     }
 
-    private void Hurt(float amount)
+    public void TakeDamage(float amount)
     {
+        creature.Hurt(amount, 100f);
         if (!Alive())
         {
             return;
         }
-
         fsm.State = BirdState.Hurt;
     }
 
@@ -125,5 +132,24 @@ public class Bird
         vectorToPlayer = playerPosition - creature.physics.Position();
         flipX.FlipX = vectorToPlayer.x > 0;
         creature.physics.LookAt(playerPosition);
+    }
+
+    public void TriggeredWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+
+    public void CollidedWith(ISysCollisionParticipator other)
+    {
+        SysCollision.RegisterCollision(this, other);
+    }
+
+    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    {
     }
 }

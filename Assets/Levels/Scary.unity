@@ -1478,16 +1478,6 @@ PrefabInstance:
       objectReference: {fileID: 608142814}
     - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
-      propertyPath: logFsmChanges
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
-        type: 3}
-      propertyPath: logTimerCallbacks
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
-        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -1498,8 +1488,18 @@ PrefabInstance:
       objectReference: {fileID: 608142820}
     - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
-      propertyPath: bird.overshoot
-      value: 0.02
+      propertyPath: bird.physicalDefense
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: logFsmChanges
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: bird.collisionDefense
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -1604,7 +1604,7 @@ PrefabInstance:
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}

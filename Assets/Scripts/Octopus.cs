@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Octopus
+public class Octopus : Creature, ICreatureController, ISysCollisionParticipator, ITakesDamage, IDealsDamage
 {
     [Range(-0.1f, 0.1f)]
     [SerializeField] float freqX = 0.3f;
@@ -18,6 +18,14 @@ public class Octopus
 
     [Range(0f, 10f)]
     [SerializeField] float uprightTorque = 4;
+
+    [Space]
+    [Header("SysCollision")]
+    [Range(1f, 5f)] [SerializeField] float collisionDefense;
+    [Range(0f, 100f)] [SerializeField] float collisionAttack;
+
+    public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
 
     private BaseCreature creature;
     private ICreatureFsm<OctopusState> fsm;
@@ -49,11 +57,30 @@ public class Octopus
         fsm.State = OctopusState.Alive;
     }
 
-    public void OnCollisionEnter2D()
+    public void TakeDamage(float amount)
     {
         if (fsm.State != OctopusState.Dead)
         {
-            creature.health.Hurt(10);
+            creature.health.Hurt(amount);
         }
+    }
+
+    public void TriggeredWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+
+    public void CollidedWith(ISysCollisionParticipator other)
+    {
+        SysCollision.RegisterCollision(this, other);
+    }
+
+    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    {
     }
 }

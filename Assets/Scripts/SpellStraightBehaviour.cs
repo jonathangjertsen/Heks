@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public class SpellStraightBehaviour : SpellBehaviour
+public class SpellStraightBehaviour : SpellBehaviour, IDealsDamage
 {
+    public float collisionAttack = 100;
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
+
     override public void Launch(Vector2 initialVelocity, float charge, bool flipX)
     {
         int flipXAsInt = flipX ? 1 : -1;

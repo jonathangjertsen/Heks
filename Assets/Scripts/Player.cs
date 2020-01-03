@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Player : IPlayerLocator
+public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamage, ITakesDamage
 {
     [SerializeField] float maxVelocityX = 10.0f;
     [SerializeField] float maxVelocityY = 10.0f;
@@ -37,6 +37,14 @@ public class Player : IPlayerLocator
     private float HeadOffsetX => headOffsetX * creature.physics.Size.x;
     private float HeadOffsetY => headOffsetY * creature.physics.Size.y;
     public Vector2 HeadPosition => new Vector2(creature.physics.Position().x + HeadOffsetX, creature.physics.Position().y + HeadOffsetY);
+
+    [Space]
+    [Header("SysCollision")]
+    [Range(1f, 5f)] [SerializeField] float collisionDefense;
+    [Range(0f, 100f)] [SerializeField] float collisionAttack;
+
+    public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
 
     BaseCreature creature;
     ISpellCaster spellSpawner;
@@ -81,20 +89,6 @@ public class Player : IPlayerLocator
     {
         fsm.State = PlayerState.Angry;
         creature.timers.Start("angry");
-    }
-
-    public void OnTriggerEnter2D()
-    {
-        if (fsm.State == PlayerState.Dead)
-        {
-            return;
-        }
-
-        if (fsm.State != PlayerState.Hurt && fsm.State != PlayerState.Angry)
-        {
-            fsm.State = PlayerState.Hurt;
-            creature.Hurt(10, -400);
-        }
     }
 
     public void FixedUpdate()
@@ -212,5 +206,42 @@ public class Player : IPlayerLocator
         spellSpawner.Cast(creature.physics.Velocity(), charge / chargeTop);
         creature.physics.Recoil(castTorque);
         Charge = 0;
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+    }
+
+    public ISysCollisionParticipator GetSysCollisionParticipator() => this;
+
+    public void TakeDamage(float amount)
+    {
+        if (fsm.State == PlayerState.Dead)
+        {
+            return;
+        }
+
+        if (fsm.State != PlayerState.Hurt && fsm.State != PlayerState.Angry)
+        {
+            fsm.State = PlayerState.Hurt;
+            creature.Hurt(amount, -400);
+        }
+    }
+
+    public void TriggeredWith(ISysCollisionParticipator other)
+    {
+        SysCollision.RegisterCollision(this, other);
+    }
+
+    public void ExitedTriggerWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void CollidedWith(ISysCollisionParticipator other)
+    {
+    }
+
+    public void ExitedCollisionWith(ISysCollisionParticipator other)
+    {
     }
 }

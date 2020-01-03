@@ -433,7 +433,6 @@ MonoBehaviour:
   logFsmChanges: 0
   logTimerCallbacks: 0
   healthBar: {fileID: 4896309875396126327}
-  player: {fileID: 2071136512551164443}
   chargeBar: {fileID: 5687931042186351582}
   gameState: {fileID: 7720906914733766677}
   spellSpawn: {fileID: 5880512318560004230}
@@ -448,6 +447,8 @@ MonoBehaviour:
     castTimerTop: 30
     headOffsetX: 4.87
     headOffsetY: 6.06
+    collisionDefense: 2
+    collisionAttack: 10
   YellClip: {fileID: 8300000, guid: 8b29819c5a69a514da3ad65002d844c2, type: 3}
   HurtClip: {fileID: 8300000, guid: ed50d34e0d690ca4286ddec924ffe3ed, type: 3}
   ChargeClip: {fileID: 8300000, guid: 8ca4badd63910d646867b1ed95cec437, type: 3}

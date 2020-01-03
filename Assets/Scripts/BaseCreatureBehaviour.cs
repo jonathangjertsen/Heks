@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where StateEnum : struct, Enum
+public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatureControllerWrapper, ISysCollisionParticipatorWrapper where StateEnum : struct, Enum
 {
     public BaseCreature creature;
     protected CreatureFsm<StateEnum> fsm;
@@ -36,4 +36,46 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour where Sta
     protected virtual void AddFsmStates()
     {
     }
+
+    public abstract ICreatureController GetCreatureController();
+
+    private void FixedUpdate() => GetCreatureController().FixedUpdate();
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var wrap = collision.gameObject.GetComponent<ISysCollisionParticipatorWrapper>();
+        if (wrap != null)
+        {
+            var other = wrap.GetSysCollisionParticipator();
+            GetCreatureController().CollidedWith(other);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        var wrap = collision.gameObject.GetComponent<ISysCollisionParticipatorWrapper>();
+        if (wrap != null)
+        {
+            var other = wrap.GetSysCollisionParticipator();
+            GetCreatureController().ExitedCollisionWith(other);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var wrap = collision.gameObject.GetComponent<ISysCollisionParticipatorWrapper>();
+        if (wrap != null)
+        {
+            var other = wrap.GetSysCollisionParticipator();
+            GetCreatureController().TriggeredWith(other);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        var wrap = collision.gameObject.GetComponent<ISysCollisionParticipatorWrapper>();
+        if (wrap != null)
+        {
+            var other = wrap.GetSysCollisionParticipator();
+            GetCreatureController().ExitedTriggerWith(other);
+        }
+    }
+    public ISysCollisionParticipator GetSysCollisionParticipator() => GetCreatureController();
 }

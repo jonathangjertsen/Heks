@@ -17,18 +17,6 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
         skull.Init(creature, fsm, player.self);
     }
 
-    private void FixedUpdate() => skull.FixedUpdate();
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        skull.OnCollisionEnter2D(collision);
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        skull.OnCollisionExit2D(collision);
-    }
-
     protected override void AddFsmStates()
     {
         fsm.Add(SkullState.GroundedCanHop, GroundedSprite, null);
@@ -37,4 +25,6 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
         fsm.Add(SkullState.Dead, DeadSprite, null);
         fsm.Add(SkullState.Hurt, HurtSprite, null);
     }
+
+    public override ICreatureController GetCreatureController() => skull;
 }

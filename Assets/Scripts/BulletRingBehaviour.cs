@@ -1,8 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public class BulletRingBehaviour : SpellBehaviour
+public class BulletRingBehaviour : SpellBehaviour, IDealsDamage
 {
+    public float collisionAttack = 30;
+    public float CollisionAttack { get => collisionAttack; set => collisionAttack = value; }
+
     [SerializeField] float ringSize;
     [SerializeField] float maxOutwardSpeed;
     [SerializeField] int maxNum;

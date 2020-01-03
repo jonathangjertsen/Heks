@@ -111,7 +111,6 @@ MonoBehaviour:
   logFsmChanges: 0
   logTimerCallbacks: 0
   healthBar: {fileID: 4444203106989673559}
-  player: {fileID: 0}
   sprite: {fileID: 21300000, guid: da8d821b33cbaba4cac36322f853d2b2, type: 3}
   octopus:
     freqX: 0.03
@@ -119,6 +118,8 @@ MonoBehaviour:
     ampX: 0.018
     ampY: 0.014
     uprightTorque: 5.7
+    collisionDefense: 4.2
+    collisionAttack: 17
 --- !u!50 &1269431479898106261
 Rigidbody2D:
   serializedVersion: 4

@@ -11,16 +11,11 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
         octopus.Init(creature, fsm);
     }
 
-    private void FixedUpdate() => octopus.FixedUpdate();
-
-    private void OnCollisionEnter2D()
-    {
-        octopus.OnCollisionEnter2D();
-    }
-
     protected override void AddFsmStates()
     {
         fsm.Add(OctopusState.Alive, sprite, null);
         fsm.Add(OctopusState.Dead, sprite, null);
     }
+
+    public override ICreatureController GetCreatureController() => octopus;
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -11,7 +12,6 @@ namespace Tests
         [Test]
         public void BasicTestSimplePasses()
         {
-
         }
     }
 }

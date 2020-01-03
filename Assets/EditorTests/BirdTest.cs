@@ -75,7 +75,7 @@ namespace Tests
         [Test]
         public void HurtCreature_BirdIsHurt()
         {
-            creature.Hurt(10);
+            bird.CollidedWith(new AttackerMock());
             Assert.AreEqual(BirdState.Hurt, bird.fsm.State);
         }
 
@@ -83,7 +83,7 @@ namespace Tests
         public void HurtCreature_BirdIsHurtUntilTimerExpires()
         {
             PutPlayerClose();
-            creature.Hurt(10);
+            bird.CollidedWith(new AttackerMock());
             creature.timers.PropagateStartAndStop();
             Assert.True(creature.timers.Running("hurt"));
             while(creature.timers.Running("hurt"))

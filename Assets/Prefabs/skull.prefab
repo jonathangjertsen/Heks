@@ -97,27 +97,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creature:
-    maxHealth: 30
-    axCoeffX: 0.01
-    axCoeffY: 0.03
-    rotCoeff: 1
-    maxVelocityX: 10
-    maxVelocityY: 10
-    maxJerkX: 5
-    maxJerkY: 5
-    logFsmChanges: 0
-    logTimerCallbacks: 0
+    maxHealth: 45.5
+    regenPer: 0.02
+    physicsProperties:
+      axCoeffX: 0.01
+      axCoeffY: 0.03
+      rotCoeff: 1
+      maxJerkX: 5
+      maxJerkY: 5
+      idleThreshold: 1
+    hurtTimerTop: 60
+    deathToShrinkStartTimerTop: 100
+    shrinkTimerTop: 200
+  logFsmChanges: 0
+  logTimerCallbacks: 0
   healthBar: {fileID: 6380522236195666845}
+  skull:
+    visionRadius: 15
+    hopTimerTop: 50
+    hopForce: 10
+    hurtTimerTop: 10
+    collisionExitToNotGroundedTimerTop: 10
+    collisionDefense: 3.46
+    collisionAttack: 58
   player: {fileID: 0}
   GroundedSprite: {fileID: 21300000, guid: 9a4221834ebaa974a92c79842b153089, type: 3}
   InAirSprite: {fileID: 21300000, guid: 5c371870182b72349bf10c70686fe76f, type: 3}
   DeadSprite: {fileID: 21300000, guid: 9a4221834ebaa974a92c79842b153089, type: 3}
   HurtSprite: {fileID: 21300000, guid: f606f99d41215b341bbf39f55e6657cb, type: 3}
-  visionRadius: 15.17
-  hopTimerTop: 130
-  hopForce: 12
-  hurtTimerTop: 15
-  collisionExitToNotGroundedTimerTop: 10
 --- !u!50 &8087899124226269971
 Rigidbody2D:
   serializedVersion: 4

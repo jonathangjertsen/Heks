@@ -21,13 +21,6 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
         bird.Init(creature, fsm, player.self);
     }
 
-    private void FixedUpdate() => bird.FixedUpdate();
-
-    private void OnCollisionEnter2D()
-    {
-        creature.Hurt(10, 100);
-    }
-
     protected override void AddFsmStates()
     {
         fsm.Add(BirdState.MoveHome, DefaultSprite, null);
@@ -35,4 +28,6 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
         fsm.Add(BirdState.Hurt, HurtSprite, CryClip);
         fsm.Add(BirdState.Dead, DeadSprite, null);
     }
+
+    public override ICreatureController GetCreatureController() => bird;
 }
