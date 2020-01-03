@@ -39,6 +39,8 @@ public class GameState : IEventBus
         timers.Add("deathToGameOverStart", new Timer(deathToGameOverStartTop, GameOverStart));
 
         Time.timeScale = 1f;
+
+        Unpaused();
     }
 
     public void PlayerDied()
