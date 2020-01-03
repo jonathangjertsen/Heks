@@ -21,6 +21,9 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatur
 
     protected void Start()
     {
+        NotNull.Check(healthBar);
+        NotNull.Check(physicsProperties);
+
         var physics = new CreaturePhysics(
             new WrapperRigidbody2d(GetComponent<Rigidbody2D>()),
             new WrapperTransform(transform),

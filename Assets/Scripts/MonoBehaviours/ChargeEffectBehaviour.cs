@@ -14,6 +14,8 @@ public class ChargeEffectBehaviour : BarBehaviour, ICanBeActivated
     {
         initialLocalScale = transform.localScale;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        NotNull.Check(spriteRenderer);
     }
 
     void Update()

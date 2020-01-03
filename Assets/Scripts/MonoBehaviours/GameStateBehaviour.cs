@@ -2,14 +2,19 @@
 
 public class GameStateBehaviour : MonoBehaviour
 {
-    [SerializeField] SceneLoader sceneLoader;
     public GameState gameState;
     public FadeInBehaviour fade;
     public PauseMenuBehaviour pauseMenu;
     public ChargeEffectBehaviour chargeEffect;
+    [SerializeField] SceneLoader sceneLoader;
 
     public void Start()
     {
+        NotNull.Check(fade);
+        NotNull.Check(pauseMenu);
+        NotNull.Check(chargeEffect);
+        NotNull.Check(sceneLoader);
+
         gameState.Init(fade, pauseMenu, chargeEffect, sceneLoader);
     }
 

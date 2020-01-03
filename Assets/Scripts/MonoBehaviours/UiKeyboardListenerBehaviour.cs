@@ -7,6 +7,8 @@ public class UiKeyboardListenerBehaviour : MonoBehaviour
     
     private void Start()
     {
+        NotNull.Check(gameStateBh);
+
         keyboardListener = new UiKeyboardListener(PlayerInput.Instance(), gameStateBh.gameState);
     }
 

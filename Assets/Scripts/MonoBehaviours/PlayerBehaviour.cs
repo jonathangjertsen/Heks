@@ -28,6 +28,22 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     private new void Start()
     {
         base.Start();
+
+        NotNull.Check(chargeBar);
+        NotNull.Check(gameState);
+        NotNull.Check(spellSpawn);
+        NotNull.Check(YellClip);
+        NotNull.Check(HurtClip);
+        NotNull.Check(ChargeClip);
+        NotNull.Check(CastClip);
+        NotNull.Check(FlyingSprite);
+        NotNull.Check(StandingSprite);
+        NotNull.Check(ChargingSprite);
+        NotNull.Check(CastingSprite);
+        NotNull.Check(HurtSprite);
+        NotNull.Check(AngrySprite);
+        NotNull.Check(DeadSprite);
+
         self.Init(creature, fsm, chargeBar, spellSpawn, PlayerInput.Instance(), gameState.gameState);
     }
 

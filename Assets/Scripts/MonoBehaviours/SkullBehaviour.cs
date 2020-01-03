@@ -16,10 +16,7 @@ public class SkullBehaviour : BaseCreatureBehaviour<SkullState>
     {
         base.Start();
 
-        if (playerLocator == null)
-        {
-            throw new System.Exception("No PlayerLocator registered");
-        }
+        NotNull.Check(playerLocator);
 
         skull.Init(creature, fsm, playerLocator);
     }

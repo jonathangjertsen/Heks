@@ -10,6 +10,10 @@ public class SpellSpawnerBehaviour : MonoBehaviour, IFlipX, ISpellInstantiator, 
 
     public void Start()
     {
+        NotNull.Check(viz);
+        NotNull.Check(spellSpawner);
+        NotNull.Check(spells);
+
         spellSpawner.Init(this, viz, spells);
     }
 

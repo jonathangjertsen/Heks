@@ -11,6 +11,11 @@ public class CameraFollowBehaviour : MonoBehaviour
 
     public Transform player;
 
+    private void Start()
+    {
+        NotNull.Check(player);
+    }
+
     private float WeightedDistanceX(float targetX)
     {
         return updateCoeffX * (targetX - transform.position.x);

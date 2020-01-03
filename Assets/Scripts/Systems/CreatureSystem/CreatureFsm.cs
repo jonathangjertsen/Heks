@@ -24,6 +24,8 @@ public class CreatureFsm<EnumType> : ICreatureFsm<EnumType> where EnumType : str
 
     public void Add(EnumType state, Sprite sprite, AudioClip clip)
     {
+        NotNull.Check(sprite);
+
         sprites.Add(state, sprite);
 
         if (clip != null)

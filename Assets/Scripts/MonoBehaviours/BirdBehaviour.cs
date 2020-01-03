@@ -18,6 +18,14 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
     private new void Start()
     {
         base.Start();
+
+        NotNull.Check(playerLocator);
+        NotNull.Check(CryClip);
+        NotNull.Check(DefaultSprite);
+        NotNull.Check(ChargingSprite);
+        NotNull.Check(HurtSprite);
+        NotNull.Check(DeadSprite);
+
         bird.Init(creature, fsm, playerLocator);
     }
 

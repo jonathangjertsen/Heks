@@ -20,9 +20,6 @@ public class PlayerLocatorBehaviour : MonoBehaviour, IPlayerLocator
              throw new System.Exception("Cannot have more than one PlayerBehaviour in the scene at once");
         }
         player = (Player)foundPlayers[0].GetCreatureController();
-        if (player == null)
-        {
-            throw new System.Exception("Found a PlayerBehaviour, but its Player is null");
-        }
+        NotNull.Check(player);
     }
 }

@@ -10,6 +10,9 @@ public class SceneLoader : MonoBehaviour, ISceneLoader
 
     public void Start()
     {
+        NotNull.Check(animator);
+        NotNull.Check(audioSource);
+
         animator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 

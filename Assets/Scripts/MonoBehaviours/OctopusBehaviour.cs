@@ -8,6 +8,9 @@ public class OctopusBehaviour : BaseCreatureBehaviour<OctopusState>
     new private void Start()
     {
         base.Start();
+
+        NotNull.Check(sprite);
+
         octopus.Init(creature, fsm);
     }
 
