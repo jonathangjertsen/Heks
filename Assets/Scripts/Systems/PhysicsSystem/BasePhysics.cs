@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BasePhysics : IFlipX, IBasePhysics
+public class BasePhysics : IBasePhysics
 {
     private readonly Vector3 initialScale;
     protected readonly ITransform transform;

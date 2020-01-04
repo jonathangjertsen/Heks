@@ -6,7 +6,7 @@ public class GameState : IEventBus
 {
     protected TimerCollection timers;
     private IFadeIn fade;
-    private IPauseMenu pauseMenu;
+    private ICanBeActivated pauseMenu;
     private ICanBeActivated chargeEffect;
     private ISceneLoader sceneLoader;
 
@@ -22,7 +22,7 @@ public class GameState : IEventBus
 
     public void Init(
         IFadeIn fade,
-        IPauseMenu pauseMenu,
+        ICanBeActivated pauseMenu,
         ICanBeActivated chargeEffect,
         ISceneLoader sceneLoader
     )

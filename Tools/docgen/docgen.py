@@ -5,7 +5,7 @@ import re
 
 import networkx as nx
 
-alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
 
 def get_scripts_dir():
     here_dir = Path(__file__).absolute()
