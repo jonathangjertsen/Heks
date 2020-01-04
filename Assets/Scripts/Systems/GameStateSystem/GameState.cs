@@ -15,10 +15,12 @@ public class GameState : IEventBus
 
     [Space] [Header("Timing")]
     public int deathToGameOverStartTop;
-    public float chargeSlowdown = 0.75f;
+    public float chargeSlowdown = 0.5f;
 
     [Space] [Header("Game")]
     [SerializeField] string mainLevelSceneName;
+
+    float initialFixedDeltaTime;
 
     public void Init(
         IFadeIn fade,
@@ -39,6 +41,7 @@ public class GameState : IEventBus
         timers.Add("deathToGameOverStart", deathToGameOverStartTop, GameOverStart);
 
         Time.timeScale = 1f;
+        initialFixedDeltaTime = Time.fixedDeltaTime;
 
         Reset();
     }
@@ -58,12 +61,14 @@ public class GameState : IEventBus
     {
         pauseMenu.SetActive(false);
         Time.timeScale = chargeEffect.IsActive() ? chargeSlowdown : 1f;
+        Time.fixedDeltaTime = initialFixedDeltaTime * (chargeEffect.IsActive() ? (1/chargeSlowdown) : 1);
     }
 
     public void ChargeStart()
     {
         chargeEffect.SetActive(true);
         Time.timeScale = chargeSlowdown;
+        Time.fixedDeltaTime = initialFixedDeltaTime * (1 / chargeSlowdown);
     }
 
     public void LevelRestarted()
@@ -82,6 +87,7 @@ public class GameState : IEventBus
     {
         chargeEffect.SetActive(false);
         Time.timeScale = pauseMenu.IsActive() ? 0f : 1f;
+        Time.fixedDeltaTime = initialFixedDeltaTime;
     }
 
     private void GameOverStart()

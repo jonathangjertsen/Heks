@@ -50,10 +50,11 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -61,6 +62,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -99,19 +101,20 @@ MonoBehaviour:
   creature:
     maxHealth: 45.5
     regenPer: 0.02
-    physicsProperties:
-      axCoeffX: 0.01
-      axCoeffY: 0.03
-      rotCoeff: 1
-      maxJerkX: 5
-      maxJerkY: 5
-      idleThreshold: 1
     hurtTimerTop: 60
     deathToShrinkStartTimerTop: 100
     shrinkTimerTop: 200
   logFsmChanges: 0
   logTimerCallbacks: 0
+  physicsProperties:
+    axCoeffX: 0.01
+    axCoeffY: 0.03
+    rotCoeff: 1
+    maxJerkX: 5
+    maxJerkY: 5
+    idleThreshold: 1
   healthBar: {fileID: 6380522236195666845}
+  playerLocator: {fileID: 0}
   skull:
     visionRadius: 15
     hopTimerTop: 50
@@ -120,7 +123,6 @@ MonoBehaviour:
     collisionExitToNotGroundedTimerTop: 10
     collisionDefense: 3.46
     collisionAttack: 58
-  player: {fileID: 0}
   GroundedSprite: {fileID: 21300000, guid: 9a4221834ebaa974a92c79842b153089, type: 3}
   InAirSprite: {fileID: 21300000, guid: 5c371870182b72349bf10c70686fe76f, type: 3}
   DeadSprite: {fileID: 21300000, guid: 9a4221834ebaa974a92c79842b153089, type: 3}
