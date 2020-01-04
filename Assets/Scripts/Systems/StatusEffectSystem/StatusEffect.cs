@@ -1,8 +1,18 @@
-﻿
-public class StatusEffect : IStatusEffect
+﻿using UnityEngine;
+
+[CreateAssetMenu(fileName = "Effect", menuName = "ScriptableObjects/StatusEffect", order = 1)]
+public class StatusEffect : ScriptableObject, IStatusEffect
 {
-    public StatusEffectType Type { get; set; }
-    public float Intensity { get; set; }
+    [Header("Data")]
+    public StatusEffectType type;
+    public float intensity;
+
+    [Header("Info")]
+    public Sprite sprite;
+    [TextArea] public string description;
+
+    public StatusEffectType Type { get => type; set => type = value; }
+    public float Intensity { get => intensity; set => intensity = value; }
 
     public StatusEffect(StatusEffectType type, float intensity)
     {
