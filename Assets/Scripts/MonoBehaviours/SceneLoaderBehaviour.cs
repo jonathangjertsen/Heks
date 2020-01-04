@@ -1,7 +1,7 @@
 ﻿using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class SceneLoader : MonoBehaviour, ISceneLoader
+public class SceneLoaderBehaviour : MonoBehaviour, ISceneLoader
 {
     [SerializeField] Animator animator;
     [SerializeField] AudioSource audioSource;

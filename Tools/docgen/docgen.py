@@ -98,6 +98,8 @@ def make_graph(classes, include_dependencies=True):
         for class_ in classes:
             with open(class_.file) as file:
                 for line in file.readlines():
+                    if "// docgen-skip" in line:
+                        continue
                     for class__ in classes:
                         if class_ == class__:
                             continue

@@ -6,7 +6,7 @@ public class GameStateBehaviour : MonoBehaviour
     public FadeInBehaviour fade;
     public PauseMenuBehaviour pauseMenu;
     public ChargeEffectBehaviour chargeEffect;
-    [SerializeField] SceneLoader sceneLoader;
+    [SerializeField] SceneLoaderBehaviour sceneLoader;
 
     public void Start()
     {

@@ -2,9 +2,9 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LevelIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class LevelIconBehaviour : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] SceneLoader sceneLoader;
+    [SerializeField] SceneLoaderBehaviour sceneLoader;
     [SerializeField] string scene;
 
     private Image image;
