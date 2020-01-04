@@ -4,15 +4,15 @@ namespace Tests
 {
     public class ChargeEffectMock : ICanBeActivated
     {
+        public bool isActive;
         public bool IsActive()
         {
-            throw new NotImplementedException();
+            return isActive;
         }
 
         public void SetActive(bool active)
         {
-            throw new NotImplementedException();
+            isActive = active;
         }
     }
-
 }

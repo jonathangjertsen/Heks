@@ -14,8 +14,8 @@ public class GameState : IEventBus
     [SerializeField] bool logTimerCallbacks;
 
     [Space] [Header("Timing")]
-    [SerializeField] int deathToGameOverStartTop;
-    [SerializeField] int gameOverFadeTop;
+    public int deathToGameOverStartTop;
+    public float chargeSlowdown = 0.75f;
 
     [Space] [Header("Game")]
     [SerializeField] string mainLevelSceneName;
@@ -40,7 +40,7 @@ public class GameState : IEventBus
 
         Time.timeScale = 1f;
 
-        Unpaused();
+        Reset();
     }
 
     public void PlayerDied()
@@ -57,25 +57,25 @@ public class GameState : IEventBus
     public void Unpaused()
     {
         pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = chargeEffect.IsActive() ? chargeSlowdown : 1f;
     }
 
     public void ChargeStart()
     {
         chargeEffect.SetActive(true);
-        Time.timeScale = 0.75f;
+        Time.timeScale = chargeSlowdown;
     }
 
     public void LevelRestarted()
     {
         sceneLoader.StartReloading();
-        Unpaused();
+        Reset();
     }
 
     public void LevelExited()
     {
         sceneLoader.StartLoading(mainLevelSceneName);
-        Unpaused();
+        Reset();
     }
 
     public void ChargeStop()
@@ -86,11 +86,13 @@ public class GameState : IEventBus
 
     private void GameOverStart()
     {
-        fade.StartFade(GameOverFadeEnded);
+        fade.StartFade(null);
     }
 
-    private void GameOverFadeEnded()
+    private void Reset()
     {
+        Unpaused();
+        ChargeStop();
     }
 
     public void FixedUpdate()

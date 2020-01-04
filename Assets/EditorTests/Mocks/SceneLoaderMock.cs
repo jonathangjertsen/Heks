@@ -4,6 +4,9 @@ namespace Tests
 {
     public class SceneLoaderMock : ISceneLoader
     {
+        public string lastSceneLoaded = null;
+        public bool didReload = false;
+
         public void OnFadeOutCompleted()
         {
             throw new NotImplementedException();
@@ -16,12 +19,13 @@ namespace Tests
 
         public void StartLoading(string scene)
         {
-            throw new NotImplementedException();
+            lastSceneLoaded = scene;
         }
 
         public void StartReloading()
         {
-            throw new NotImplementedException();
+            didReload = true;
+            StartLoading(lastSceneLoaded);
         }
     }
 

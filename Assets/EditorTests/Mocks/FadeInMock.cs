@@ -4,9 +4,11 @@ namespace Tests
 {
     public class FadeInMock : IFadeIn
     {
+        public bool fadeStarted = false;
+
         public void StartFade(FadeEndedCallback fadeEndedCallback)
         {
-            throw new NotImplementedException();
+            fadeStarted = true;
         }
     }
 
