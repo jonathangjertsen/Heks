@@ -36,7 +36,7 @@ public class GameState : IEventBus
         {
             logCallbacks = logTimerCallbacks
         };
-        timers.Add("deathToGameOverStart", new Timer(deathToGameOverStartTop, GameOverStart));
+        timers.Add("deathToGameOverStart", deathToGameOverStartTop, GameOverStart);
 
         Time.timeScale = 1f;
 

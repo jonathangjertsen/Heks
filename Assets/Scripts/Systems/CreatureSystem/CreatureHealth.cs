@@ -5,13 +5,11 @@ public class CreatureHealth : ICreatureHealth
     private readonly IBarDisplay healthBar;
     private readonly float maxHealth;
     private float currentHealth;
-    private OnZeroHealth onZeroHealth;
-    private OnHurt onHurt;
-    private OnHeal onHeal;
+    private Callback.Void onZeroHealth;
+    private Callback.FloatIn onHurt;
+    private Callback.FloatIn onHeal;
 
     public delegate void OnZeroHealth();
-    public delegate void OnHurt(float amount);
-    public delegate void OnHeal(float amount);
 
     public CreatureHealth(IBarDisplay healthBar, float maxHealth)
     {
@@ -21,16 +19,16 @@ public class CreatureHealth : ICreatureHealth
         Health = maxHealth;
     }
 
-    public void PrependZeroHealthCallback(OnZeroHealth callback)
+    public void PrependZeroHealthCallback(Callback.Void callback)
     {
-        OnZeroHealth original = onZeroHealth;
+        Callback.Void original = onZeroHealth;
         onZeroHealth = () => {
             callback();
             original?.Invoke();
         };
     }
 
-    public void SetHurtCallback(OnHurt callback)
+    public void SetHurtCallback(Callback.FloatIn callback)
     {
         if (onHurt != null)
         {

@@ -30,9 +30,9 @@ public class BaseCreature
         health = new CreatureHealth(healthBar, maxHealth);
 
         timers = new TimerCollection();
-        timers.Add("deathToShrinkStart", new Timer(deathToShrinkStartTimerTop, () => timers.Start("shrink")));
-        timers.Add("shrink", new Timer(shrinkTimerTop, null, onTick: Shrinking));
-        timers.Add("hurt", new Timer(hurtTimerTop, null));
+        timers.Add("deathToShrinkStart", deathToShrinkStartTimerTop, () => timers.Start("shrink"));
+        timers.Add("shrink", shrinkTimerTop, null, onTick: Shrinking);
+        timers.Add("hurt", hurtTimerTop, null);
 
         FlipXItems = new FlipXCollection();
         FlipXItems.Add(bars);
@@ -47,17 +47,17 @@ public class BaseCreature
         });
     }
 
-    public void SetDeathFinishedCallback(Timer.Timeout callback)
+    public void SetDeathFinishedCallback(Callback.Void callback)
     {
         timers.SetTimeoutCallback("shrink", callback);
     }
 
-    public void SetHurtCallback(CreatureHealth.OnHurt callback)
+    public void SetHurtCallback(Callback.FloatIn callback)
     {
         health.SetHurtCallback(callback);
     }
 
-    public void SetHurtFinishedCallback(Timer.Timeout callback)
+    public void SetHurtFinishedCallback(Callback.Void callback)
     {
         timers.SetTimeoutCallback("hurt", callback);
     }

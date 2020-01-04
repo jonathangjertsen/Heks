@@ -35,8 +35,8 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
 
         this.fsm.State = SkullState.InAir;
 
-        creature.timers.Add("hop", new Timer(hopTimerTop, OnHopTimerExpired, TimerMode.Repeat));
-        creature.timers.Add("collisionExitToNotGrounded", new Timer(collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot));
+        creature.timers.Add("hop", hopTimerTop, OnHopTimerExpired, TimerMode.Repeat);
+        creature.timers.Add("collisionExitToNotGrounded", collisionExitToNotGroundedTimerTop, OnCollisionExitToNotGroundedTimerExpired, TimerMode.Oneshot);
         this.playerLocator = playerLocator;
     }
 

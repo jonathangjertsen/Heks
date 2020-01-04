@@ -17,7 +17,7 @@ public class SpellBehaviour : MonoBehaviour, ISpell, ICollisionSystemParticipato
             new WrapperTransform(transform)
         );
         timers = new TimerCollection();
-        timers.Add("contact", new Timer(liveTimerTop, onTimeout: Remove));
+        timers.Add("contact", liveTimerTop, onTimeout: Remove);
     }
 
     public void FixedUpdate()

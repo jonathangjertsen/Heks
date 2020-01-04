@@ -206,9 +206,9 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
 
     private void InitTimers()
     {
-        creature.timers.Add("angry", new Timer(angryTimerTop, () => fsm.State = PlayerState.Flying));
-        creature.timers.Add("flyingToIdle", new Timer(flyingToIdleTimerTop, () => fsm.State = PlayerState.Standing));
-        creature.timers.Add("cast", new Timer(castTimerTop, () => fsm.State = PlayerState.Flying));
+        creature.timers.Add("angry", angryTimerTop, () => fsm.State = PlayerState.Flying);
+        creature.timers.Add("flyingToIdle", flyingToIdleTimerTop, () => fsm.State = PlayerState.Standing);
+        creature.timers.Add("cast", castTimerTop, () => fsm.State = PlayerState.Flying);
     }
 
     private void InitCharge()

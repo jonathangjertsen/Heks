@@ -1,21 +1,17 @@
-using UnityEngine;
 
 public class Timer
 {
     private readonly int top;
-    private Timeout onTimeout;
-    private readonly OnTick onTick;
+    private Callback.Void onTimeout;
+    private readonly Callback.Void onTick;
     private readonly TimerMode mode;
     public bool logCallbacks = false;
     public string name = "unnamed";
 
-    public delegate void OnTick();
-    public delegate void Timeout();
-
     public int Value { get; private set; }
     public bool Running { get; private set; }
 
-    public Timer(int top, Timeout onTimeout, TimerMode mode = TimerMode.Oneshot, OnTick onTick = null)
+    public Timer(int top, Callback.Void onTimeout, TimerMode mode = TimerMode.Oneshot, Callback.Void onTick = null)
     {
         this.top = top;
         this.onTimeout = onTimeout;
@@ -36,7 +32,7 @@ public class Timer
         DecrementTimer();
     }
 
-    public void SetTimeoutCallback(Timeout callback)
+    public void SetTimeoutCallback(Callback.Void callback)
     {
         onTimeout = callback;
     }

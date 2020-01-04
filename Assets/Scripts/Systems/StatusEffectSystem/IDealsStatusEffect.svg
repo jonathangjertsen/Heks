@@ -9,35 +9,35 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>%3</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-184 215.936,-184 215.936,4 -4,4"/>
-<!-- IStatusEffect -->
-<g id="node1" class="node"><title>IStatusEffect</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="77.9931" cy="-18" rx="57.6901" ry="18"/>
-<text text-anchor="middle" x="77.9931" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IStatusEffect</text>
-</g>
 <!-- ITakesStatusEffect -->
-<g id="node2" class="node"><title>ITakesStatusEffect</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="131.993" cy="-90" rx="79.8859" ry="18"/>
-<text text-anchor="middle" x="131.993" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ITakesStatusEffect</text>
+<g id="node1" class="node"><title>ITakesStatusEffect</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="79.9429" cy="-90" rx="79.8859" ry="18"/>
+<text text-anchor="middle" x="79.9429" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ITakesStatusEffect</text>
+</g>
+<!-- IStatusEffect -->
+<g id="node3" class="node"><title>IStatusEffect</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="133.943" cy="-18" rx="57.6901" ry="18"/>
+<text text-anchor="middle" x="133.943" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IStatusEffect</text>
 </g>
 <!-- ITakesStatusEffect&#45;&gt;IStatusEffect -->
 <g id="edge1" class="edge"><title>ITakesStatusEffect&#45;&gt;IStatusEffect</title>
-<path fill="none" stroke="black" d="M118.921,-72.055C112.421,-63.6287 104.437,-53.2798 97.2528,-43.9663"/>
-<polygon fill="black" stroke="black" points="99.8239,-41.569 90.9446,-35.789 94.2814,-45.8447 99.8239,-41.569"/>
+<path fill="none" stroke="black" d="M93.0148,-72.055C99.5151,-63.6287 107.499,-53.2798 114.683,-43.9663"/>
+<polygon fill="black" stroke="black" points="117.655,-45.8447 120.991,-35.789 112.112,-41.569 117.655,-45.8447"/>
 </g>
 <!-- IDealsStatusEffect -->
-<g id="node3" class="node"><title>IDealsStatusEffect</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="77.9931" cy="-162" rx="77.9862" ry="18"/>
-<text text-anchor="middle" x="77.9931" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">IDealsStatusEffect</text>
-</g>
-<!-- IDealsStatusEffect&#45;&gt;IStatusEffect -->
-<g id="edge2" class="edge"><title>IDealsStatusEffect&#45;&gt;IStatusEffect</title>
-<path fill="none" stroke="black" d="M63.1752,-144.173C55.5313,-134.353 46.9902,-121.306 42.9931,-108 38.39,-92.6764 38.39,-87.3236 42.9931,-72 45.9597,-62.1243 51.4293,-52.3913 57.1775,-44.0146"/>
-<polygon fill="black" stroke="black" points="60.0892,-45.9625 63.1752,-35.8271 54.4422,-41.8258 60.0892,-45.9625"/>
+<g id="node2" class="node"><title>IDealsStatusEffect</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="133.943" cy="-162" rx="77.9862" ry="18"/>
+<text text-anchor="middle" x="133.943" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">IDealsStatusEffect</text>
 </g>
 <!-- IDealsStatusEffect&#45;&gt;ITakesStatusEffect -->
 <g id="edge3" class="edge"><title>IDealsStatusEffect&#45;&gt;ITakesStatusEffect</title>
-<path fill="none" stroke="black" d="M91.065,-144.055C97.5652,-135.629 105.549,-125.28 112.733,-115.966"/>
-<polygon fill="black" stroke="black" points="115.705,-117.845 119.042,-107.789 110.162,-113.569 115.705,-117.845"/>
+<path fill="none" stroke="black" d="M120.871,-144.055C114.371,-135.629 106.387,-125.28 99.2026,-115.966"/>
+<polygon fill="black" stroke="black" points="101.774,-113.569 92.8944,-107.789 96.2312,-117.845 101.774,-113.569"/>
+</g>
+<!-- IDealsStatusEffect&#45;&gt;IStatusEffect -->
+<g id="edge2" class="edge"><title>IDealsStatusEffect&#45;&gt;IStatusEffect</title>
+<path fill="none" stroke="black" d="M148.761,-144.173C156.405,-134.353 164.946,-121.306 168.943,-108 173.546,-92.6764 173.546,-87.3236 168.943,-72 165.976,-62.1243 160.507,-52.3913 154.759,-44.0146"/>
+<polygon fill="black" stroke="black" points="157.494,-41.8258 148.761,-35.8271 151.847,-45.9625 157.494,-41.8258"/>
 </g>
 </g>
 </svg>

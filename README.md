@@ -34,3 +34,13 @@ Assets
 ├───Scenes            - Obsolete
 └───Scripts           - All scripts
 ```
+
+## Documentation
+
+Documentation for each system is found together with the source (subfolders of `Assets/Scripts/System`).
+
+The dependency graphs use the following colors and styles:
+
+![Legend](Doc/legend.svg)
+
+`sh Tools/docgen/generate_images.sh` is run to generate all the images.

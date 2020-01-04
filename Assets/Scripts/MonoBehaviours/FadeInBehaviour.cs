@@ -21,7 +21,7 @@ public class FadeInBehaviour : MonoBehaviour, IFadeIn
         components.Add(GetComponent<Image>());
 
         timers = new TimerCollection();
-        timers.Add("fade", new Timer(fadeTop, FadeEnded, onTick: FadeTick));
+        timers.Add("fade", fadeTop, FadeEnded, onTick: FadeTick);
 
         foreach (Graphic component in components)
         {

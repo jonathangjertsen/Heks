@@ -18,8 +18,9 @@ public class TimerCollection
         pausedTimers = new Dictionary<string, Timer>();
     }
 
-    public void Add(string name, Timer timer)
+    public void Add(string name, int top, Callback.Void onTimeout, TimerMode mode = TimerMode.Oneshot, Callback.Void onTick = null)
     {
+        var timer = new Timer(top, onTimeout, mode, onTick);
         timer.logCallbacks = logCallbacks;
         timer.name = name;
         timers.Add(name, timer);
@@ -41,7 +42,7 @@ public class TimerCollection
         PropagateStartAndStop();
     }
 
-    public void SetTimeoutCallback(string name, Timer.Timeout callback)
+    public void SetTimeoutCallback(string name, Callback.Void callback)
     {
         Get(name).SetTimeoutCallback(callback);
     }

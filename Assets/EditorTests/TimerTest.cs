@@ -122,7 +122,7 @@ namespace Tests
         public void CanReadFromAddedTimer()
         {
             var timers = new TimerCollection();
-            timers.Add("a timer", new Timer(10, null));
+            timers.Add("a timer", 10, null);
 
             Assert.False(timers.Running("a timer"));
         }
@@ -131,8 +131,8 @@ namespace Tests
         public void ExceptionMessageHasAvailableTimers()
         {
             var timers = new TimerCollection();
-            timers.Add("a timer", new Timer(10, null));
-            timers.Add("another timer", new Timer(10, null));
+            timers.Add("a timer", 10, null);
+            timers.Add("another timer", 10, null);
 
             Assert.False(timers.Running("a timer"));
 
@@ -153,9 +153,9 @@ namespace Tests
             bool timerBTimedOut = false;
 
             var timers = new TimerCollection();
-            timers.Add("A", new Timer(timerTop, () => timers.Stop("B")));
-            timers.Add("B", new Timer(timerTop, () => timerBTimedOut = true));
-            timers.Add("C", new Timer(timerTop, () => timers.Stop("B")));
+            timers.Add("A", timerTop, () => timers.Stop("B"));
+            timers.Add("B", timerTop, () => timerBTimedOut = true);
+            timers.Add("C", timerTop, () => timers.Stop("B"));
 
             timers.Start("A");
             timers.Start("B");
@@ -195,9 +195,9 @@ namespace Tests
             int timeoutsC = 0;
 
             var timers = new TimerCollection();
-            timers.Add("A", new Timer(timerTop, () => { timeoutsA++; timers.Start("B"); }));
-            timers.Add("B", new Timer(timerTop, () => { timeoutsB++; timers.Start("C"); }));
-            timers.Add("C", new Timer(timerTop, () => { timeoutsC++; timers.Start("A"); }));
+            timers.Add("A", timerTop, () => { timeoutsA++; timers.Start("B"); });
+            timers.Add("B", timerTop, () => { timeoutsB++; timers.Start("C"); });
+            timers.Add("C", timerTop, () => { timeoutsC++; timers.Start("A"); });
 
             timers.Start("A");
 
@@ -262,9 +262,9 @@ namespace Tests
             bool timerCTimedOut = false;
 
             var timers = new TimerCollection();
-            timers.Add("A", new Timer(timerTopA, () => timerATimedOut = true));
-            timers.Add("B", new Timer(timerTopB, () => timerBTimedOut = true));
-            timers.Add("C", new Timer(timerTopC, () => timerCTimedOut = true));
+            timers.Add("A", timerTopA, () => timerATimedOut = true);
+            timers.Add("B", timerTopB, () => timerBTimedOut = true);
+            timers.Add("C", timerTopC, () => timerCTimedOut = true);
 
             timers.Start("A");
             timers.Start("B");

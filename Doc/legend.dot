@@ -1,0 +1,9 @@
+strict digraph {
+    "abstract class" [style="dotted"];
+    subclass -> class -> "abstract class"  [style="bold" xlabel="derives from"];
+    class -> interface  [style="dashed" label="implements"];
+    class -> "other class" -> "static class" [label="depends on"]
+    class;
+    interface [style="dashed"];
+    "static class" [style="filled" fillcolor="gray90"];
+}

@@ -88,7 +88,7 @@ def get_classes():
 def make_graph(classes, include_dependencies=True):
     graph = nx.DiGraph()
     for class_ in classes:
-        graph.add_node(class_.name, __interface__=class_.interface)
+        graph.add_node(class_.name, is_interface=class_.interface, is_static="static" in class_.modifiers)
     for class_ in classes:
         if class_.base is not None:
             graph.add_edge(class_.name, class_.base, attr="__bold__")
@@ -139,9 +139,12 @@ def get_pydot(graph: nx.DiGraph) -> str:
     text = pd.replace(
         "attr=__bold__", 'style="bold"').replace(
         "attr=__dashed__", 'style="dashed"').replace(
-        "__interface__=True", 'style="dashed"').replace(
-        "__interface__=False", ''
+        "is_interface=True, is_static=False", 'style="dashed"').replace(
+        "is_interface=False, is_static=False", '').replace(
+        "is_interface=True, is_static=True", 'style="filled,dashed" fillcolor="gray90"').replace(
+        "is_interface=False, is_static=True", 'style="filled" fillcolor="gray90"'
     )
+
     return text
 
 if __name__ == "__main__":
