@@ -1,6 +1,6 @@
 ﻿
 public interface IStatusEffect
 {
-    StatusEffectType Type { get; }
-    float intensity { get; set; }
+    StatusEffectType Type { get; set; }
+    float Intensity { get; set; }
 }

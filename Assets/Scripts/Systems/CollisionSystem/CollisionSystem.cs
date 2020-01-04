@@ -16,7 +16,6 @@
             float damage = dealer.CollisionAttack / defense;
             taker.TakeDamage(damage);
             dealer.DealDamage(damage);
-            // Debug.Log($"Dealt {damage} from {dealer} to {taker}");
         }
     }
 
@@ -24,9 +23,7 @@
     {
         if (first.As(out ITakesStatusEffect taker) && other.As(out IDealsStatusEffect dealer))
         {
-            IStatusEffect statusEffect = dealer.DealStatusEffect(taker);
-            taker.TakeStatusEffect(statusEffect);
-            // Debug.Log($"Dealt {statusEffect} from {dealer} to {taker}")
+            taker.TakeStatusEffect(dealer.DealStatusEffect(taker));
         }
     }
 }

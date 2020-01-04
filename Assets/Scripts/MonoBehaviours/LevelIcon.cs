@@ -11,6 +11,8 @@ public class LevelIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
     public void Start()
     {
+        NotNull.Check(sceneLoader);
+
         image = GetComponent<Image>();
     }
 
