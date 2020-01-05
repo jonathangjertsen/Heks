@@ -4,4 +4,5 @@
     MoveToPlayer,
     Hurt,
     Dead,
+    Burned
 }

@@ -34,6 +34,7 @@ public class BirdBehaviour : BaseCreatureBehaviour<BirdState>
         fsm.Add(BirdState.MoveHome, DefaultSprite, null);
         fsm.Add(BirdState.MoveToPlayer, ChargingSprite, CryClip);
         fsm.Add(BirdState.Hurt, HurtSprite, CryClip);
+        fsm.Add(BirdState.Burned, HurtSprite, CryClip);
         fsm.Add(BirdState.Dead, DeadSprite, null);
     }
 

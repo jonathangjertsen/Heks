@@ -27,13 +27,13 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
 
     public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm, IPlayerLocator playerLocator)
     {
+        creature.SetDeathStartedCallback(() => fsm.State = BirdState.Dead);
+        creature.SetHurtFinishedCallback(OnHurtCompleted);
+        creature.timers.Add("burn", 0, onTimeout: () => fsm.State = BirdState.MoveHome);
+
         this.creature = creature;
         this.fsm = fsm;
         this.playerLocator = playerLocator;
-
-        creature.SetDeathStartedCallback(() => fsm.State = BirdState.Dead);
-        creature.SetHurtFinishedCallback(OnHurtCompleted);
-
         this.fsm.State = BirdState.MoveHome;
 
         home = creature.physics.Position();
@@ -55,20 +55,39 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
             return;
         }
 
+        if (Burned())
+        {
+            DoBurnedBehaviour();
+            return;
+        }
+
         FindPlayerLocation();
         if (CloseToPlayer())
         {
             DoBehaviourCloseToPlayer();
+            return;
         }
-        else
-        {
-            ApproachHome();
-        }
+
+        ApproachHome();
     }
+
+    private bool Burned() => fsm.State == BirdState.Burned;
 
     public void TakeStatusEffect(IStatusEffect statusEffect)
     {
-        Debug.Log($"Bird took a {statusEffect}");
+        if (fsm.State == BirdState.Dead)
+        {
+            return;
+        }
+
+        switch(statusEffect.Type)
+        {
+            case StatusEffectType.Burn:
+                fsm.State = BirdState.Burned;
+                // creature.timers.SetTop("burn", statusEffect.Intensity);
+                creature.timers.Start("burn");
+                break;
+        }
     }
 
     private void DoBehaviourCloseToPlayer()
@@ -86,6 +105,11 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
             Math.Min(vectorToPlayer.x, maxVelocityX) * (1 + overshoot),
             Math.Min(vectorToPlayer.y, maxVelocityY) * (1 + overshoot)
         ));
+    }
+
+    private void DoBurnedBehaviour()
+    {
+        creature.Hurt(1f, 10f);
     }
 
     private bool CloseToPlayer()
