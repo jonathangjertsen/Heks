@@ -23,7 +23,7 @@
     {
         if (first.As(out ITakesStatusEffect taker) && other.As(out IDealsStatusEffect dealer))
         {
-            taker.TakeStatusEffect(dealer.DealStatusEffect(taker));
+            taker.TakeStatusEffect(dealer.DealStatusEffect(taker), dealer);
         }
     }
 }

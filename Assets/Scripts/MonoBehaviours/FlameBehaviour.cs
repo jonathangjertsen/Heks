@@ -6,6 +6,7 @@ public class FlameBehaviour : BaseCollisionSystemParticipatorWrapper
 
     private void Start()
     {
+        flame.Init(transform.position);
     }
 
     public override ICollisionSystemParticipator GetCollisionSystemParticipator() => flame;

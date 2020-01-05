@@ -254,7 +254,7 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     {
     }
 
-    public void TakeStatusEffect(IStatusEffect statusEffect)
+    public void TakeStatusEffect(IStatusEffect statusEffect, IDealsStatusEffect dealer)
     {
         if (statusEffect.Type == StatusEffectType.Burn)
         {

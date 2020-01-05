@@ -8,8 +8,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
     [Header("Chasing behaviour")]
     [SerializeField] float visionRadius = 15f;
     [SerializeField] float overshoot = 0.01f;
-    [SerializeField] float maxVelocityX = 10.0f;
-    [SerializeField] float maxVelocityY = 10.0f;
+    [SerializeField] float maxVelocity = 10.0f;
 
     [Space]
     [Header("SysCollision")]
@@ -20,6 +19,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
     public float CollisionAttack { get => Alive() ? collisionAttack : 0; set => collisionAttack = value; }
 
     private Vector2 vectorToPlayer;
+    private IDealsStatusEffect threat;
     private Vector2 home;
     BaseCreature creature;
     public ICreatureFsm<BirdState> fsm { get; private set; }
@@ -73,7 +73,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
 
     private bool Burned() => fsm.State == BirdState.Burned;
 
-    public void TakeStatusEffect(IStatusEffect statusEffect)
+    public void TakeStatusEffect(IStatusEffect statusEffect, IDealsStatusEffect dealer)
     {
         if (fsm.State == BirdState.Dead)
         {
@@ -86,6 +86,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
                 fsm.State = BirdState.Burned;
                 // creature.timers.SetTop("burn", statusEffect.Intensity);
                 creature.timers.Start("burn");
+                threat = dealer;
                 break;
         }
     }
@@ -102,14 +103,22 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
         }
 
         creature.physics.ApproachVelocity(new Vector2(
-            Math.Min(vectorToPlayer.x, maxVelocityX) * (1 + overshoot),
-            Math.Min(vectorToPlayer.y, maxVelocityY) * (1 + overshoot)
+            Math.Min(vectorToPlayer.x, maxVelocity) * (1 + overshoot),
+            Math.Min(vectorToPlayer.y, maxVelocity) * (1 + overshoot)
         ));
     }
 
     private void DoBurnedBehaviour()
     {
         creature.Hurt(1f, 10f);
+        DoScaredBehaviour();
+    }
+
+    private void DoScaredBehaviour()
+    {
+        Vector2 vectorToThreat = (threat.Position() - creature.physics.Position());
+        creature.physics.Accelerate(-vectorToThreat.normalized);
+        creature.FlipX = vectorToThreat.x < 0;
     }
 
     private bool CloseToPlayer()
@@ -119,7 +128,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
 
     private void ApproachHome()
     {
-        creature.physics.ApproachVelocity(home - creature.physics.Position());
+        creature.physics.ApproachVelocity((home - creature.physics.Position()).normalized * maxVelocity);
         fsm.State = BirdState.MoveHome;
     }
 
