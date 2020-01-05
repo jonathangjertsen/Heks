@@ -9,25 +9,25 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>%3</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-112 228.341,-112 228.341,4 -4,4"/>
-<!-- IEventBus -->
-<g id="node1" class="node"><title>IEventBus</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="48.0957" cy="-18" rx="48.1917" ry="18"/>
-<text text-anchor="middle" x="48.0957" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IEventBus</text>
-</g>
-<!-- IPlayerInput -->
-<g id="node2" class="node"><title>IPlayerInput</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="169.096" cy="-18" rx="55.4913" ry="18"/>
-<text text-anchor="middle" x="169.096" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IPlayerInput</text>
-</g>
 <!-- UiKeyboardListener -->
-<g id="node3" class="node"><title>UiKeyboardListener</title>
+<g id="node1" class="node"><title>UiKeyboardListener</title>
 <ellipse fill="none" stroke="black" cx="108.096" cy="-90" rx="83.6854" ry="18"/>
 <text text-anchor="middle" x="108.096" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">UiKeyboardListener</text>
+</g>
+<!-- IEventBus -->
+<g id="node2" class="node"><title>IEventBus</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="48.0957" cy="-18" rx="48.1917" ry="18"/>
+<text text-anchor="middle" x="48.0957" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IEventBus</text>
 </g>
 <!-- UiKeyboardListener&#45;&gt;IEventBus -->
 <g id="edge1" class="edge"><title>UiKeyboardListener&#45;&gt;IEventBus</title>
 <path fill="none" stroke="black" d="M93.5714,-72.055C86.0931,-63.3303 76.8481,-52.5444 68.6507,-42.9808"/>
 <polygon fill="black" stroke="black" points="71.2385,-40.6218 62.0732,-35.307 65.9237,-45.1774 71.2385,-40.6218"/>
+</g>
+<!-- IPlayerInput -->
+<g id="node3" class="node"><title>IPlayerInput</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="169.096" cy="-18" rx="55.4913" ry="18"/>
+<text text-anchor="middle" x="169.096" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IPlayerInput</text>
 </g>
 <!-- UiKeyboardListener&#45;&gt;IPlayerInput -->
 <g id="edge2" class="edge"><title>UiKeyboardListener&#45;&gt;IPlayerInput</title>

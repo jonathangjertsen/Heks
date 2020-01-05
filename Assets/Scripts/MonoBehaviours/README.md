@@ -18,14 +18,6 @@ Subclasses (like the player and enemies) are too big to show
 
 ![ChargeEffectBehaviour](Doc/ChargeEffectBehaviour.svg)
 
-## FadeInBehaviour
-
-![FadeInBehaviour](Doc/FadeInBehaviour.svg)
-
-## GameStateBehaviour
-
-![GameStateBehaviour](Doc/GameStateBehaviour.svg)
-
 ## GroundBehaviour
 
 ![GroundBehaviour](Doc/GroundBehaviour.svg)
@@ -37,10 +29,6 @@ Subclasses (like the player and enemies) are too big to show
 ## MainMenuBehaviour
 
 ![MainMenuBehaviour](Doc/MainMenuBehaviour.svg)
-
-## PauseMenuBehaviour
-
-![PauseMenuBehaviour](Doc/PauseMenuBehaviour.svg)
 
 ## PlayerLocatorBehaviour
 

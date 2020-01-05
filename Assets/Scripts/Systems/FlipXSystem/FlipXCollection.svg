@@ -9,15 +9,15 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>%3</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-112 140.488,-112 140.488,4 -4,4"/>
-<!-- FlipXCollection -->
-<g id="node1" class="node"><title>FlipXCollection</title>
-<ellipse fill="none" stroke="black" cx="68.2439" cy="-90" rx="68.4888" ry="18"/>
-<text text-anchor="middle" x="68.2439" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">FlipXCollection</text>
-</g>
 <!-- IFlipX -->
-<g id="node2" class="node"><title>IFlipX</title>
+<g id="node1" class="node"><title>IFlipX</title>
 <ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="68.2439" cy="-18" rx="34.394" ry="18"/>
 <text text-anchor="middle" x="68.2439" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IFlipX</text>
+</g>
+<!-- FlipXCollection -->
+<g id="node2" class="node"><title>FlipXCollection</title>
+<ellipse fill="none" stroke="black" cx="68.2439" cy="-90" rx="68.4888" ry="18"/>
+<text text-anchor="middle" x="68.2439" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">FlipXCollection</text>
 </g>
 <!-- FlipXCollection&#45;&gt;IFlipX -->
 <g id="edge1" class="edge"><title>FlipXCollection&#45;&gt;IFlipX</title>

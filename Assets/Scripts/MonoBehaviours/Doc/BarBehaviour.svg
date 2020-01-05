@@ -15,7 +15,7 @@
 <text text-anchor="middle" x="123.945" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">BarBehaviour</text>
 </g>
 <!-- IBarDisplay -->
-<g id="node2" class="node"><title>IBarDisplay</title>
+<g id="node3" class="node"><title>IBarDisplay</title>
 <ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="53.9452" cy="-90" rx="53.8905" ry="18"/>
 <text text-anchor="middle" x="53.9452" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">IBarDisplay</text>
 </g>
@@ -35,7 +35,7 @@
 <polygon fill="black" stroke="black" stroke-width="2" points="173.083,-117.469 177.747,-107.956 168.168,-112.485 173.083,-117.469"/>
 </g>
 <!-- IFlipX -->
-<g id="node3" class="node"><title>IFlipX</title>
+<g id="node2" class="node"><title>IFlipX</title>
 <ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="53.9452" cy="-18" rx="34.394" ry="18"/>
 <text text-anchor="middle" x="53.9452" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IFlipX</text>
 </g>

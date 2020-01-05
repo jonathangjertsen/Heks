@@ -1,5 +1,13 @@
 # Creature system
 
+## Creature system
+
+New creatures should inherit from `Creature` and then implement `ICreatureController`.
+
+`ICreatureControllerWrapper` is an interface that is implemented by `BaseCreatureBehaviour`.
+
+![Creature](Creature.svg)
+
 ## BaseCreature
 
 Creature controllers should take a `BaseCreature` as their first argument. It holds
@@ -14,16 +22,3 @@ adds some extra methods that only make sense on a living thing (approaching, loo
 recoiling etc).
 
 ![CreaturePhysics](CreaturePhysics.svg)
-
-## ICreatureControllerWrapper
-
-An interface that is implemented by `BaseCreatureBehaviour`.
-
-![ICreatureControllerWrapper](ICreatureControllerWrapper.svg)
-
-## Creature
-
-Empty base class for creature controllers, just there to automatically implement
-the `ISystemParticipator` interface.
-
-![Creature](Creature.svg)

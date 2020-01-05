@@ -1,4 +1,4 @@
-﻿public class Creature : SystemParticipator
+﻿public class Creature : BaseCollisionSystemParticipator
 {
 
 }

@@ -10,10 +10,3 @@ implement these interfaces, wrapping Unity's normal RigidBody2d and Transform re
 
 ![Physics system](BasePhysics.svg)
 
-## WrapperRigidBody2d
-
-![Physics system](WrapperRigidBody2d.svg)
-
-## WrapperTransform
-
-![Physics system](WrapperTransform.svg)

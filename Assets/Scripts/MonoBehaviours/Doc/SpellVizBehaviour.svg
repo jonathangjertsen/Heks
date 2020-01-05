@@ -9,28 +9,33 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>%3</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-184 308.404,-184 308.404,4 -4,4"/>
-<!-- SpellVizBehaviour -->
-<g id="node1" class="node"><title>SpellVizBehaviour</title>
-<ellipse fill="none" stroke="black" cx="80.8605" cy="-162" rx="77.1866" ry="18"/>
-<text text-anchor="middle" x="80.8605" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">SpellVizBehaviour</text>
-</g>
 <!-- ISpell -->
-<g id="node2" class="node"><title>ISpell</title>
+<g id="node1" class="node"><title>ISpell</title>
 <ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="32.8605" cy="-18" rx="31.6951" ry="18"/>
 <text text-anchor="middle" x="32.8605" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">ISpell</text>
 </g>
-<!-- SpellVizBehaviour&#45;&gt;ISpell -->
-<g id="edge3" class="edge"><title>SpellVizBehaviour&#45;&gt;ISpell</title>
-<path fill="none" stroke="black" d="M45.6744,-145.85C30.1897,-137.19 13.5668,-124.686 4.86051,-108 -5.9085,-87.361 4.23877,-61.8453 15.2115,-43.4332"/>
-<polygon fill="black" stroke="black" points="18.3135,-45.0788 20.7469,-34.7672 12.4142,-41.3107 18.3135,-45.0788"/>
-</g>
 <!-- ISpellVisualizer -->
-<g id="node3" class="node"><title>ISpellVisualizer</title>
+<g id="node2" class="node"><title>ISpellVisualizer</title>
 <ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="80.8605" cy="-90" rx="66.8882" ry="18"/>
 <text text-anchor="middle" x="80.8605" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellVisualizer</text>
 </g>
+<!-- ISpellVisualizer&#45;&gt;ISpell -->
+<g id="edge1" class="edge"><title>ISpellVisualizer&#45;&gt;ISpell</title>
+<path fill="none" stroke="black" d="M69.241,-72.055C63.3781,-63.5048 56.1576,-52.975 49.699,-43.5561"/>
+<polygon fill="black" stroke="black" points="52.5843,-41.5749 44.0425,-35.307 46.8112,-45.5337 52.5843,-41.5749"/>
+</g>
+<!-- SpellVizBehaviour -->
+<g id="node3" class="node"><title>SpellVizBehaviour</title>
+<ellipse fill="none" stroke="black" cx="80.8605" cy="-162" rx="77.1866" ry="18"/>
+<text text-anchor="middle" x="80.8605" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">SpellVizBehaviour</text>
+</g>
+<!-- SpellVizBehaviour&#45;&gt;ISpell -->
+<g id="edge4" class="edge"><title>SpellVizBehaviour&#45;&gt;ISpell</title>
+<path fill="none" stroke="black" d="M45.6744,-145.85C30.1897,-137.19 13.5668,-124.686 4.86051,-108 -5.9085,-87.361 4.23877,-61.8453 15.2115,-43.4332"/>
+<polygon fill="black" stroke="black" points="18.3135,-45.0788 20.7469,-34.7672 12.4142,-41.3107 18.3135,-45.0788"/>
+</g>
 <!-- SpellVizBehaviour&#45;&gt;ISpellVisualizer -->
-<g id="edge2" class="edge"><title>SpellVizBehaviour&#45;&gt;ISpellVisualizer</title>
+<g id="edge3" class="edge"><title>SpellVizBehaviour&#45;&gt;ISpellVisualizer</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M80.8605,-143.697C80.8605,-135.983 80.8605,-126.712 80.8605,-118.112"/>
 <polygon fill="black" stroke="black" points="84.3606,-118.104 80.8605,-108.104 77.3606,-118.104 84.3606,-118.104"/>
 </g>
@@ -40,14 +45,9 @@
 <text text-anchor="middle" x="234.861" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">MonoBehaviour</text>
 </g>
 <!-- SpellVizBehaviour&#45;&gt;MonoBehaviour -->
-<g id="edge1" class="edge"><title>SpellVizBehaviour&#45;&gt;MonoBehaviour</title>
+<g id="edge2" class="edge"><title>SpellVizBehaviour&#45;&gt;MonoBehaviour</title>
 <path fill="none" stroke="black" stroke-width="2" d="M114.656,-145.638C137.559,-135.228 168,-121.391 192.518,-110.247"/>
 <polygon fill="black" stroke="black" stroke-width="2" points="194.281,-113.29 201.937,-105.965 191.385,-106.917 194.281,-113.29"/>
-</g>
-<!-- ISpellVisualizer&#45;&gt;ISpell -->
-<g id="edge4" class="edge"><title>ISpellVisualizer&#45;&gt;ISpell</title>
-<path fill="none" stroke="black" d="M69.241,-72.055C63.3781,-63.5048 56.1576,-52.975 49.699,-43.5561"/>
-<polygon fill="black" stroke="black" points="52.5843,-41.5749 44.0425,-35.307 46.8112,-45.5337 52.5843,-41.5749"/>
 </g>
 </g>
 </svg>
