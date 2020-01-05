@@ -2133,12 +2133,12 @@ PrefabInstance:
     - target: {fileID: 2852255323461275841, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.19
+      value: 1.91
       objectReference: {fileID: 0}
     - target: {fileID: 2852255323461275841, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6
+      value: 12.02
       objectReference: {fileID: 0}
     - target: {fileID: 2852255323461275841, guid: b8228e5662f4b83408b238c5bf7b7ce3,
         type: 3}
@@ -2224,6 +2224,11 @@ PrefabInstance:
         type: 3}
       propertyPath: bird.collisionDefense
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852255323461275843, guid: b8228e5662f4b83408b238c5bf7b7ce3,
+        type: 3}
+      propertyPath: bird.framesPerBurnDamage
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 224543222903508982, guid: b8228e5662f4b83408b238c5bf7b7ce3, type: 3}
@@ -2357,7 +2362,7 @@ PrefabInstance:
     - target: {fileID: 450802654010742555, guid: 04003236899cd20499277c0b26291465,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.89
+      value: 9.2
       objectReference: {fileID: 0}
     - target: {fileID: 450802654010742555, guid: 04003236899cd20499277c0b26291465,
         type: 3}
@@ -2418,6 +2423,11 @@ PrefabInstance:
         type: 3}
       propertyPath: logCollisions
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635877387491489347, guid: 04003236899cd20499277c0b26291465,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7993905944780328008, guid: 04003236899cd20499277c0b26291465,
         type: 3}

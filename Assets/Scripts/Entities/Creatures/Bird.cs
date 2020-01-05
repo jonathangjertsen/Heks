@@ -15,6 +15,10 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
     [Range(1f, 5f)] [SerializeField] float collisionDefense;
     [Range(0f, 100f)] [SerializeField] float collisionAttack;
 
+    [Space]
+    [Header("Reaction to burns")]
+    [Range(1, 100)] [SerializeField] int framesPerBurnDamage = 1;
+
     public float CollisionDefense { get => collisionDefense; set => collisionDefense = value; }
     public float CollisionAttack { get => Alive() ? collisionAttack : 0; set => collisionAttack = value; }
 
@@ -24,6 +28,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
     BaseCreature creature;
     public ICreatureFsm<BirdState> fsm { get; private set; }
     private IPlayerLocator playerLocator;
+    private int tick = 0;
 
     public void Init(BaseCreature creature, ICreatureFsm<BirdState> fsm, IPlayerLocator playerLocator)
     {
@@ -37,10 +42,17 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
         this.fsm.State = BirdState.MoveHome;
 
         home = creature.physics.Position();
+        tick = 0;
+
+        if (framesPerBurnDamage == 0)
+        {
+            throw new System.Exception("Cannot have framesPerBurnDamage=0");
+        }
     }
 
     public void FixedUpdate()
     {
+        tick++;
         creature.FixedUpdate();
 
         if (fsm.State == BirdState.Dead)
@@ -84,7 +96,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
         {
             case StatusEffectType.Burn:
                 fsm.State = BirdState.Burned;
-                // creature.timers.SetTop("burn", statusEffect.Intensity);
+                creature.timers.SetTop("burn", (int)statusEffect.Intensity * framesPerBurnDamage);
                 creature.timers.Start("burn");
                 threat = dealer;
                 break;
@@ -102,6 +114,7 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
             fsm.State = BirdState.MoveToPlayer;
         }
 
+        // TODO bug if negative
         creature.physics.ApproachVelocity(new Vector2(
             Math.Min(vectorToPlayer.x, maxVelocity) * (1 + overshoot),
             Math.Min(vectorToPlayer.y, maxVelocity) * (1 + overshoot)
@@ -110,15 +123,18 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
 
     private void DoBurnedBehaviour()
     {
-        creature.Hurt(1f, 10f);
+        if (tick % framesPerBurnDamage == 0)
+        {
+            creature.Hurt(1f, 10f);
+        }
         DoScaredBehaviour();
     }
 
     private void DoScaredBehaviour()
     {
-        Vector2 vectorToThreat = (threat.Position() - creature.physics.Position());
-        creature.physics.Accelerate(-vectorToThreat.normalized);
-        creature.FlipX = vectorToThreat.x < 0;
+        Vector2 vectorToThreatNormalized = (threat.Position() - creature.physics.Position()).normalized;
+        creature.physics.ApproachVelocity(-vectorToThreatNormalized * maxVelocity * 1.2f);
+        creature.FlipX = vectorToThreatNormalized.x < 0;
     }
 
     private bool CloseToPlayer()

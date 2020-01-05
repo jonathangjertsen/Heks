@@ -84,7 +84,7 @@ namespace Tests
         {
             PutPlayerClose();
             bird.CollidedWith(new AttackerMock());
-            creature.timers.PropagateStartAndStop();
+            creature.timers.EnforceTimerState();
             Assert.True(creature.timers.Running("hurt"));
             while(creature.timers.Running("hurt"))
             {

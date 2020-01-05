@@ -165,7 +165,7 @@ namespace Tests
             Assert.False(timers.Running("B"));
             Assert.False(timers.Running("C"));
 
-            timers.PropagateStartAndStop();
+            timers.EnforceTimerState();
 
             Assert.True(timers.Running("A"));
             Assert.True(timers.Running("B"));
@@ -201,7 +201,7 @@ namespace Tests
 
             timers.Start("A");
 
-            timers.PropagateStartAndStop();
+            timers.EnforceTimerState();
 
             for (int i = 0; i < timerTop; i++)
             {
@@ -270,7 +270,7 @@ namespace Tests
             timers.Start("B");
             timers.Start("C");
 
-            timers.PropagateStartAndStop();
+            timers.EnforceTimerState();
 
             Assert.AreEqual(timers.Value("A"), timerTopA);
             Assert.AreEqual(timers.Value("B"), timerTopB);

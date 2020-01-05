@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3436193474946002047}
   - component: {fileID: 6055528658933274677}
   - component: {fileID: 1649399714135709046}
-  - component: {fileID: 7993905944780328008}
+  - component: {fileID: 3635877387491489347}
   m_Layer: 0
   m_Name: Flame
   m_TagString: Untagged
@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logCollisions: 0
---- !u!70 &7993905944780328008
-CapsuleCollider2D:
+--- !u!61 &3635877387491489347
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -155,12 +155,22 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.022321165, y: -0.07384199}
-  m_Size: {x: 0.31071538, y: 0.602316}
-  m_Direction: 0
+  m_Offset: {x: -0.011674061, y: -0.13230652}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.36959842, y: 0.48633945}
+  m_EdgeRadius: 0
 --- !u!1 &8344507895320056057
 GameObject:
   m_ObjectHideFlags: 0
