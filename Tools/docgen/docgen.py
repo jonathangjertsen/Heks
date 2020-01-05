@@ -127,12 +127,14 @@ def make_graph(classes, include_dependencies=True):
                             graph.add_edge(class_.name, class__.name)
     return graph
 
-def build_subgraph(source, include_descendants: bool, include_ancestors: bool):
-    nodes = [source]
+def build_subgraph(sources, include_descendants: bool, include_ancestors: bool):
+    nodes = list(sources)
     if include_descendants:
-        nodes.extend(nx.descendants(graph, source))
+        for source in sources:
+            nodes.extend(nx.descendants(graph, source))
     if include_ancestors:
-        nodes.extend(nx.ancestors(graph, source))
+        for source in sources:
+            nodes.extend(nx.ancestors(graph, source))
     subgraph = graph.subgraph(nodes)
     return subgraph
 
@@ -151,7 +153,7 @@ def get_pydot(graph: nx.DiGraph) -> str:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Get dependency graph as pydot")
-    parser.add_argument("-r", dest="root", help="Root class")
+    parser.add_argument("-r", dest="root", help="Root class(es)", nargs="+")
     parser.add_argument("-d", dest="descendants", action="store_true", help="Set flag to include descendants")
     parser.add_argument("-a", dest="ancestors", action="store_true", help="Set flag to include ancestors")
     args = parser.parse_args()
