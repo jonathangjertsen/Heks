@@ -84,17 +84,7 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
         }
     }
 
-    public void TriggeredWith(ICollisionSystemParticipator other)
-    {
-    }
-
-    public void ExitedTriggerWith(ICollisionSystemParticipator other)
-    {
-    }
-
-    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
-
-    public void CollidedWith(ICollisionSystemParticipator other)
+    override public void CollidedWith(ICollisionSystemParticipator other)
     {
         if (!Alive())
         {
@@ -111,7 +101,7 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
         CollisionSystem.RegisterCollision(this, other);
     }
 
-    public void ExitedCollisionWith(ICollisionSystemParticipator other)
+    override public void ExitedCollisionWith(ICollisionSystemParticipator other)
     {
         if (fsm.State == SkullState.Dead)
         {

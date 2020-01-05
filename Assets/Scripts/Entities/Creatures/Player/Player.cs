@@ -231,8 +231,6 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     {
     }
 
-    public ICollisionSystemParticipator GetCollisionSystemParticipator() => this;
-
     public void TakeDamage(float amount)
     {
         if (fsm.State == PlayerState.Dead)
@@ -247,21 +245,9 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         }
     }
 
-    public void TriggeredWith(ICollisionSystemParticipator other)
+    override public void TriggeredWith(ICollisionSystemParticipator other)
     {
         CollisionSystem.RegisterCollision(this, other);
-    }
-
-    public void ExitedTriggerWith(ICollisionSystemParticipator other)
-    {
-    }
-
-    public void CollidedWith(ICollisionSystemParticipator other)
-    {
-    }
-
-    public void ExitedCollisionWith(ICollisionSystemParticipator other)
-    {
     }
 
     public void DealDamage(float amount)
