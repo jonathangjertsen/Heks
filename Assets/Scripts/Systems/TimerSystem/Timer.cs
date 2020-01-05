@@ -1,7 +1,9 @@
 
+using System;
+
 public class Timer
 {
-    private readonly int top;
+    private int top;
     private Callback.Void onTimeout;
     private readonly Callback.Void onTick;
     private readonly TimerMode mode;
@@ -62,6 +64,11 @@ public class Timer
     public void Pause()
     {
         Running = false;
+    }
+
+    public void SetTop(int top)
+    {
+        this.top = top;
     }
 
     public void TickThrough()

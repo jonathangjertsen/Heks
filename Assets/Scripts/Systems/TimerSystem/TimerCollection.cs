@@ -6,6 +6,7 @@ public class TimerCollection
     private Dictionary<string, Timer> startedTimers;
     private Dictionary<string, Timer> pausedTimers;
     private Dictionary<string, Timer> stoppedTimers;
+    private Dictionary<string, Tuple<Timer, int>> adjustedTopTimers;
 
     private readonly Dictionary<string, Timer> timers;
     public bool logCallbacks = false;
@@ -16,6 +17,7 @@ public class TimerCollection
         startedTimers = new Dictionary<string, Timer>();
         stoppedTimers = new Dictionary<string, Timer>();
         pausedTimers = new Dictionary<string, Timer>();
+        adjustedTopTimers = new Dictionary<string, Tuple<Timer, int>>();
     }
 
     public void Add(string name, int top, Callback.Void onTimeout, TimerMode mode = TimerMode.Oneshot, Callback.Void onTick = null)
@@ -39,7 +41,7 @@ public class TimerCollection
     public void TickThrough(string name)
     {
         Get(name).TickThrough();
-        PropagateStartAndStop();
+        EnforceTimerState();
     }
 
     public void SetTimeoutCallback(string name, Callback.Void callback)
@@ -47,25 +49,34 @@ public class TimerCollection
         Get(name).SetTimeoutCallback(callback);
     }
 
-    public void PropagateStartAndStop()
+    public void EnforceTimerState()
     {
-        foreach (KeyValuePair<string, Timer> pair in startedTimers)
+        foreach (var pair in startedTimers)
         {
             pair.Value.Start();
         }
         startedTimers = new Dictionary<string, Timer>();
 
-        foreach (KeyValuePair<string, Timer> pair in stoppedTimers)
+        foreach (var pair in stoppedTimers)
         {
             pair.Value.Stop();
         }
         stoppedTimers = new Dictionary<string, Timer>();
 
-        foreach (KeyValuePair<string, Timer> pair in pausedTimers)
+        foreach (var pair in pausedTimers)
         {
             pair.Value.Pause();
         }
         pausedTimers = new Dictionary<string, Timer>();
+
+        foreach (var pair in adjustedTopTimers)
+        {
+            Timer timer = pair.Value.Item1;
+            int newTop = pair.Value.Item2;
+            timer.SetTop(newTop);
+        }
+        adjustedTopTimers = new Dictionary<string, Tuple<Timer, int>>();
+
     }
 
     public void TickAll()
@@ -75,7 +86,7 @@ public class TimerCollection
             pair.Value.Tick();
         }
 
-        PropagateStartAndStop();
+        EnforceTimerState();
     }
 
     public void Pause(string name)
@@ -91,6 +102,14 @@ public class TimerCollection
         if (!startedTimers.ContainsKey(name))
         {
             startedTimers.Add(name, Get(name));
+        }
+    }
+
+    public void SetTop(string name, int value)
+    {
+        if (!adjustedTopTimers.ContainsKey(name))
+        {
+            adjustedTopTimers.Add(name, new Tuple<Timer, int>(Get(name), value));
         }
     }
 
