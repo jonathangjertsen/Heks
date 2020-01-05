@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
+public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, ITakesStatusEffect
 {
     [Space]
     [Header("Chasing behaviour")]
@@ -64,6 +64,11 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage
         {
             ApproachHome();
         }
+    }
+
+    public void TakeStatusEffect(IStatusEffect statusEffect)
+    {
+        Debug.Log($"Bird took a {statusEffect}");
     }
 
     private void DoBehaviourCloseToPlayer()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   intensity: 50
-  sprite: {fileID: 0}
+  sprite: {fileID: -185423723844968993, guid: 02b89855bd3039a4a93b9765cc147f4a, type: 3}
   description: 'Deals some damage over a period of time, and causes panic.
 
 

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamage, ITakesDamage
+public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamage, ITakesDamage, ITakesStatusEffect
 {
     [SerializeField] float maxVelocityX = 10.0f;
     [SerializeField] float maxVelocityY = 10.0f;
@@ -266,5 +266,13 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
 
     public void DealDamage(float amount)
     {
+    }
+
+    public void TakeStatusEffect(IStatusEffect statusEffect)
+    {
+        if (statusEffect.Type == StatusEffectType.Burn)
+        {
+            // Do flame
+        }
     }
 }

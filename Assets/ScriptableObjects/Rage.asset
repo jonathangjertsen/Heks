@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   intensity: 100
-  sprite: {fileID: 0}
+  sprite: {fileID: -6474026964654790375, guid: 02b89855bd3039a4a93b9765cc147f4a, type: 3}
   description: Affected entity will attack any nearby target

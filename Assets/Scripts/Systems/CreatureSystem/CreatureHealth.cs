@@ -65,10 +65,10 @@ public class CreatureHealth : ICreatureHealth
             else if (value <= 0.0001f)
             {
                 cappedHealth = 0;
-                healthBar.Hide();
+                healthBar?.Hide();
                 onZeroHealth?.Invoke();
             }
-            healthBar.FillTo(cappedHealth / maxHealth);
+            healthBar?.FillTo(cappedHealth / maxHealth);
             currentHealth = cappedHealth;
         }
     }

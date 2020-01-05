@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatureControllerWrapper, ICollisionSystemParticipatorWrapper, IHasSpriteRendererAndAudioSource where StateEnum : struct, Enum
+public abstract class BaseCreatureBehaviour<StateEnum> : BaseCollisionSystemParticipatorWrapper, ICreatureControllerWrapper, ICollisionSystemParticipatorWrapper, IHasSpriteRendererAndAudioSource where StateEnum : struct, Enum
 {
     public BaseCreature creature;
     protected CreatureFsm<StateEnum> fsm;
@@ -19,9 +19,11 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatur
     [Header("Behaviour references")]
     public BarBehaviour healthBar;
 
+    public abstract ICreatureController GetCreatureController();
+    override public ICollisionSystemParticipator GetCollisionSystemParticipator() => GetCreatureController();
+
     protected void Start()
     {
-        NotNull.Check(healthBar);
         NotNull.Check(physicsProperties);
 
         var physics = new CreaturePhysics(
@@ -45,47 +47,7 @@ public abstract class BaseCreatureBehaviour<StateEnum> : MonoBehaviour, ICreatur
     {
     }
 
-    public abstract ICreatureController GetCreatureController();
-
     private void FixedUpdate() => GetCreatureController().FixedUpdate();
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        var wrap = collision.gameObject.GetComponent<ICollisionSystemParticipatorWrapper>();
-        if (wrap != null)
-        {
-            var other = wrap.GetCollisionSystemParticipator();
-            GetCreatureController().CollidedWith(other);
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        var wrap = collision.gameObject.GetComponent<ICollisionSystemParticipatorWrapper>();
-        if (wrap != null)
-        {
-            var other = wrap.GetCollisionSystemParticipator();
-            GetCreatureController().ExitedCollisionWith(other);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var wrap = collision.gameObject.GetComponent<ICollisionSystemParticipatorWrapper>();
-        if (wrap != null)
-        {
-            var other = wrap.GetCollisionSystemParticipator();
-            GetCreatureController().TriggeredWith(other);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        var wrap = collision.gameObject.GetComponent<ICollisionSystemParticipatorWrapper>();
-        if (wrap != null)
-        {
-            var other = wrap.GetCollisionSystemParticipator();
-            GetCreatureController().ExitedTriggerWith(other);
-        }
-    }
-    public ICollisionSystemParticipator GetCollisionSystemParticipator() => GetCreatureController();
 
     public SpriteRenderer GetSpriteRenderer()
     {

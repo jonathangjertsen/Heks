@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   intensity: 50
-  sprite: {fileID: 0}
+  sprite: {fileID: 5357047607561738500, guid: 02b89855bd3039a4a93b9765cc147f4a, type: 3}
   description: Deals significant damage over a period of time.

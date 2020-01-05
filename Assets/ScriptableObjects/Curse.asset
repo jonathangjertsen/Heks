@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   intensity: 100
-  sprite: {fileID: 0}
+  sprite: {fileID: 5788625487566752301, guid: 02b89855bd3039a4a93b9765cc147f4a, type: 3}
   description: Deals severe damage over a period of time. Can be transferred from
     one entity to another.

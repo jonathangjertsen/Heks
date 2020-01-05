@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 5
   intensity: 50
-  sprite: {fileID: 0}
+  sprite: {fileID: -26102183988802579, guid: 02b89855bd3039a4a93b9765cc147f4a, type: 3}
   description: Causes loss of mobility.
