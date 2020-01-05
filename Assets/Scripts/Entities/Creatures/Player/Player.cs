@@ -243,6 +243,8 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
             fsm.State = PlayerState.Hurt;
             creature.Hurt(amount, -400);
         }
+
+        events.ChargeStop();
     }
 
     override public void TriggeredWith(ICollisionSystemParticipator other)
