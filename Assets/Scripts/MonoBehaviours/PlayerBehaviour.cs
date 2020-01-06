@@ -23,6 +23,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     [SerializeField] Sprite HurtSprite;
     [SerializeField] Sprite AngrySprite;
     [SerializeField] Sprite DeadSprite;
+    [SerializeField] Sprite PlungingSprite;
 
     // Unity
     private new void Start()
@@ -43,6 +44,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         NotNull.Check(HurtSprite);
         NotNull.Check(AngrySprite);
         NotNull.Check(DeadSprite);
+        NotNull.Check(PlungingSprite);
 
         self.Init(creature, fsm, chargeBar, spellSpawn, PlayerInput.Instance(), gameState.gameState);
     }
@@ -62,6 +64,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         fsm.Add(PlayerState.Standing, StandingSprite, null);
         fsm.Add(PlayerState.Still, FlyingSprite, null);
         fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
+        fsm.Add(PlayerState.Plunging, PlungingSprite, ChargeClip);
     }
 
     public override ICreatureController GetCreatureController() => self;

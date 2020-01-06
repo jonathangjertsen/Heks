@@ -8,4 +8,6 @@
     Hurt,
     Angry,
     Dead,
+    Plunging,
+    InvalidState
 };

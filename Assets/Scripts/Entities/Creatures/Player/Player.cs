@@ -42,6 +42,8 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     [Header("SysCollision")]
     [Range(1f, 5f)] [SerializeField] float collisionDefense;
     [Range(1f, 4f)] [SerializeField] float defenseReductionWhileCharging = 1f;
+    [Range(1f, 4f)] [SerializeField] float defenseReductionWhilePlunging = 2f;
+    [Range(1f, 4f)] [SerializeField] float attackIncreaseWhileCharging = 3f;
     [Range(0f, 100f)] [SerializeField] float collisionAttack;
 
     public float CollisionDefense {
@@ -49,6 +51,10 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
             if (fsm.State == PlayerState.Charging)
             {
                 return collisionDefense / defenseReductionWhileCharging;
+            }
+            else if (fsm.State == PlayerState.Plunging)
+            {
+                return collisionDefense / defenseReductionWhilePlunging;
             }
             return collisionDefense;
         }
@@ -60,6 +66,12 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
             {
                 return 0;
             }
+
+            if(fsm.State == PlayerState.Plunging)
+            {
+                return collisionAttack * attackIncreaseWhileCharging;
+            }
+
             return collisionAttack;
         }
         set => collisionAttack = value;
@@ -70,6 +82,7 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
     ICreatureFsm<PlayerState> fsm;
     IEventBus events;
     IPlayerInput input;
+    PlayerState stateBeforePlunge;
 
     public void Init(BaseCreature creature, ICreatureFsm<PlayerState> fsm, IBarDisplay chargeBar, ISpellCaster spellSpawner, IPlayerInput input, IEventBus events)
     {
@@ -134,10 +147,31 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
 
         // Movement
         Vector2 target = new Vector2(0, 0);
+
+        bool hardDown = down && !(right || left || up);
         bool updateX = right ^ left;
         bool updateY = up ^ down;
-        target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
-        target.y = maxVelocityY * (up ? 1 : down ? -1 : 0);
+
+        if (hardDown)
+        {
+            if (stateBeforePlunge == PlayerState.InvalidState)
+            {
+                stateBeforePlunge = fsm.State;
+            }
+            fsm.State = PlayerState.Plunging;
+            target.y = maxVelocityY * -2;
+        }
+        else
+        {
+            if (stateBeforePlunge != PlayerState.InvalidState)
+            {
+                fsm.State = stateBeforePlunge;
+                stateBeforePlunge = PlayerState.InvalidState;
+            }
+            target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
+            target.y = maxVelocityY * (up ? 1 : down ? -1 : 0);
+        }
+
         creature.physics.ApproachVelocity(updateX, updateY, target);
         creature.physics.ApproachAngularVelocity(target);
 

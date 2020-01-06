@@ -378,13 +378,13 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 5
-  m_LinearDrag: 0
+  m_LinearDrag: 0.35
   m_AngularDrag: 2
-  m_GravityScale: 1
+  m_GravityScale: 1.07
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &2071136512551164443
 MonoBehaviour:
@@ -405,11 +405,11 @@ MonoBehaviour:
     hurtTimerTop: 60
     deathToShrinkStartTimerTop: 100
     shrinkTimerTop: 200
-  logFsmChanges: 0
+  logFsmChanges: 1
   logTimerCallbacks: 0
   physicsProperties:
-    axCoeffX: 0.01
-    axCoeffY: 0.03
+    axCoeffX: 0.015
+    axCoeffY: 0.05
     rotCoeff: 1
     maxJerkX: 5
     maxJerkY: 5
@@ -419,8 +419,8 @@ MonoBehaviour:
   gameState: {fileID: 7720906914733766677}
   spellSpawn: {fileID: 5880512318560004230}
   self:
-    maxVelocityX: 10
-    maxVelocityY: 10
+    maxVelocityX: 10.16
+    maxVelocityY: 10.6
     chargeTop: 50
     castTorque: 150
     hurtTimerTop: 30
@@ -431,6 +431,8 @@ MonoBehaviour:
     headOffsetY: 6.06
     collisionDefense: 2
     defenseReductionWhileCharging: 1.65
+    defenseReductionWhilePlunging: 1.21
+    attackIncreaseWhileCharging: 3
     collisionAttack: 10
   YellClip: {fileID: 8300000, guid: 8b29819c5a69a514da3ad65002d844c2, type: 3}
   HurtClip: {fileID: 8300000, guid: ed50d34e0d690ca4286ddec924ffe3ed, type: 3}
@@ -443,6 +445,7 @@ MonoBehaviour:
   HurtSprite: {fileID: 21300000, guid: 96770ecf4c3ac3444818a93e0ca7519b, type: 3}
   AngrySprite: {fileID: 21300000, guid: 82a298a634924734b884af8061af5a51, type: 3}
   DeadSprite: {fileID: 21300000, guid: 96770ecf4c3ac3444818a93e0ca7519b, type: 3}
+  PlungingSprite: {fileID: 21300000, guid: daa8ec674eb0195439767e53d161ad9d, type: 3}
 --- !u!58 &2071136512551164441
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -679,11 +682,9 @@ MonoBehaviour:
   gameState:
     logTimerCallbacks: 0
     deathToGameOverStartTop: 0
-    chargeSlowdown: 0.75
     mainLevelSceneName: Levels/Menu
   fade: {fileID: 2071136512567138706}
   pauseMenu: {fileID: 7573746362044332941}
-  chargeEffect: {fileID: 0}
   sceneLoader: {fileID: 4634089709041882407}
 --- !u!114 &4634089709041882407
 MonoBehaviour:
