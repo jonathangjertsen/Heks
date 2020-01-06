@@ -101,7 +101,7 @@ public class Timer
         {
             Debug.Log($"Invoking onTimeout callback for '{name}'");
         }
-        onTimeout();
+        onTimeout?.Invoke();
 
         if (mode == TimerMode.Oneshot)
         {

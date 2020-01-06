@@ -92,6 +92,29 @@ namespace Tests
             Assert.False(timer.Running);
             Assert.AreEqual(timer.Value, timerTop - 1);
         }
+
+        [Test]
+        public void CanUpdateTimerTopValueFromHighToLow()
+        {
+            var timer = new Timer(4, null);
+            timer.SetTop(2);
+            timer.Start();
+            timer.Tick();
+            timer.Tick();
+            Assert.False(timer.Running);
+        }
+
+        [Test]
+        public void CanUpdateTimerTopValueLowToHigh()
+        {
+            var timer = new Timer(2, null);
+            timer.SetTop(4);
+            timer.Start();
+            timer.Tick();
+            timer.Tick();
+            Assert.True(timer.Running);
+        }
+
     }
 
     public class TimerCollectionTests
