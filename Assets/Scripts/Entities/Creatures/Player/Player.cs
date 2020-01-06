@@ -154,19 +154,14 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
 
         if (hardDown)
         {
-            if (stateBeforePlunge == PlayerState.InvalidState)
-            {
-                stateBeforePlunge = fsm.State;
-            }
             fsm.State = PlayerState.Plunging;
             target.y = maxVelocityY * -2;
         }
         else
         {
-            if (stateBeforePlunge != PlayerState.InvalidState)
+            if (fsm.State == PlayerState.Plunging)
             {
-                fsm.State = stateBeforePlunge;
-                stateBeforePlunge = PlayerState.InvalidState;
+                fsm.State = PlayerState.Flying;
             }
             target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
             target.y = maxVelocityY * (up ? 1 : down ? -1 : 0);
