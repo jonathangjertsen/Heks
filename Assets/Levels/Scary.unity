@@ -582,7 +582,7 @@ MonoBehaviour:
     mainLevelSceneName: 
   fade: {fileID: 122955853}
   pauseMenu: {fileID: 350551151}
-  chargeEffect: {fileID: 983485912}
+  chargeEffect: {fileID: 0}
   sceneLoader: {fileID: 223946819}
 --- !u!4 &599865655
 Transform:
@@ -855,18 +855,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1674757414}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &983485912 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5687931042186351582, guid: cfb32e77694556d4e8cc33e43f1fe123,
-    type: 3}
-  m_PrefabInstance: {fileID: 1779623171}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ccb063691f6fe444bdd65b240134ec1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1007038264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,6 +1820,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2071136512681157912, guid: cfb32e77694556d4e8cc33e43f1fe123,
         type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071136512681157912, guid: cfb32e77694556d4e8cc33e43f1fe123,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -1874,21 +1867,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerControlled
-      objectReference: {fileID: 0}
-    - target: {fileID: 4381348024261610291, guid: cfb32e77694556d4e8cc33e43f1fe123,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0.740566
-      objectReference: {fileID: 0}
-    - target: {fileID: 4381348024261610291, guid: cfb32e77694556d4e8cc33e43f1fe123,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 0.7969501
-      objectReference: {fileID: 0}
-    - target: {fileID: 4381348024261610291, guid: cfb32e77694556d4e8cc33e43f1fe123,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfb32e77694556d4e8cc33e43f1fe123, type: 3}
@@ -2338,7 +2316,7 @@ PrefabInstance:
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8302682176468316123, guid: c9e69b350fab34b4786720fb29b66371,
         type: 3}

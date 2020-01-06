@@ -7,7 +7,6 @@ public class GameState : IEventBus
     protected TimerCollection timers;
     private IFadeIn fade;
     private ICanBeActivated pauseMenu;
-    private ICanBeActivated chargeEffect;
     private ISceneLoader sceneLoader;
 
     [Header("Debug")]
@@ -15,7 +14,6 @@ public class GameState : IEventBus
 
     [Space] [Header("Timing")]
     public int deathToGameOverStartTop;
-    public float chargeSlowdown = 0.5f;
 
     [Space] [Header("Game")]
     [SerializeField] string mainLevelSceneName;
@@ -25,13 +23,11 @@ public class GameState : IEventBus
     public void Init(
         IFadeIn fade,
         ICanBeActivated pauseMenu,
-        ICanBeActivated chargeEffect,
         ISceneLoader sceneLoader
     )
     {
         this.fade = fade;
         this.pauseMenu = pauseMenu;
-        this.chargeEffect = chargeEffect;
         this.sceneLoader = sceneLoader;
 
         timers = new TimerCollection
@@ -60,15 +56,7 @@ public class GameState : IEventBus
     public void Unpaused()
     {
         pauseMenu.SetActive(false);
-        Time.timeScale = chargeEffect.IsActive() ? chargeSlowdown : 1f;
-        Time.fixedDeltaTime = initialFixedDeltaTime * (chargeEffect.IsActive() ? (1/chargeSlowdown) : 1);
-    }
-
-    public void ChargeStart()
-    {
-        chargeEffect.SetActive(true);
-        Time.timeScale = chargeSlowdown;
-        Time.fixedDeltaTime = initialFixedDeltaTime * (1 / chargeSlowdown);
+        Time.timeScale = 1f;
     }
 
     public void LevelRestarted()
@@ -83,13 +71,6 @@ public class GameState : IEventBus
         Reset();
     }
 
-    public void ChargeStop()
-    {
-        chargeEffect.SetActive(false);
-        Time.timeScale = pauseMenu.IsActive() ? 0f : 1f;
-        Time.fixedDeltaTime = initialFixedDeltaTime;
-    }
-
     private void GameOverStart()
     {
         fade.StartFade(null);
@@ -98,7 +79,6 @@ public class GameState : IEventBus
     private void Reset()
     {
         Unpaused();
-        ChargeStop();
     }
 
     public void FixedUpdate()

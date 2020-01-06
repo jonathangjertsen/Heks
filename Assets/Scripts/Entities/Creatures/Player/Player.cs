@@ -155,7 +155,6 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
             if (fsm.State == PlayerState.Flying)
             {
                 fsm.State = PlayerState.Charging;
-                events.ChargeStart();
             }
             else if (fsm.State == PlayerState.Charging)
             {
@@ -165,7 +164,6 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         else if (fsm.State == PlayerState.Charging)
         {
             CastSpell();
-            events.ChargeStop();
         }
     }
 
@@ -243,8 +241,6 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
             fsm.State = PlayerState.Hurt;
             creature.Hurt(amount, -400);
         }
-
-        events.ChargeStop();
     }
 
     override public void TriggeredWith(ICollisionSystemParticipator other)

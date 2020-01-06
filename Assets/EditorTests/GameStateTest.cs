@@ -12,7 +12,6 @@ namespace Tests
         private PauseMenuMock pauseMenu;
         private FadeInMock fadeIn;
         private SceneLoaderMock sceneLoader;
-        private ChargeEffectMock chargeEffect;
         private int deathToGameOverStartTop = 3;
 
         [SetUp]
@@ -29,11 +28,7 @@ namespace Tests
             };
             fadeIn = new FadeInMock();
             sceneLoader = new SceneLoaderMock();
-            chargeEffect = new ChargeEffectMock()
-            {
-                isActive = false
-            };
-            gameState.Init(fadeIn, pauseMenu, chargeEffect, sceneLoader);
+            gameState.Init(fadeIn, pauseMenu, sceneLoader);
 
             Assert.False(sceneLoader.didReload);
         }
@@ -46,20 +41,20 @@ namespace Tests
         [Test]
         public void PauseUnpause()
         {
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
 
             gameState.Paused();
             AssertIsPaused();
 
             gameState.Unpaused();
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
         }
 
         [Test]
         public void Restart_NotPaused()
         {
             gameState.LevelRestarted();
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
             Assert.True(sceneLoader.didReload);
         }
 
@@ -68,7 +63,7 @@ namespace Tests
         {
             gameState.Paused();
             gameState.LevelRestarted();
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
             Assert.True(sceneLoader.didReload);
         }
 
@@ -76,7 +71,7 @@ namespace Tests
         public void Exit_NotPaused()
         {
             gameState.LevelExited();
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
         }
 
         [Test]
@@ -84,7 +79,7 @@ namespace Tests
         {
             gameState.Paused();
             gameState.LevelExited();
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
         }
 
         [Test]
@@ -110,56 +105,8 @@ namespace Tests
             gameState.Paused();
             gameState.LevelRestarted();
 
-            AssertIsUnpaused(false);
+            AssertIsUnpaused();
             Assert.True(sceneLoader.didReload);
-        }
-
-        [Test]
-        public void ChargeEffectSlowdown()
-        {
-            gameState.ChargeStart();
-            AssertIsUnpaused(true);
-            gameState.ChargeStop();
-            AssertIsUnpaused(false);
-        }
-
-        [Test]
-        public void ChargeEffectAndPauseInteractions()
-        {
-            gameState.ChargeStart();
-            AssertIsUnpaused(true);
-            gameState.Paused();
-            AssertIsPaused();
-            gameState.ChargeStop();
-            AssertIsPaused();
-            gameState.Unpaused();
-            AssertIsUnpaused(false);
-            gameState.ChargeStart();
-            AssertIsUnpaused(true);
-            gameState.Paused();
-            AssertIsPaused();
-            gameState.Unpaused();
-            AssertIsUnpaused(true);
-            gameState.ChargeStop();
-            AssertIsUnpaused(false);
-        }
-
-        [Test]
-        public void ChargeEffectAndRestartInteractions()
-        {
-            gameState.ChargeStart();
-            AssertIsUnpaused(true);
-            gameState.LevelRestarted();
-            AssertIsUnpaused(false);
-        }
-
-        [Test]
-        public void ChargeEffectAndExitInteractions()
-        {
-            gameState.ChargeStart();
-            AssertIsUnpaused(true);
-            gameState.LevelExited();
-            AssertIsUnpaused(false);
         }
 
         private void ClockThroughFadeDelay()
@@ -179,10 +126,10 @@ namespace Tests
             UnityEngine.Assertions.Assert.AreApproximatelyEqual(Time.timeScale, 0f);
         }
 
-        private void AssertIsUnpaused(bool charging)
+        private void AssertIsUnpaused()
         {
             Assert.False(pauseMenu.isActive);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual(Time.timeScale, charging ? gameState.chargeSlowdown : 1f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual(Time.timeScale, 1f);
         }
     }
 }
