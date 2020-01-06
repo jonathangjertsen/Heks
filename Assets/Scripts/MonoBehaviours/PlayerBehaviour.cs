@@ -14,6 +14,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
     [SerializeField] AudioClip HurtClip;
     [SerializeField] AudioClip ChargeClip;
     [SerializeField] AudioClip CastClip;
+    [SerializeField] AudioClip PlungeClip;
 
     [Space] [Header("Sprites")]
     [SerializeField] Sprite FlyingSprite;
@@ -37,6 +38,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         NotNull.Check(HurtClip);
         NotNull.Check(ChargeClip);
         NotNull.Check(CastClip);
+        NotNull.Check(PlungeClip);
         NotNull.Check(FlyingSprite);
         NotNull.Check(StandingSprite);
         NotNull.Check(ChargingSprite);
@@ -64,7 +66,7 @@ public class PlayerBehaviour : BaseCreatureBehaviour<PlayerState>
         fsm.Add(PlayerState.Standing, StandingSprite, null);
         fsm.Add(PlayerState.Still, FlyingSprite, null);
         fsm.Add(PlayerState.Charging, ChargingSprite, ChargeClip);
-        fsm.Add(PlayerState.Plunging, PlungingSprite, ChargeClip);
+        fsm.Add(PlayerState.Plunging, PlungingSprite, PlungeClip);
     }
 
     public override ICreatureController GetCreatureController() => self;
