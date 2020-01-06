@@ -17,7 +17,7 @@ python Tools/docgen/docgen.py -r CollisionSystem BaseCollisionSystemParticipator
 python Tools/docgen/docgen.py -r Creature ICreatureControllerWrapper ICreatureController -d | dot -Tsvg -o Assets/Scripts/Systems/CreatureSystem/Creature.svg
 python Tools/docgen/docgen.py -r CreaturePhysics WrapperRigidbody2d WrapperTransform -d | dot -Tsvg -o Assets/Scripts/Systems/CreatureSystem/CreaturePhysics.svg
 python Tools/docgen/docgen.py -r FlipXCollection -d | dot -Tsvg -o Assets/Scripts/Systems/FlipXSystem/FlipXCollection.svg
-python Tools/docgen/docgen.py -r GameState UiKeyboardListener FadeInBehaviour PauseMenuBehaviour SceneLoaderBehaviour ChargeEffectBehaviour -d | dot -Tsvg -o Assets/Scripts/Systems/GameStateSystem/GameState.svg
+python Tools/docgen/docgen.py -r GameState UiKeyboardListener FadeInBehaviour PauseMenuBehaviour SceneLoaderBehaviour -d | dot -Tsvg -o Assets/Scripts/Systems/GameStateSystem/GameState.svg
 python Tools/docgen/docgen.py -r IDealsStatusEffect ITakesStatusEffect StatusEffect -d | dot -Tsvg -o Assets/Scripts/Systems/StatusEffectSystem/IDealsStatusEffect.svg
 python Tools/docgen/docgen.py -r PlayerInput -d | dot -Tsvg -o Assets/Scripts/Systems/PlayerInputSystem/PlayerInput.svg
 python Tools/docgen/docgen.py -r SpellSpawner -d | dot -Tsvg -o Assets/Scripts/Systems/SpellSystem/SpellSpawner.svg

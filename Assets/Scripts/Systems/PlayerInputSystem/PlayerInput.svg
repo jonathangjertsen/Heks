@@ -9,15 +9,15 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>%3</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-112 114.49,-112 114.49,4 -4,4"/>
-<!-- PlayerInput -->
-<g id="node1" class="node"><title>PlayerInput</title>
-<ellipse fill="none" stroke="black" cx="55.2451" cy="-90" rx="51.9908" ry="18"/>
-<text text-anchor="middle" x="55.2451" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">PlayerInput</text>
-</g>
 <!-- IPlayerInput -->
-<g id="node2" class="node"><title>IPlayerInput</title>
+<g id="node1" class="node"><title>IPlayerInput</title>
 <ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="55.2451" cy="-18" rx="55.4913" ry="18"/>
 <text text-anchor="middle" x="55.2451" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IPlayerInput</text>
+</g>
+<!-- PlayerInput -->
+<g id="node2" class="node"><title>PlayerInput</title>
+<ellipse fill="none" stroke="black" cx="55.2451" cy="-90" rx="51.9908" ry="18"/>
+<text text-anchor="middle" x="55.2451" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">PlayerInput</text>
 </g>
 <!-- PlayerInput&#45;&gt;IPlayerInput -->
 <g id="edge1" class="edge"><title>PlayerInput&#45;&gt;IPlayerInput</title>
