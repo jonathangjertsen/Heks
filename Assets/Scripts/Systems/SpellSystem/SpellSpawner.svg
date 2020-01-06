@@ -5,74 +5,74 @@
  -->
 <!-- Title: %3 Pages: 1 -->
 <svg width="448pt" height="188pt"
- viewBox="0.00 0.00 447.72 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ viewBox="0.00 0.00 447.62 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>%3</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-184 443.722,-184 443.722,4 -4,4"/>
-<!-- SpellSpawner -->
-<g id="node1" class="node"><title>SpellSpawner</title>
-<ellipse fill="none" stroke="black" cx="273.245" cy="-162" rx="60.3893" ry="18"/>
-<text text-anchor="middle" x="273.245" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">SpellSpawner</text>
-</g>
-<!-- ISpellCaster -->
-<g id="node2" class="node"><title>ISpellCaster</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="55.2451" cy="-90" rx="55.4913" ry="18"/>
-<text text-anchor="middle" x="55.2451" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellCaster</text>
-</g>
-<!-- SpellSpawner&#45;&gt;ISpellCaster -->
-<g id="edge1" class="edge"><title>SpellSpawner&#45;&gt;ISpellCaster</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M233.767,-148.324C197.005,-136.519 142.137,-118.901 102.941,-106.315"/>
-<polygon fill="black" stroke="black" points="103.925,-102.955 93.3337,-103.23 101.785,-109.62 103.925,-102.955"/>
-</g>
-<!-- ISpellVisualizer -->
-<g id="node4" class="node"><title>ISpellVisualizer</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="195.245" cy="-90" rx="66.8882" ry="18"/>
-<text text-anchor="middle" x="195.245" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellVisualizer</text>
-</g>
-<!-- SpellSpawner&#45;&gt;ISpellVisualizer -->
-<g id="edge4" class="edge"><title>SpellSpawner&#45;&gt;ISpellVisualizer</title>
-<path fill="none" stroke="black" d="M255.154,-144.765C245.087,-135.73 232.38,-124.326 221.262,-114.349"/>
-<polygon fill="black" stroke="black" points="223.288,-111.464 213.508,-107.39 218.613,-116.674 223.288,-111.464"/>
-</g>
-<!-- ISpellInstantiator -->
-<g id="node5" class="node"><title>ISpellInstantiator</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="352.245" cy="-90" rx="72.2875" ry="18"/>
-<text text-anchor="middle" x="352.245" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellInstantiator</text>
-</g>
-<!-- SpellSpawner&#45;&gt;ISpellInstantiator -->
-<g id="edge3" class="edge"><title>SpellSpawner&#45;&gt;ISpellInstantiator</title>
-<path fill="none" stroke="black" d="M291.568,-144.765C301.789,-135.708 314.697,-124.27 325.977,-114.276"/>
-<polygon fill="black" stroke="black" points="328.31,-116.885 333.473,-107.633 323.667,-111.646 328.31,-116.885"/>
-</g>
+<polygon fill="white" stroke="none" points="-4,4 -4,-184 443.623,-184 443.623,4 -4,4"/>
 <!-- ISpell -->
-<g id="node6" class="node"><title>ISpell</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="352.245" cy="-18" rx="31.6951" ry="18"/>
-<text text-anchor="middle" x="352.245" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">ISpell</text>
+<g id="node1" class="node"><title>ISpell</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="82.3783" cy="-18" rx="31.6951" ry="18"/>
+<text text-anchor="middle" x="82.3783" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">ISpell</text>
+</g>
+<!-- SpellSpawner -->
+<g id="node2" class="node"><title>SpellSpawner</title>
+<ellipse fill="none" stroke="black" cx="160.378" cy="-162" rx="60.3893" ry="18"/>
+<text text-anchor="middle" x="160.378" y="-158.3" font-family="Times New Roman,serif" font-size="14.00">SpellSpawner</text>
 </g>
 <!-- SpellSpawner&#45;&gt;ISpell -->
 <g id="edge2" class="edge"><title>SpellSpawner&#45;&gt;ISpell</title>
-<path fill="none" stroke="black" d="M332.381,-157.962C367.845,-152.722 410.374,-139.67 433.245,-108 442.613,-95.0289 440.855,-86.0742 433.245,-72 423.533,-54.0391 404.794,-41.1886 387.785,-32.6433"/>
-<polygon fill="black" stroke="black" points="389.122,-29.4047 378.581,-28.3337 386.153,-35.7442 389.122,-29.4047"/>
+<path fill="none" stroke="black" d="M101.858,-157.064C68.0161,-151.426 27.9723,-138.269 6.37833,-108 -2.91392,-94.9749 -1.02318,-86.1851 6.37833,-72 15.2114,-55.0713 32.1932,-42.4466 47.8677,-33.7742"/>
+<polygon fill="black" stroke="black" points="49.5956,-36.8211 56.874,-29.1221 46.383,-30.6018 49.5956,-36.8211"/>
 </g>
-<!-- IFlipX -->
-<g id="node3" class="node"><title>IFlipX</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="55.2451" cy="-18" rx="34.394" ry="18"/>
-<text text-anchor="middle" x="55.2451" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IFlipX</text>
+<!-- ISpellVisualizer -->
+<g id="node3" class="node"><title>ISpellVisualizer</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="82.3783" cy="-90" rx="66.8882" ry="18"/>
+<text text-anchor="middle" x="82.3783" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellVisualizer</text>
 </g>
-<!-- ISpellCaster&#45;&gt;IFlipX -->
-<g id="edge5" class="edge"><title>ISpellCaster&#45;&gt;IFlipX</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M55.2451,-71.6966C55.2451,-63.9827 55.2451,-54.7125 55.2451,-46.1124"/>
-<polygon fill="black" stroke="black" points="58.7452,-46.1043 55.2451,-36.1043 51.7452,-46.1044 58.7452,-46.1043"/>
+<!-- SpellSpawner&#45;&gt;ISpellVisualizer -->
+<g id="edge4" class="edge"><title>SpellSpawner&#45;&gt;ISpellVisualizer</title>
+<path fill="none" stroke="black" d="M142.288,-144.765C132.22,-135.73 119.513,-124.326 108.395,-114.349"/>
+<polygon fill="black" stroke="black" points="110.421,-111.464 100.641,-107.39 105.746,-116.674 110.421,-111.464"/>
+</g>
+<!-- ISpellCaster -->
+<g id="node4" class="node"><title>ISpellCaster</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="384.378" cy="-90" rx="55.4913" ry="18"/>
+<text text-anchor="middle" x="384.378" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellCaster</text>
+</g>
+<!-- SpellSpawner&#45;&gt;ISpellCaster -->
+<g id="edge1" class="edge"><title>SpellSpawner&#45;&gt;ISpellCaster</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M200.425,-148.485C238.44,-136.606 295.635,-118.732 336.142,-106.074"/>
+<polygon fill="black" stroke="black" points="337.301,-109.379 345.802,-103.055 335.213,-102.697 337.301,-109.379"/>
+</g>
+<!-- ISpellInstantiator -->
+<g id="node6" class="node"><title>ISpellInstantiator</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="239.378" cy="-90" rx="72.2875" ry="18"/>
+<text text-anchor="middle" x="239.378" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">ISpellInstantiator</text>
+</g>
+<!-- SpellSpawner&#45;&gt;ISpellInstantiator -->
+<g id="edge3" class="edge"><title>SpellSpawner&#45;&gt;ISpellInstantiator</title>
+<path fill="none" stroke="black" d="M178.701,-144.765C188.923,-135.708 201.83,-124.27 213.11,-114.276"/>
+<polygon fill="black" stroke="black" points="215.443,-116.885 220.606,-107.633 210.801,-111.646 215.443,-116.885"/>
 </g>
 <!-- ISpellVisualizer&#45;&gt;ISpell -->
-<g id="edge6" class="edge"><title>ISpellVisualizer&#45;&gt;ISpell</title>
-<path fill="none" stroke="black" d="M228.541,-74.1548C254.996,-62.3596 291.841,-45.9317 318.431,-34.0765"/>
-<polygon fill="black" stroke="black" points="320.017,-37.2016 327.725,-29.9327 317.166,-30.8083 320.017,-37.2016"/>
+<g id="edge5" class="edge"><title>ISpellVisualizer&#45;&gt;ISpell</title>
+<path fill="none" stroke="black" d="M82.3783,-71.6966C82.3783,-63.9827 82.3783,-54.7125 82.3783,-46.1124"/>
+<polygon fill="black" stroke="black" points="85.8784,-46.1043 82.3783,-36.1043 78.8784,-46.1044 85.8784,-46.1043"/>
+</g>
+<!-- IFlipX -->
+<g id="node5" class="node"><title>IFlipX</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="384.378" cy="-18" rx="34.394" ry="18"/>
+<text text-anchor="middle" x="384.378" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">IFlipX</text>
+</g>
+<!-- ISpellCaster&#45;&gt;IFlipX -->
+<g id="edge6" class="edge"><title>ISpellCaster&#45;&gt;IFlipX</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M384.378,-71.6966C384.378,-63.9827 384.378,-54.7125 384.378,-46.1124"/>
+<polygon fill="black" stroke="black" points="387.878,-46.1043 384.378,-36.1043 380.878,-46.1044 387.878,-46.1043"/>
 </g>
 <!-- ISpellInstantiator&#45;&gt;ISpell -->
 <g id="edge7" class="edge"><title>ISpellInstantiator&#45;&gt;ISpell</title>
-<path fill="none" stroke="black" d="M352.245,-71.6966C352.245,-63.9827 352.245,-54.7125 352.245,-46.1124"/>
-<polygon fill="black" stroke="black" points="355.745,-46.1043 352.245,-36.1043 348.745,-46.1044 355.745,-46.1043"/>
+<path fill="none" stroke="black" d="M205.698,-73.9832C179.217,-62.1763 142.502,-45.8067 116.028,-34.0032"/>
+<polygon fill="black" stroke="black" points="117.335,-30.7537 106.776,-29.8781 114.484,-37.147 117.335,-30.7537"/>
 </g>
 </g>
 </svg>

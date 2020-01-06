@@ -14,8 +14,13 @@
 <ellipse fill="none" stroke="black" cx="69.5438" cy="-18" rx="69.5877" ry="18"/>
 <text text-anchor="middle" x="69.5438" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">MonoBehaviour</text>
 </g>
+<!-- Debug -->
+<g id="node2" class="node"><title>Debug</title>
+<ellipse fill="#e5e5e5" stroke="black" cx="191.544" cy="-18" rx="34.394" ry="18"/>
+<text text-anchor="middle" x="191.544" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">Debug</text>
+</g>
 <!-- MainMenuBehaviour -->
-<g id="node2" class="node"><title>MainMenuBehaviour</title>
+<g id="node3" class="node"><title>MainMenuBehaviour</title>
 <ellipse fill="none" stroke="black" cx="130.544" cy="-90" rx="85.5853" ry="18"/>
 <text text-anchor="middle" x="130.544" y="-86.3" font-family="Times New Roman,serif" font-size="14.00">MainMenuBehaviour</text>
 </g>
@@ -23,11 +28,6 @@
 <g id="edge1" class="edge"><title>MainMenuBehaviour&#45;&gt;MonoBehaviour</title>
 <path fill="none" stroke="black" stroke-width="2" d="M115.777,-72.055C108.285,-63.4567 99.0474,-52.8566 90.8044,-43.3974"/>
 <polygon fill="black" stroke="black" stroke-width="2" points="93.3828,-41.0287 84.1742,-35.789 88.1054,-45.6276 93.3828,-41.0287"/>
-</g>
-<!-- Debug -->
-<g id="node3" class="node"><title>Debug</title>
-<ellipse fill="#e5e5e5" stroke="black" cx="191.544" cy="-18" rx="34.394" ry="18"/>
-<text text-anchor="middle" x="191.544" y="-14.3" font-family="Times New Roman,serif" font-size="14.00">Debug</text>
 </g>
 <!-- MainMenuBehaviour&#45;&gt;Debug -->
 <g id="edge2" class="edge"><title>MainMenuBehaviour&#45;&gt;Debug</title>
