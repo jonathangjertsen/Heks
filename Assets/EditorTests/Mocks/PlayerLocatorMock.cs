@@ -8,5 +8,4 @@ namespace Tests
         public bool isAlive { get; set; } = false;
         public bool IsAlive() => isAlive;
     }
-
 }

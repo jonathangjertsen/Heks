@@ -5,4 +5,7 @@
     void Unpaused();
     void LevelRestarted();
     void LevelExited();
+    void PlayerDamaged(float magnitude);
+    void ZoomOutStart();
+    void ZoomOutStop();
 }

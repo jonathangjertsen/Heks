@@ -8,6 +8,7 @@ public class GameState : IEventBus
     private IFadeIn fade;
     private ICanBeActivated pauseMenu;
     private ISceneLoader sceneLoader;
+    private ICameraManipulator cameraManipulator;
 
     [Header("Debug")]
     [SerializeField] bool logTimerCallbacks;
@@ -18,17 +19,17 @@ public class GameState : IEventBus
     [Space] [Header("Game")]
     [SerializeField] string mainLevelSceneName;
 
-    float initialFixedDeltaTime;
-
     public void Init(
         IFadeIn fade,
         ICanBeActivated pauseMenu,
-        ISceneLoader sceneLoader
+        ISceneLoader sceneLoader,
+        ICameraManipulator cameraManipulator
     )
     {
         this.fade = fade;
         this.pauseMenu = pauseMenu;
         this.sceneLoader = sceneLoader;
+        this.cameraManipulator = cameraManipulator;
 
         timers = new TimerCollection
         {
@@ -37,7 +38,6 @@ public class GameState : IEventBus
         timers.Add("deathToGameOverStart", deathToGameOverStartTop, GameOverStart);
 
         Time.timeScale = 1f;
-        initialFixedDeltaTime = Time.fixedDeltaTime;
 
         Reset();
     }
@@ -84,5 +84,20 @@ public class GameState : IEventBus
     public void FixedUpdate()
     {
         timers.TickAll();
+    }
+
+    public void PlayerDamaged(float magnitude)
+    {
+        cameraManipulator.Shake(0.5f, magnitude);
+    }
+
+    public void ZoomOutStart()
+    {
+        cameraManipulator.ZoomOut();
+    }
+
+    public void ZoomOutStop()
+    {
+        cameraManipulator.ResetZoom();
     }
 }

@@ -154,6 +154,10 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
 
         if (hardDown)
         {
+            if (fsm.State != PlayerState.Plunging)
+            {
+                events.ZoomOutStart();
+            }
             fsm.State = PlayerState.Plunging;
             target.y = maxVelocityY * -2;
         }
@@ -161,6 +165,7 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         {
             if (fsm.State == PlayerState.Plunging)
             {
+                events.ZoomOutStop();
                 fsm.State = PlayerState.Flying;
             }
             target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
@@ -269,6 +274,7 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         {
             fsm.State = PlayerState.Hurt;
             creature.Hurt(amount, -400);
+            events.PlayerDamaged(amount);
         }
     }
 

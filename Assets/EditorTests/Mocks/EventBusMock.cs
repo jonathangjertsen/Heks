@@ -39,6 +39,21 @@ namespace Tests
         {
             throw new NotImplementedException();
         }
+
+        public void PlayerDamaged(float magnitude)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ZoomOutStart()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ZoomOutStop()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

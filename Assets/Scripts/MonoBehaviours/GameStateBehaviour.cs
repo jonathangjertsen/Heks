@@ -5,6 +5,7 @@ public class GameStateBehaviour : MonoBehaviour
     public GameState gameState;
     public FadeInBehaviour fade;
     public PauseMenuBehaviour pauseMenu;
+    public CameraManipulatorBehaviour cameraManipulator;
     [SerializeField] SceneLoaderBehaviour sceneLoader;
 
     public void Start()
@@ -13,7 +14,7 @@ public class GameStateBehaviour : MonoBehaviour
         NotNull.Check(pauseMenu);
         NotNull.Check(sceneLoader);
 
-        gameState.Init(fade, pauseMenu, sceneLoader);
+        gameState.Init(fade, pauseMenu, sceneLoader, cameraManipulator);
     }
 
     public void FixedUpdate()

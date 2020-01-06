@@ -12,6 +12,7 @@ namespace Tests
         private PauseMenuMock pauseMenu;
         private FadeInMock fadeIn;
         private SceneLoaderMock sceneLoader;
+        private CameraManipulatorMock cameraManipulator;
         private int deathToGameOverStartTop = 3;
 
         [SetUp]
@@ -28,7 +29,8 @@ namespace Tests
             };
             fadeIn = new FadeInMock();
             sceneLoader = new SceneLoaderMock();
-            gameState.Init(fadeIn, pauseMenu, sceneLoader);
+            cameraManipulator = new CameraManipulatorMock();
+            gameState.Init(fadeIn, pauseMenu, sceneLoader, cameraManipulator);
 
             Assert.False(sceneLoader.didReload);
         }
