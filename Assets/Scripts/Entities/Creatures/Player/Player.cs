@@ -127,6 +127,53 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         creature.timers.Start("angry");
     }
 
+    private bool Left() => input.IsHeld(PlayerInputKey.Left);
+    private bool Right() => input.IsHeld(PlayerInputKey.Right);
+    private float HorizontalDirection() => Right() ? 1 : Left() ? -1 : 0;
+    private float VerticalDirection() => Up() ? 1 : Down() ? -1 : 0;
+    private bool Up() => input.IsHeld(PlayerInputKey.Up);
+    private bool Down() => input.IsHeld(PlayerInputKey.Down);
+    private bool Space() => input.IsHeld(PlayerInputKey.Space);
+    private bool Any() => input.IsAnyHeld();
+    private bool UpdateX() => Left() ^ Right();
+    private bool UpdateY() => Up() ^ Down();
+    private bool HardDown() => Down() && !(Up() || Right() || Left());
+
+    private void SetStateFromKeyboardInput()
+    {
+        if (HardDown())
+        {
+            if (fsm.State != PlayerState.Plunging)
+            {
+                events.ZoomOutStart();
+                fsm.State = PlayerState.Plunging;
+            }
+        }
+        else
+        {
+            if (fsm.State == PlayerState.Plunging)
+            {
+                events.ZoomOutStop();
+                fsm.State = PlayerState.Flying;
+            }
+        }
+    }
+
+    private Vector2 GetTargetFromKeyboardInput()
+    {
+        if (HardDown())
+        {
+            return new Vector2(0, maxVelocityY * -2);
+        }
+        else
+        {
+            return new Vector2(
+                maxVelocityX * HorizontalDirection(),
+                maxVelocityY * VerticalDirection()
+            );
+        }
+    }
+
     public void FixedUpdate()
     {
         creature.FixedUpdate();
@@ -142,50 +189,13 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         }
 
         creature.physics.GetUpright(uprightTorque);
-
-        creature.FlipX = input.IsHeld(PlayerInputKey.Right) ? false : input.IsHeld(PlayerInputKey.Left) ? true : creature.FlipX;
-
-        bool right = input.IsHeld(PlayerInputKey.Right);
-        bool left = input.IsHeld(PlayerInputKey.Left);
-        bool down = input.IsHeld(PlayerInputKey.Down);
-        bool up = input.IsHeld(PlayerInputKey.Up);
-        bool space = input.IsHeld(PlayerInputKey.Space);
-
-        // Movement
-        Vector2 target = new Vector2(0, 0);
-
-        bool hardDown = down && !(right || left || up);
-        bool updateX = right ^ left;
-        bool updateY = up ^ down;
-
-        if (hardDown)
-        {
-            if (fsm.State != PlayerState.Plunging)
-            {
-                events.ZoomOutStart();
-            }
-            fsm.State = PlayerState.Plunging;
-            target.y = maxVelocityY * -2;
-        }
-        else
-        {
-            if (fsm.State == PlayerState.Plunging)
-            {
-                events.ZoomOutStop();
-                fsm.State = PlayerState.Flying;
-            }
-            target.x = maxVelocityX * (right ? 1 : left ? -1 : 0);
-            target.y = maxVelocityY * (up ? 1 : down ? -1 : 0);
-        }
-
-        creature.physics.ApproachVelocity(updateX, updateY, target);
+        creature.FlipX = Right() ? false : Left() ? true : creature.FlipX;
+        SetStateFromKeyboardInput();
+        Vector2 target = GetTargetFromKeyboardInput();
+        creature.physics.ApproachVelocity(UpdateX(), UpdateY(), target);
         creature.physics.ApproachAngularVelocity(target);
-
-        // Cast
-        UpdateCastCycleStates(space);
-
-        // Idle
-        UpdateToIdleIfIdle(input.IsAnyHeld());
+        UpdateCastCycleStates(Space());
+        UpdateToIdleIfIdle(Any());
     }
 
     private void UpdateCastCycleStates(bool charging)
