@@ -9,6 +9,8 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
     [SerializeField] float visionRadius = 15f;
     [SerializeField] float overshoot = 0.01f;
     [SerializeField] float maxVelocity = 10.0f;
+    [Range(0f, 10f)]
+    [SerializeField] float uprightTorque = 4;
 
     [Space]
     [Header("SysCollision")]
@@ -60,6 +62,8 @@ public class Bird : Creature, ICreatureController, ITakesDamage, IDealsDamage, I
             creature.physics.Accelerate(new Vector2(0, -0.5f));
             return;
         }
+
+        creature.physics.GetUpright(uprightTorque);
 
         if (PlayerIsNullOrDead())
         {

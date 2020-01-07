@@ -9,6 +9,8 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
     [SerializeField] int hopTimerTop = 50;
     [SerializeField] int hopForce = 10;
     [SerializeField] int hurtTimerTop = 10;
+    [Range(0f, 10f)]
+    [SerializeField] float uprightTorque = 4;
 
     [Space] [Header("Glitch filtering")]
     [SerializeField] int collisionExitToNotGroundedTimerTop = 10;
@@ -82,6 +84,8 @@ public class Skull : Creature, ICreatureController, ICollisionSystemParticipator
             creature.physics.Jump(hopForce);
             fsm.State = SkullState.GroundedWaiting;
         }
+
+        creature.physics.GetUpright(uprightTorque);
     }
 
     override public void CollidedWith(ICollisionSystemParticipator other)

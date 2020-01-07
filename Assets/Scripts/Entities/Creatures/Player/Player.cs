@@ -4,8 +4,12 @@ using UnityEngine;
 [Serializable]
 public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamage, ITakesDamage, ITakesStatusEffect
 {
+    [Space]
+    [Header("Movement")]
     [SerializeField] float maxVelocityX = 10.0f;
     [SerializeField] float maxVelocityY = 10.0f;
+    [Range(0f, 10f)]
+    [SerializeField] float uprightTorque = 4;
 
     [Space]
     [Header("Charging and casting")]
@@ -136,6 +140,8 @@ public class Player : Creature, IPlayerLocator, ICreatureController, IDealsDamag
         {
             creature.health.Hurt(creature.maxHealth * 2);
         }
+
+        creature.physics.GetUpright(uprightTorque);
 
         creature.FlipX = input.IsHeld(PlayerInputKey.Right) ? false : input.IsHeld(PlayerInputKey.Left) ? true : creature.FlipX;
 

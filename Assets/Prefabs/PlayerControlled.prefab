@@ -435,7 +435,7 @@ MonoBehaviour:
     hurtTimerTop: 60
     deathToShrinkStartTimerTop: 100
     shrinkTimerTop: 200
-  logFsmChanges: 1
+  logFsmChanges: 0
   logTimerCallbacks: 0
   physicsProperties:
     axCoeffX: 0.015
@@ -1818,7 +1818,7 @@ PrefabInstance:
     - target: {fileID: 7430492850605922855, guid: 2c59e3da551cc0a4c9f7ad1058c873f8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 260.3
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7430492850605922855, guid: 2c59e3da551cc0a4c9f7ad1058c873f8,
         type: 3}
@@ -1960,7 +1960,7 @@ PrefabInstance:
     - target: {fileID: 7430492850605922855, guid: 2c59e3da551cc0a4c9f7ad1058c873f8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 263.2
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7430492850605922855, guid: 2c59e3da551cc0a4c9f7ad1058c873f8,
         type: 3}
